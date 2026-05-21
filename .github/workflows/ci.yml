@@ -1,0 +1,30 @@
+name: OCaml CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup OCaml
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.1.0 
+          dune-cache: true 
+
+      - name: Check code formatting
+        run: dune build @fmt
+
+      - name: Build project
+        run: dune build
+
+      - name: Run test suite
+        run: dune runtest
