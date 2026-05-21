@@ -24,7 +24,7 @@ jobs:
         run: |
           opam update
           opam install . --deps-only --with-test --with-doc
-          opam install ocamlformat
+          opam install ocamlformat.0.29.0 --yes
 
       - name: Fix and Check Code Formatting
         run: |
