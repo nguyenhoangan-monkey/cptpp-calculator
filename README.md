@@ -137,3 +137,5 @@ The bill of materials of type `material`:
 this is for trees: `tree -I "_build|_opam|*.install|dune.lock"`
 
 first I need to convert json
+
+then `dune build @fmt --auto-promote` before commit

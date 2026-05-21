@@ -2,4 +2,5 @@
  (name parser)
  (public_name cptpp_calculator.parser)
  (libraries domain yojson)
- (preprocess (pps ppx_deriving_yojson)))
+ (preprocess
+  (pps ppx_deriving_yojson)))

@@ -24,10 +24,10 @@ jobs:
         run: opam install . --deps-only --with-test --with-doc
 
       - name: Check code formatting
-        run: opam exec -- dune build @fmt
+        run: dune build @fmt
 
       - name: Build project
-        run: opam exec -- dune build
+        run: dune build
 
       - name: Run test suite
-        run: opam exec -- dune runtest
+        run: dune runtest
