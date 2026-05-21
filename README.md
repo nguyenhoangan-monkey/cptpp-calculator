@@ -129,7 +129,6 @@ The bill of materials of type `material`:
 
 
 ## Notes
-this is for trees:
-  tree -I "_build|_opam|*.install|dune.lock"
+this is for trees: `tree -I "_build|_opam|*.install|dune.lock"`
 
-first I need to convert 
+first I need to convert json
