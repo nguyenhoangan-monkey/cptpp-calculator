@@ -13,43 +13,44 @@ dune build
 ## How the calculator works
 ### Step 1: create the product
 #### How-to
-You need to define the product as an OCaml record variable with type `product`. In this example below, I defined a (hypothetical) Hatsune Miku figurine that is officially licensed and have a very high profit margin, and then record it as a `hatsune_miku` variable. For simplicity, foreign currencies are not added for now as we default to USD for all countries, nor is the accumulation rule (we assume it is satisfactory).
-
+You need to define the product as an OCaml record variable with type `product`:
 1. The bill of materials are defined with required attributes for CPTPP (type `material_metrics`).
 2. They are then wrapped under variables `pvc_pellet`, `paint` and `box` (type `material`).
 3. This is added to the bill of materials of `hatsune_miku_metrics`, then additional CPTPP product data is added (type `product_metrics`)
 4. `hatsune_miku` is a wrapper that provide an id and name to the product (type `product`)
 
-Only type `material_metrics` and `product_metrics` are used by the CPTPP calculator. Type `material` and `product` can be adjusted or change to other types if needed, since these types are purely for metadata and is transparent in the CPTPP calculator.
+Type `material` and `product` are purely for metadata and is transparent in the CPTPP calculator. Only the fields in `material_metrics` and `product_metrics`are used by the CPTPP calculator are used functionally.
+
+In this example below, I defined a (hypothetical) Hatsune Miku figurine that is officially licensed and has a very high profit margin, and then record it as a `hatsune_miku` variable. For simplicity, foreign currencies are not added for now as we default to USD for all countries, nor is the accumulation rule.
 
 ```ocaml
 (* 1. define "material_metrics" *)
 (* HS code 3904.10: "Poly(vinyl chloride), not mixed with any other substances" *)
-val pvc_pellet_metrics : material_metrics = 
+let pvc_pellet_metrics : material_metrics = 
   { hs_code = Hs_code.of_string "3904.10"; origin = "CHN"; cost = 5.00 }
 
 (* HS code 3208.20: "Based on acrylic or vinyl polymers" *)
-val paint_metrics : material_metrics = 
+let paint_metrics : material_metrics = 
   { hs_code = Hs_code.of_string "3208.20"; origin = "JPN"; cost = 2.50 }
 
 (* HS code 4819.10: "Cartons, boxes and cases, of corrugated paper or paperboard" *)
-val box_metrics : material_metrics = 
+let box_metrics : material_metrics = 
   { hs_code = Hs_code.of_string "4819.10"; origin = "VNM"; cost = 1.50 }
 
 
 (* 2. wrap under "material", add description *)
-val pvc_pellet : material =
-  { id = "mat-pvc-001"; name = "PVC pellets from China, 5 USD"; trade_metrics = pvc_pellet_metrics }
+let pvc_pellet : material =
+  { metadata = Some {id = "mat-pvc-001"; name = "PVC pellets"}; trade_metrics = pvc_pellet_metrics }
 
-val paint      : material =
-  { id = "mat-paint-001"; name = "Acrylic paint from Japan, 2.50 USD"; trade_metrics = paint_metrics }
+let paint      : material =
+  { metadata = Some {id = "mat-paint-001"; name = "Acrylic paint"}; trade_metrics = paint_metrics }
 
-val box        : material =
-  { id = "mat-box-001"; name = "Cardboard box from Vietnam, 1.50 USD"; trade_metrics = box_metrics }
+let box        : material =
+  { metadata = Some {id = "mat-box-001"; name = "Cardboard box"}; trade_metrics = box_metrics }
 
 
 (* 3. define "product_metrics", add "material" objects *)
-val hatsune_miku_metrics : product_metrics = {
+let hatsune_miku_metrics : product_metrics = {
   hs_code = Hs_code.of_string "9503.00.00";
   export_value = 50.00;
   origin_country = "VNM";
@@ -59,32 +60,58 @@ val hatsune_miku_metrics : product_metrics = {
 
 
 (* 4. wrap under "product", add description *)
-val hatsune_miku : product =
-  { id = "miku-v4x-001"; name = "Hatsune Miku figurine, Vietnam -> Mexico"; trade_metrics = hatsune_miku_metrics }
+let hatsune_miku : product =
+  { metadata = Some {id = "miku-v4x-001"; name = "Hatsune Miku figurine"}; trade_metrics = hatsune_miku_metrics }
 ```
 
 You can also explicitly write the bill of material and structs directly:
-
 ```ocaml
-val hatsune_miku : product = {
-  id = "miku-v4x-001";
-  name = "Hatsune Miku figurine, Vietnam -> Mexico";
+let hatsune_miku : product = {
+  metadata = Some {
+    id = "miku-v4x-001"; 
+    name = "Hatsune Miku figurine";
+  };
   trade_metrics = {
     hs_code = Hs_code.of_string "9503.00.00";
     export_value = 50.00;
     origin_country = "VNM";
     destination_country = "MEX";
     bill_of_materials = [
-      { id = "mat-pvc-001"; name = "PVC pellets from China, 5 USD"; 
-        trade_metrics = { hs_code = Hs_code.of_string "3904.10"; origin = "CHN"; cost = 5.00 } };
-      { id = "mat-paint-001"; name = "Acrylic paint from Japan, 2.50 USD"; 
-        trade_metrics = { hs_code = Hs_code.of_string "3208.20"; origin = "JPN"; cost = 2.50 } };
-      { id = "mat-box-001"; name = "Cardboard box from Vietnam, 1.50 USD"; 
-        trade_metrics = { hs_code = Hs_code.of_string "4819.10"; origin = "VNM"; cost = 1.50 } };
-    ]
-  }
+      {
+        metadata = Some { id = "mat-pvc-001"; name = "PVC pellets" };
+        trade_metrics = { hs_code = Hs_code.of_string "3904.10"; origin = "CHN"; cost = 5.00 };
+      };
+      {
+        metadata = Some { id = "mat-paint-001"; name = "Acrylic paint" };
+        trade_metrics = { hs_code = Hs_code.of_string "3208.20"; origin = "JPN"; cost = 2.50 };
+      };
+      {
+        metadata = Some { id = "mat-box-001"; name = "Cardboard box" };
+        trade_metrics = { hs_code = Hs_code.of_string "4819.10"; origin = "VNM"; cost = 1.50 };
+      };
+    ];
+  };
 }
 ```
+
+But, these descriptions and names doesn't matter in actual calculation. In the eyes of the CPTPP calculator, it is similar to this, and will only concern itself with these data:
+```ocaml
+let hatsune_miku : product = {
+  metadata = None;
+  trade_metrics = {
+    hs_code = Hs_code.of_string "9503.00.00";
+    export_value = 50.00;
+    origin_country = "VNM";
+    destination_country = "MEX";
+    bill_of_materials = [
+      { metadata = None; trade_metrics = { hs_code = Hs_code.of_string "3904.10"; origin = "CHN"; cost = 5.00 }};
+      { metadata = None; trade_metrics = { hs_code = Hs_code.of_string "3208.20"; origin = "JPN"; cost = 2.50 }};
+      { metadata = None; trade_metrics = { hs_code = Hs_code.of_string "4819.10"; origin = "VNM"; cost = 1.50 }};
+    ];
+  };
+}
+```
+
 
 #### Technical specifications
 Hatsune Miku figurine of type `product`:
