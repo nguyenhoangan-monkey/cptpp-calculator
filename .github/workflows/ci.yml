@@ -18,7 +18,11 @@ jobs:
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: 5.1.0 
-          dune-cache: true 
+          dune-cache: true
+          opam-depext: true
+
+      - name: Install dependencies
+        run: opam install . --deps-only --with-test --with-doc
 
       - name: Check code formatting
         run: dune build @fmt
