@@ -6,7 +6,7 @@ open Product
 
 (* Long definition *)
 (* HS code 3904.10: "Poly(vinyl chloride), not mixed with any other substances" *)
-let pvc_pellet : material =
+let pvc_pellet =
   {
     hs_code = Hs_code.of_string "3904.10";
     origin = Country.China;
@@ -14,7 +14,7 @@ let pvc_pellet : material =
   }
 
 (* HS code 3208.20: "Based on acrylic or vinyl polymers" *)
-let paint : material =
+let paint =
   {
     hs_code = Hs_code.of_string "3208.20";
     origin = Country.Japan;
@@ -22,14 +22,14 @@ let paint : material =
   }
 
 (* HS code 4819.10: "Cartons, boxes and cases, of corrugated paper or paperboard" *)
-let cardboard_box : material =
+let cardboard_box =
   {
     hs_code = Hs_code.of_string "4819.10";
     origin = Country.Vietnam;
     cost = Bignum.of_string "1.50";
   }
 
-let miku_def_long : product =
+let miku_def_long =
   {
     hs_code = Hs_code.of_string "9503.00.00";
     export_value = Bignum.of_string "50.00";
@@ -39,7 +39,7 @@ let miku_def_long : product =
   }
 
 (* Inline definition *)
-let miku_def_short : product =
+let miku_def_short =
   {
     hs_code = Hs_code.of_string "9503.00.00";
     export_value = Bignum.of_string "50.00";
