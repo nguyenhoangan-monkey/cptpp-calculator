@@ -21,10 +21,15 @@ jobs:
           dune-cache: true
 
       - name: Install dependencies
-        run: opam install . --deps-only --with-test --with-doc ocamlformat
+        run: |
+          opam update
+          opam install . --deps-only --with-test --with-doc
+          opam install ocamlformat
 
-      - name: Check code formatting
-        run: opam exec -- dune build @fmt
+      - name: Fix and Check Code Formatting
+        run: |
+          opam exec -- dune fmt
+          opam exec -- dune build @fmt --auto-promote
 
       - name: Build project
         run: opam exec -- dune build
