@@ -115,15 +115,20 @@ let hatsune_miku : product = {
 
 #### Technical specifications
 Hatsune Miku figurine of type `product`:
-* `hs_code`: `Hs_code.of_string`, then the actual HS code `"9503.00.00" (Plastic toy/figurine)`. The program would parse the code to an internal OCaml datatype.
-* `export_value`: MSRP price to the destination country in USD, with floating points
-* `origin_country`: raw string of 3 letter code of the origin country (`"VNM"` is Vietnam)
-* `destination_country`: raw string of 3 letter code of the destination country (`"MEX"` is Mexico)
-* `bill_of_materials`: a list of materials
+* `metadata`: An optional record (`Some { id; name }` or `None`) containing an ID string and the product description
+* **`trade_metrics`: contain core data below:**
+  * `hs_code`: `Hs_code.of_string`, then the actual HS code `"9503.00.00" (Plastic toy/figurine)`. The program would parse the code to an internal OCaml datatype.
+  * `export_value`: MSRP price to the destination country in USD, with floating points
+  * `origin_country`: raw string of 3 letter code of the origin country (`"VNM"` is Vietnam)
+  * `destination_country`: raw string of 3 letter code of the destination country (`"MEX"` is Mexico)
+  * `bill_of_materials`: a list of materials, see below
 
 The bill of materials of type `material`:
-* `materials`: a list of more `Product.t` objects, in this case, they are the manufacturing materials for the product.
-* `cost`: this is the original value of the materials in USD, with floating points.
+* `metadata`: An optional record (`Some { id; name }` or `None`) containing an ID string and the material description
+* **`trade_metrics`: contain core data below:**
+  * `hs_code`: `Hs_code.of_string`, then the actual HS code. The program would parse the code to an internal OCaml datatype.
+  * `cost`: this is the original value of the materials in USD, with floating points.
+  * `origin`: raw string of 3 letter code of the origin country (`"CHN"` is China)
 
 
 
