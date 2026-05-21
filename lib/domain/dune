@@ -1,3 +1,4 @@
 (library
  (name domain)
- (public_name cptpp_calculator.domain))
+ (public_name cptpp_calculator.domain)
+ (modules hs_code product))
