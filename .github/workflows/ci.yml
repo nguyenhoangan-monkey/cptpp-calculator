@@ -19,7 +19,6 @@ jobs:
         with:
           ocaml-compiler: 5.1.0 
           dune-cache: true
-          opam-depext: true
 
       - name: Install dependencies
         run: opam install . --deps-only --with-test --with-doc
