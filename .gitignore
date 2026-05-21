@@ -34,3 +34,7 @@ setup.log
 
 # Local OPAM switch
 _opam/
+
+# macOS system files
+.DS_Store
+**/.DS_Store
