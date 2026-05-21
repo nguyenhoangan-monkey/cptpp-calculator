@@ -136,6 +136,8 @@ The bill of materials of type `material`:
 ## Notes
 this is for trees: `tree -I "_build|_opam|*.install|dune.lock"`
 
-first I need to convert json
+first I need to convert json of tariffs.
 
-then `dune build @fmt --auto-promote` before commit
+before commit:
+`dune build @all @fmt --auto-promote`
+`opam install . --deps-only --with-test`
