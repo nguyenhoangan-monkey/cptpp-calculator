@@ -10,7 +10,6 @@
   (ocaml (>= 5.0.0))
   (dune (>= 3.11))
   (yojson (>= 2.1.0))              
-  (ppx_deriving_yojson (>= 3.7.0)) 
   (alcotest :with-test)
   (qcheck :with-test)
  )
