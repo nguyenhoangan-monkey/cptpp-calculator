@@ -4,9 +4,11 @@ CPTPP rules of origin and tariffs calculator.
 **This calculator is for intuition/informational/education purposes, not for actual legal work. Please read the BSD 3-Clause License before usage because it contains important legal information.**
 
 ## Installation
+Download the zip, cd to the folder then:
 
 ```bash
-opam install yojson ppx_deriving_yojson alcotest qcheck
+dune build
+opam install . --deps-only --with-test
 dune build
 ```
 
@@ -22,20 +24,20 @@ In this example below, I defined a (hypothetical) Hatsune Miku figurine that is 
 ```ocaml
 (* HS code 3904.10: "Poly(vinyl chloride), not mixed with any other substances" *)
 let pvc_pellet : material =
-  { hs_code = Hs_code.of_string "3904.10"; origin = Country.China; cost = 5.00 }
+  { hs_code = Hs_code.of_string "3904.10"; origin = Country.China; cost = Bignum.of_string "5.00" }
 
 (* HS code 3208.20: "Based on acrylic or vinyl polymers" *)
 let paint : material =
-  { hs_code = Hs_code.of_string "3208.20"; origin = Country.Japan; cost = 2.50 }
+  { hs_code = Hs_code.of_string "3208.20"; origin = Country.Japan; cost = Bignum.of_string "2.50" }
 
 (* HS code 4819.10: "Cartons, boxes and cases, of corrugated paper or paperboard" *)
 let cardboard_box : material =
-  { hs_code = Hs_code.of_string "4819.10"; origin = Country.Vietnam; cost = 1.50 }
+  { hs_code = Hs_code.of_string "4819.10"; origin = Country.Vietnam; cost = Bignum.of_string "1.50" }
 
 let hatsune_miku : product =
   {
     hs_code = Hs_code.of_string "9503.00.00";
-    export_value = 50.00;
+    export_value = Bignum.of_string "50.00";
     origin_country = Country.Vietnam;
     destination_country = Country.Mexico;
     bill_of_materials = [ pvc_pellet; paint; cardboard_box ];
@@ -47,14 +49,14 @@ You can also explicitly write the bill of material and structs directly:
 let hatsune_miku : product =
   {
     hs_code = Hs_code.of_string "9503.00.00";
-    export_value = 50.00;
+    export_value = Bignum.of_string "50.00";
     origin_country = Country.Vietnam;
     destination_country = Country.Mexico;
     bill_of_materials =
       [
-        { hs_code = Hs_code.of_string "3904.10"; origin = Country.China; cost = 5.00 };
-        { hs_code = Hs_code.of_string "3208.20"; origin = Country.Japan; cost = 2.50 };
-        { hs_code = Hs_code.of_string "4819.10"; origin = Country.Vietnam; cost = 1.50 };
+        { hs_code = Hs_code.of_string "3904.10"; origin = Country.China; cost = Bignum.of_string "5.00" };
+        { hs_code = Hs_code.of_string "3208.20"; origin = Country.Japan; cost = Bignum.of_string "2.50" };
+        { hs_code = Hs_code.of_string "4819.10"; origin = Country.Vietnam; cost = Bignum.of_string "1.50" };
       ];
   }
 ```
