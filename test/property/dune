@@ -1,0 +1,3 @@
+(test
+ (name prop_runner)
+ (libraries domain engine qcheck))
