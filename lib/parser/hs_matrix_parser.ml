@@ -1,6 +1,5 @@
 let raw_hs_world_csv = [%blob "hs_world_2022.csv"] (* ignore error, it is in subrepo *)
 
-
 (* Defer table creation until the first time it is actually needed *)
 let lookup_table =
   lazy
