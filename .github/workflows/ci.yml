@@ -24,9 +24,6 @@ jobs:
         with:
           ocaml-compiler: 5.1.0 
           dune-cache: true
-          opam-disable-cache: false
-          opam-depext: true
-          allow-release-blockers: true
 
       - name: Install Tools
         run: opam install ocamlformat.0.29.0 csv zarith --yes
