@@ -37,41 +37,69 @@ let pvc_pellet = Material.of_strings_exn "3904.10" Country.China "5.00"
 let paint = Material.of_strings_exn "3208.20" Country.Japan "2.50"
 let box = Material.of_strings_exn "4819.10" Country.Vietnam "1.50"
 
-let bill_of_materials = [ pvc_pellet; paint; box ]
+let hatsune_miku = Good.of_strings_exn
+  "9503.00.00"                (* HS code for figurines *)
+  "20.00"                     (* Free-on-board value: 20 USD *)
+  Country.Vietnam             (* Ship from Vietnam... *)
+  Country.Mexico              (* ... to Mexico *)
+  [ pvc_pellet; paint; box ]  (* Bill of materials *)
 
-(* 9503.00.00 is code for figurines *)
-let hatsune_miku = Good.of_strings_exn "9503.00.00" "20.00" Country.Vietnam Country.Mexico bill_of_materials
-let akita_neru = Good.of_strings_exn "9503.00.00" "30.00" Country.Vietnam Country.Japan bill_of_materials
+let akita_neru = Good.of_strings_exn
+  "9503.00.00"                (* HS code for figurines *)
+  "30.00"                     (* Free-on-board value: 30 USD *)
+  Country.Vietnam             (* Ship from Vietnam... *)
+  Country.Japan               (* ... to Japan *)
+  [ pvc_pellet; paint; box ]  (* Bill of materials *)
 ```
 
-The first way is the safe, error handling way. This is recommended for actual production-grade work.
+The second way is the safe, error handling way. This is recommended for actual production-grade work. In this example, the free-on-board value is adjustable as `fob_str`.
 
 ```ocaml
-(** Generator factory **)
-let make_miku ~export_value =
-  let hs_figurine = Hs_code.of_string_exn "9503.00.00" in
-  let hs_pvc      = Hs_code.of_string_exn "3904.10" in
-  let hs_paint    = Hs_code.of_string_exn "3208.20" in
-  let hs_box      = Hs_code.of_string_exn "4819.10" in
+let vocaloid_figurines fob_str =
+  let open Result.Syntax in
+  let parse_cost str err = try Ok (Q.of_string str) with _ -> Error err in
 
-  let pvc_pellet = make_material hs_pvc Country.China "5.00" in
-  let paint      = make_material hs_paint Country.Japan "2.50" in
-  let box        = make_material hs_box Country.Vietnam "1.50" in
+  let validated_product_result =
+    (* let* monad is used for error handling *)
+    let* hs_figurine = Hs_code.of_string "9503.00.00" in
+    let* hs_pvc = Hs_code.of_string "3904.10" in
+    let* hs_paint = Hs_code.of_string "3208.20" in
+    let* hs_box = Hs_code.of_string "4819.10" in
 
-  let bill_of_materials = [ pvc_pellet; paint; box ] in
+    let* cost_pvc = parse_cost "5.00" "Invalid PVC cost" in
+    let* cost_paint = parse_cost "2.50" "Invalid paint cost" in
+    let* cost_box = parse_cost "1.50" "Invalid box cost" in
 
-  {
-    hs_code = hs_figurine;
-    export_value = Q.of_string export_value;
-    origin_country = Country.Vietnam;
-    destination_country = Country.Mexico;
-    bill_of_materials;
-  }
+    (* free-on-board value is passed here *)
+    let* export_val = parse_cost fob_str "Invalid export value" in
 
-(** Directly generate Miku at different price points **)
-let budget_miku   = make_miku ~export_value:"20.00"
-let standard_miku = make_miku ~export_value:"30.00"
-let scale_miku    = make_miku ~export_value:"100.00"
+    (* all unsafe variables are now handled. Material.hs_code needs to be specified *)
+    let pvc_pellet = { Material.hs_code = hs_pvc; origin = Country.China; cost = cost_pvc } in
+    let paint = { Material.hs_code = hs_paint; origin = Country.Japan; cost = cost_paint } in
+    let box = { Material.hs_code = hs_box; origin = Country.Vietnam; cost = cost_box } in
+    let bill_of_materials = [ pvc_pellet; paint; box ] in
+
+    (* creating the object. Good.hs_code needs to be specified *)
+    Ok
+      {
+        Good.hs_code = hs_figurine;
+        export_value = export_val;
+        origin_country = Country.Vietnam;
+        destination_country = Country.Mexico;
+        bill_of_materials;
+      }
+  in
+
+  (* Unwrapping the product *)
+  match validated_product_result with
+  | Ok product -> product
+  | Error err -> failwith ("Vocaloid figurine specification failed: " ^ err)
+
+
+(** Generate products at different price points **)
+let budget_miku   = vocaloid_figurines "20.00"
+let standard_miku = vocaloid_figurines "30.00"
+let giant_miku    = vocaloid_figurines "100.00"
 ```
 
 
