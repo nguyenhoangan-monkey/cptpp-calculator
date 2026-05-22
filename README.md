@@ -1,4 +1,4 @@
-# cptpp-calculator/data
+# cptpp-parser
 This directory holds the scripts used to clean data and JSON data files for the [cptpp-calculator](https://github.com/nguyenhoangan-monkey/cptpp-calculator). The /data folder is copied to the cptpp-calculator when doing recursive checkout or when the software is released.
 
 
