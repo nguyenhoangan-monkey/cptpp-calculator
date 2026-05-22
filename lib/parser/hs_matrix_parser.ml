@@ -1,6 +1,6 @@
 let raw_hs_world_csv = Csv_data.data
 
-(* Defer table creation until the first time it is actually needed *)
+(* Defer table creation *)
 let lookup_table =
   lazy
     (let table = Hashtbl.create 1024 in
