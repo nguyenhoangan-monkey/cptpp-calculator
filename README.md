@@ -13,6 +13,9 @@ dune build
 ```
 
 ## How the calculator works
+### Step 0: get tariff data
+You want to get the "data" [Project Name](https://github.com/nguyenhoangan-monkey/cptpp-parser)
+
 ### Step 1: create the product
 #### How-to
 You need to define the product as an OCaml record variable with type `product`:
@@ -73,15 +76,15 @@ let hatsune_miku =
 #### Technical specifications
 Hatsune Miku figurine of type `product`:
 * `hs_code`: `Hs_code.of_string`, then the actual HS code `"9503.00.00" (Plastic toy/figurine)`. The program would parse the code to an internal OCaml datatype.
-* `export_value`: MSRP price to the destination country in USD, in Bignum
-* `origin_country`: Country data type + country name
-* `destination_country`: Country data type + country name
+* `export_value`: MSRP price to the destination country in USD, in `Bignum`
+* `origin_country`: `Country` variant type (e.g., `Country.Vietnam`)
+* `destination_country`: `Country` variant type (e.g., `Country.Vietnam`)
 * `bill_of_materials`: a list of materials, see below
 
 The bill of materials of type `material`:
 * `hs_code`: `Hs_code.of_string`, then the actual HS code. The program would parse the code to an internal OCaml datatype.
-* `cost`: this is the original value of the materials in USD, in Bignum
-* `origin`: Country data type + country name
+* `cost`: this is the original value of the materials in USD, in `Bignum`
+* `origin`: `Country` variant type (e.g., `Country.Vietnam`)
 
 
 
