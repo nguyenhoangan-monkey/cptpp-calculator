@@ -26,7 +26,7 @@ jobs:
           dune-cache: true
 
       - name: Install Tools
-        run: opam install ocamlformat.0.29.0 csv zarith --yes
+        run: opam install . --deps-only --with-test --yes
 
       - name: Build project
         run: opam exec -- dune build
