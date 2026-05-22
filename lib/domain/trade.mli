@@ -1,5 +1,18 @@
+module Money : sig
+  (** Unit cost, USD, non-negative *)
+
+  type t
+
+  val of_string : string -> (t, string) result
+  val of_string_exn : string -> t
+  val of_q : Q.t -> (t, string) result
+  val ( + ) : t -> t -> t
+  val ( - ) : t -> t -> (t, string) result
+  val to_string : t -> string
+end
+
 module Material : sig
-  type t = { hs_code : Hs_code.t; origin : Country.t; cost : Q.t  (** Unit cost, USD, non-negative *) }
+  type t = { hs_code : Hs_code.t; origin : Country.t; cost : Money.t }
 
   val of_strings_exn : string -> Country.t -> string -> t
   val print : Format.formatter -> t -> unit
@@ -8,9 +21,9 @@ end
 module Good : sig
   type t = {
     hs_code : Hs_code.t;
-    export_value : Q.t;  (** free-on-board value, USD, non-negative *)
-    origin_country : Country.t;
-    destination_country : Country.t;
+    free_on_board_value : Money.t;
+    shipped_from : Country.t;
+    shipped_to : Country.t;
     bill_of_materials : Material.t list;
   }
 
