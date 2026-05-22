@@ -19,14 +19,20 @@ jobs:
         with:
           submodules: true
 
-      - name: Setup OCaml & Install Dependencies
+      - name: Setup OCaml
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: 5.1.0 
-          dune-version: 3.23.1
           dune-cache: true
 
-      - name: Install Tools
+      - name: Install dune binary
+        run: |
+          mkdir -p $HOME/.local/bin
+          curl -L https://github.com/ocaml/dune/releases/download/3.23.1/dune-linux-x86_64 -o $HOME/.local/bin/dune
+          chmod +x $HOME/.local/bin/dune
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
         run: opam install . --deps-only --with-test --yes
 
       - name: Build project
