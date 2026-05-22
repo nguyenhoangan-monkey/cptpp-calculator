@@ -4,7 +4,7 @@ def main():
     print("Starting harmonization suite...")
     harmonized_system.parse_hs_world_2022(
         "raw_data/harmonized_system/hs_world_2022/harmonized-system.csv",
-        "data/harmonized_system/hs_world_2022.csv")
+        "parsed/harmonized_system/hs_world_2022.csv")
     
     print(f"Finished.")
 
