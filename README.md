@@ -5,7 +5,7 @@ This directory holds the scripts used to clean data and JSON data files for the 
 progress
 
 ## Data sources
-**IMPORTANT: This section shows what kind of license is used. It has legal value.**
+**IMPORTANT: This section shows what kind of license is used. It has legal value and thus require due diligence.**
 
 ### `raw_data/harmonized_system`
 
