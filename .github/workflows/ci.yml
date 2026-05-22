@@ -19,19 +19,17 @@ jobs:
         with:
           submodules: true
 
-      - name: Setup OCaml
+      - name: Setup OCaml & Install Dependencies
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: 5.1.0 
           dune-cache: true
-          opam-disable-cache: false 
+          opam-disable-cache: false
+          opam-depext: true
+          allow-release-blockers: true
 
-      - name: Install Opam Dependencies
-        uses: ocaml/setup-ocaml/subactions/install-opam-deps@v3
-        with:
-          with-test: true
-          with-doc: true
-          extra-packages: ocamlformat.0.29.0
+      - name: Install Tools
+        run: opam install ocamlformat.0.29.0 csv zarith --yes
 
       - name: Check code formatting
         run: opam exec -- dune build @fmt
