@@ -27,6 +27,6 @@ progress
 
 ## Format notes
 
-* For the harmonized system, files use the following format: hs_XXX_YYYY.json. XXX is 3-letter country codes, YYYY is year of publishing. 
+* For the harmonized system, files use the following format: hs_XXX_YYYY.csv. XXX is 3-letter country codes, YYYY is year of publishing. CSV is convenient and easy to use for OCaml.
 * For tariffs, files use the following format: effective_YYYYMMDD.json. YYYYMMDD is the enforcement date. For each change in the tariffs, there is a complete matrix.
 * metadata.json is used to add display name (VNM -> "Vietnam") and link files in a systematic way (in metadata.json, "effective_20250103.json" has attribute "date": "2025-01-03")
