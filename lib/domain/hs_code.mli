@@ -1,5 +1,7 @@
-type t
-(** abstract type for a validated HS Code *)
+open Core
 
-val of_string : string -> t
+type t
+
+val of_string : string -> (t, string) Result.t
+val of_string_exn : string -> t
 val to_string : t -> string

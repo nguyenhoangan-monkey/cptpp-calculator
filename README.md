@@ -28,65 +28,78 @@ You need to define the product as an OCaml record variable with type `product`:
 
 In this example below, I defined a (hypothetical) Hatsune Miku figurine that is officially licensed and has a very high profit margin, and then record it as a `hatsune_miku` variable. For simplicity, foreign currencies are not added for now as we default to USD for all countries, nor is the accumulation rule.
 
-You can explicitly write the bill of material and structs directly:
+You create an object by explicitly define the attributes. Once you create an object, it is immutable.
+
 ```ocaml
-let hatsune_miku =
-  {
-    hs_code = Hs_code.of_string "9503.00.00";
-    export_value = Bignum.of_string "50.00";
-    origin_country = Country.Vietnam;
-    destination_country = Country.Mexico;
-    bill_of_materials =
-      [
-        {
-          hs_code = Hs_code.of_string "3904.10";
-          origin = Country.China;
-          cost = Bignum.of_string "5.00";
-        };
-        {
-          hs_code = Hs_code.of_string "3208.20";
-          origin = Country.Japan;
-          cost = Bignum.of_string "2.50";
-        };
-        {
-          hs_code = Hs_code.of_string "4819.10";
-          origin = Country.Vietnam;
-          cost = Bignum.of_string "1.50";
-        };
-      ];
-  }
+let hs_figurine = Hs_code.of_string_exn "9503.00.00"
+let hs_pvc      = Hs_code.of_string_exn "3904.10"
+let hs_paint    = Hs_code.of_string_exn "3208.20"
+let hs_box      = Hs_code.of_string_exn "4819.10"
+
+let pvc_pellet = make_material hs_pvc Country.China "5.00"
+let paint      = make_material hs_paint Country.Japan "2.50" 
+let box        = make_material hs_box Country.Vietnam "1.50"
+
+let bill_of_materials = [ pvc_pellet; paint; box ]
+
+let hatsune_miku = {
+  hs_code = hs_figurine;
+  export_value = Bignum.of_string "20.00";
+  origin_country = Country.Vietnam;
+  destination_country = Country.Mexico;
+  bill_of_materials;
+}
+
+let akita_neru = {
+  hs_code = hs_figurine;
+  export_value = Bignum.of_string "30.00";
+  origin_country = Country.Vietnam;
+  destination_country = Country.Japan;
+  bill_of_materials;
+}
 ```
 
-Or you can define the materials as a variable:
+Or you can make a function for the generator to ingest:
 
 ```ocaml
-let pvc_pellet =
+(** Generator factory **)
+let make_miku ~export_value =
+  let hs_figurine = Hs_code.of_string_exn "9503.00.00" in
+  let hs_pvc      = Hs_code.of_string_exn "3904.10" in
+  let hs_paint    = Hs_code.of_string_exn "3208.20" in
+  let hs_box      = Hs_code.of_string_exn "4819.10" in
+
+  let pvc_pellet = make_material hs_pvc Country.China "5.00" in
+  let paint      = make_material hs_paint Country.Japan "2.50" in
+  let box        = make_material hs_box Country.Vietnam "1.50" in
+
+  let bill_of_materials = [ pvc_pellet; paint; box ] in
+
   {
-    hs_code = Hs_code.of_string "3904.10";
-    origin = Country.China;
-    cost = Bignum.of_string "5.00";
+    hs_code = hs_figurine;
+    export_value = Bignum.of_string export_value;
+    origin_country = Country.Vietnam;
+    destination_country = Country.Mexico;
+    bill_of_materials;
   }
 
-[...]
-
-let hatsune_miku =
-  {
-    [...]
-    bill_of_materials = [ pvc_pellet; paint; cardboard_box ];
-  }
+(** Directly generate Miku at different price points **)
+let budget_miku   = make_miku ~export_value:"20.00"
+let standard_miku = make_miku ~export_value:"30.00"
+let scale_miku    = make_miku ~export_value:"100.00"
 ```
 
 
 #### Technical specifications
 Hatsune Miku figurine of type `product`:
-* `hs_code`: `Hs_code.of_string`, then the actual HS code `"9503.00.00" (Plastic toy/figurine)`. The program would parse the code to an internal OCaml datatype.
+* `hs_code`: `Hs_code.of_string_exn` would parse the HS code, if it doesn't work, the program would crash.
 * `export_value`: MSRP price to the destination country in USD, in `Bignum`
 * `origin_country`: `Country` variant type (e.g., `Country.Vietnam`)
 * `destination_country`: `Country` variant type (e.g., `Country.Vietnam`)
 * `bill_of_materials`: a list of materials, see below
 
 The bill of materials of type `material`:
-* `hs_code`: `Hs_code.of_string`, then the actual HS code. The program would parse the code to an internal OCaml datatype.
+* `hs_code`: `Hs_code.of_string_exn` would parse the HS code, if it doesn't work, the program would crash.
 * `cost`: this is the original value of the materials in USD, in `Bignum`
 * `origin`: `Country` variant type (e.g., `Country.Vietnam`)
 

@@ -1,3 +1,4 @@
 (tests
  (names test_runner test_product test_hs_code test_rules)
- (libraries cptpp_calculator.domain cptpp_calculator.engine alcotest))
+ (libraries cptpp_calculator.domain cptpp_calculator.engine alcotest)
+ (preprocess (pps ppx_let)))

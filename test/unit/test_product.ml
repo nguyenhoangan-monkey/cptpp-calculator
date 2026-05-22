@@ -2,75 +2,58 @@
 open Domain
 open Product
 
-(* --- FIXTURES --- *)
+(* Global definition *)
+let hs_figurine = Hs_code.of_string_exn "9503.00.00"
+let hs_pvc      = Hs_code.of_string_exn "3904.10"
+let hs_paint    = Hs_code.of_string_exn "3208.20"
+let hs_box      = Hs_code.of_string_exn "4819.10"
 
-(* Long definition *)
-(* HS code 3904.10: "Poly(vinyl chloride), not mixed with any other substances" *)
-let pvc_pellet =
-  {
-    hs_code = Hs_code.of_string "3904.10";
-    origin = Country.China;
-    cost = Bignum.of_string "5.00";
-  }
+let pvc_pellet = make_material hs_pvc Country.China "5.00"
+let paint      = make_material hs_paint Country.Japan "2.50" 
+let box        = make_material hs_box Country.Vietnam "1.50"
 
-(* HS code 3208.20: "Based on acrylic or vinyl polymers" *)
-let paint =
-  {
-    hs_code = Hs_code.of_string "3208.20";
-    origin = Country.Japan;
-    cost = Bignum.of_string "2.50";
-  }
+let bill_of_materials = [ pvc_pellet; paint; box ]
 
-(* HS code 4819.10: "Cartons, boxes and cases, of corrugated paper or paperboard" *)
-let cardboard_box =
-  {
-    hs_code = Hs_code.of_string "4819.10";
-    origin = Country.Vietnam;
-    cost = Bignum.of_string "1.50";
-  }
+let hatsune_miku = {
+  hs_code = hs_figurine;
+  export_value = Bignum.of_string "20.00";
+  origin_country = Country.Vietnam;
+  destination_country = Country.Mexico;
+  bill_of_materials;
+}
 
-let miku_def_long =
+
+(** Generator factory **)
+let make_miku ~export_value =
+  let hs_figurine = Hs_code.of_string_exn "9503.00.00" in
+  let hs_pvc      = Hs_code.of_string_exn "3904.10" in
+  let hs_paint    = Hs_code.of_string_exn "3208.20" in
+  let hs_box      = Hs_code.of_string_exn "4819.10" in
+
+  let pvc_pellet = make_material hs_pvc Country.China "5.00" in
+  let paint      = make_material hs_paint Country.Japan "2.50" in
+  let box        = make_material hs_box Country.Vietnam "1.50" in
+
+  let bill_of_materials = [ pvc_pellet; paint; box ] in
+
   {
-    hs_code = Hs_code.of_string "9503.00.00";
-    export_value = Bignum.of_string "50.00";
+    hs_code = hs_figurine;
+    export_value = Bignum.of_string export_value;
     origin_country = Country.Vietnam;
     destination_country = Country.Mexico;
-    bill_of_materials = [ pvc_pellet; paint; cardboard_box ];
+    bill_of_materials;
   }
 
-(* Inline definition *)
-let miku_def_short =
-  {
-    hs_code = Hs_code.of_string "9503.00.00";
-    export_value = Bignum.of_string "50.00";
-    origin_country = Country.Vietnam;
-    destination_country = Country.Mexico;
-    bill_of_materials =
-      [
-        {
-          hs_code = Hs_code.of_string "3904.10";
-          origin = Country.China;
-          cost = Bignum.of_string "5.00";
-        };
-        {
-          hs_code = Hs_code.of_string "3208.20";
-          origin = Country.Japan;
-          cost = Bignum.of_string "2.50";
-        };
-        {
-          hs_code = Hs_code.of_string "4819.10";
-          origin = Country.Vietnam;
-          cost = Bignum.of_string "1.50";
-        };
-      ];
-  }
+let generator_miku   = make_miku ~export_value:"20.00"
+
+
 (* --- TESTS --- *)
 
 let test_absolute_equality () =
-  (* Tests that decomposing variables vs writing inline yields the exact same structure *)
+  (* Tests that object created by explicit definition and generator are the same *)
   Alcotest.(check bool)
-    "Def 1 and Def 2 are structurally identical" true
-    (miku_def_long = miku_def_short)
+    "Explicit object and generator object are structurally identical" true
+    (hatsune_miku = generator_miku)
 
 let () =
   let open Alcotest in

@@ -13,3 +13,7 @@ type product = {
   destination_country : Country.t;
   bill_of_materials : material list;
 }
+
+val make_material : Hs_code.t -> Country.t -> string -> material
+
+val make_product : Hs_code.t -> string -> Country.t -> Country.t -> material list -> product
