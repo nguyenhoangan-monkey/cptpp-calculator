@@ -1,3 +1,8 @@
 (tests
  (names test_runner test_trade test_hs_code test_rules)
- (libraries cptpp_calculator.domain cptpp_calculator.engine alcotest zarith))
+ (libraries
+  cptpp_calculator.domain
+  cptpp_calculator.engine
+  alcotest
+  zarith
+  result))
