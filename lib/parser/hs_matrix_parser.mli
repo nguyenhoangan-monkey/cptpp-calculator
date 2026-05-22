@@ -1,1 +1,1 @@
-val lookup_code : string -> string
+val lookup_code : string -> string option

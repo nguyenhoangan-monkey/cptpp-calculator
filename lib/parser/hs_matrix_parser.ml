@@ -1,21 +1,24 @@
-open Core
+let raw_hs_world_csv = [%blob "hs_world_2022.csv"] (* ignore error, it is in subrepo *)
 
-let raw_hs_world_csv = [%blob "hs_world_2022.csv"]
-let lookup_table = Hashtbl.create (module String)
 
-(* Parse the embedded CSV on module load and populate the table *)
-let () =
-  let csv_channel = Csv.of_string raw_hs_world_csv in
-  let csv_data = Csv.input_all csv_channel in
-  let rows = Csv.to_array csv_data in
+(* Defer table creation until the first time it is actually needed *)
+let lookup_table =
+  lazy
+    (let table = Hashtbl.create 1024 in
+     (* Standard library hash table *)
+     let csv_channel = Csv.of_string raw_hs_world_csv in
+     let csv_data = Csv.input_all csv_channel in
 
-  Array.iteri rows ~f:(fun idx row ->
-      if idx > 0 && Array.length row >= 2 then
-        let hscode = String.strip row.(0) in
-        let description = String.strip row.(1) in
-        Hashtbl.set lookup_table ~key:hscode ~data:description)
+     List.iteri
+       (fun idx row ->
+         if idx > 0 && List.length row >= 2 then
+           let hscode = String.trim (List.nth row 0) in
+           let description = String.trim (List.nth row 1) in
+           Hashtbl.replace table hscode description)
+       csv_data;
+     table)
 
+(* Return an option (Some/None) instead of an error string *)
 let lookup_code code =
-  match Hashtbl.find lookup_table (String.strip code) with
-  | Some desc -> desc
-  | None -> "Error: HS Code not found"
+  let table = Lazy.force lookup_table in
+  Hashtbl.find_opt table (String.trim code)
