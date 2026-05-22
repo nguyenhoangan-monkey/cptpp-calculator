@@ -1,4 +1,4 @@
-let raw_hs_world_csv = [%blob "hs_world_2022.csv"] (* ignore error, it is in subrepo *)
+let raw_hs_world_csv = Csv_data.data
 
 (* Defer table creation until the first time it is actually needed *)
 let lookup_table =

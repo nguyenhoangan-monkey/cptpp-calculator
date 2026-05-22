@@ -1,5 +1,3 @@
-; 1. Copy the CSV from the workspace root into this directory's build context
-
 (rule
  (target hs_world_2022.csv)
  (action
@@ -7,13 +5,17 @@
    %{workspace_root}/data/parsed/harmonized_system/hs_world_2022.csv
    %{target})))
 
-; 2. Define the parser library
+(rule
+ (target csv_data.ml)
+ (action
+  (with-outputs-to
+   %{target}
+   (progn
+    (run echo "let data = {|")
+    (run cat hs_world_2022.csv)
+    (run echo "|}")))))
 
 (library
  (name cptpp_calculator_parser)
  (public_name cptpp_calculator.parser)
- (preprocess
-  (pps ppx_blob))
- (preprocessor_deps
-  (file hs_world_2022.csv))
  (libraries csv zarith cptpp_calculator.domain))

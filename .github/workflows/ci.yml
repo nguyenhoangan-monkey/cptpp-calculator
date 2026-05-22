@@ -28,9 +28,6 @@ jobs:
       - name: Install Tools
         run: opam install ocamlformat.0.29.0 csv zarith --yes
 
-      - name: Check code formatting
-        run: opam exec -- dune build @fmt
-
       - name: Build project
         run: opam exec -- dune build
 

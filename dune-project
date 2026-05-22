@@ -25,9 +25,6 @@
    (>= 5.0.0))
   (dune
    (>= 3.11))
-  (ppx_blob
-   (>= 0.7.2))
   csv
   zarith
-  (alcotest :with-test)
-  (qcheck :with-test)))
+  (alcotest :with-test)))
