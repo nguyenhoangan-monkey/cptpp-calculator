@@ -1,17 +1,29 @@
 # cptpp-parser
 This directory holds the scripts used to clean data and JSON data files for the [cptpp-calculator](https://github.com/nguyenhoangan-monkey/cptpp-calculator). The /data folder is copied to the cptpp-calculator when doing recursive checkout or when the software is released.
 
-
-
+## Parsing logic
+progress
 
 ## Data sources
-* harmonized_system
-  * hs_world_2022.json: global Harmonized System framework published in 2022. Sourced from [github.com/datasets/harmonized-system](https://github.com/datasets)
-  * hs_vnm_2022.json: HS subcodes for Vietnam in 2022
-  * hs_mex_2022.json: HS subcodes for Mexico in 2022
-* tariffs/cptpp
-  * mex: list of tariffs from Mexico
-  * vnm: list of tariffs from Vietnam
+**IMPORTANT: This section shows what kind of license is used. It has legal value.**
+
+### Harmonized system
+
+| Data File / Path | Description | Source | License / Terms of Use | Commercial Use? |
+| --- | --- | --- | --- | --- |
+| `harmonized_system/hs_world_2022.json` | Global HS Codes (2022) | [datasets/harmonized-system](https://github.com/datasets/harmonized-system) | Public Domain / Open Data | Yes |
+| `harmonized_system/hs_vnm_2022.json` | Vietnam HS Subcodes (2022) | Vietnam Customs / Government Portal | Open Government Data (Verify local terms) | Yes |
+| `harmonized_system/hs_mex_2022.json` | Mexico HS Subcodes (2022) | Government of Mexico (SIVIEX / SE) | Open Government Data (Verify local terms) | Yes |
+
+
+### CPTPP Tariff Schedules
+
+| Data File / Path | Country Schedule | Source | License / Terms of Use | Commercial Use? |
+| --- | --- | --- | --- | --- |
+| `tariffs/cptpp/mex/` | Mexico | Mexican Ministry of Economy | Official Public Schedule | Yes |
+| `tariffs/cptpp/vnm/` | Vietnam | Vietnam Ministry of Industry & Trade | Official Public Schedule | Yes |
+
+---
 
 ## Format notes
 
