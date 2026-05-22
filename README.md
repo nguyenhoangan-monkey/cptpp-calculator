@@ -44,7 +44,7 @@ let bill_of_materials = [ pvc_pellet; paint; box ]
 
 let hatsune_miku = {
   hs_code = hs_figurine;
-  export_value = Bignum.of_string "20.00";
+  export_value = Q.of_string "20.00";
   origin_country = Country.Vietnam;
   destination_country = Country.Mexico;
   bill_of_materials;
@@ -52,7 +52,7 @@ let hatsune_miku = {
 
 let akita_neru = {
   hs_code = hs_figurine;
-  export_value = Bignum.of_string "30.00";
+  export_value = Q.of_string "30.00";
   origin_country = Country.Vietnam;
   destination_country = Country.Japan;
   bill_of_materials;
@@ -77,7 +77,7 @@ let make_miku ~export_value =
 
   {
     hs_code = hs_figurine;
-    export_value = Bignum.of_string export_value;
+    export_value = Q.of_string export_value;
     origin_country = Country.Vietnam;
     destination_country = Country.Mexico;
     bill_of_materials;
@@ -93,14 +93,14 @@ let scale_miku    = make_miku ~export_value:"100.00"
 #### Technical specifications
 Hatsune Miku figurine of type `product`:
 * `hs_code`: `Hs_code.of_string_exn` would parse the HS code, if it doesn't work, the program would crash.
-* `export_value`: MSRP price to the destination country in USD, in `Bignum`
+* `export_value`: MSRP price to the destination country in USD, in `Q.of_string`
 * `origin_country`: `Country` variant type (e.g., `Country.Vietnam`)
 * `destination_country`: `Country` variant type (e.g., `Country.Vietnam`)
 * `bill_of_materials`: a list of materials, see below
 
 The bill of materials of type `material`:
 * `hs_code`: `Hs_code.of_string_exn` would parse the HS code, if it doesn't work, the program would crash.
-* `cost`: this is the original value of the materials in USD, in `Bignum`
+* `cost`: this is the original value of the materials in USD, in `Q.of_string`
 * `origin`: `Country` variant type (e.g., `Country.Vietnam`)
 
 In practice, you don't want to use `Hs_code.of_string_exn`. You want to use `Hs_code.of_string` and perform error handling.

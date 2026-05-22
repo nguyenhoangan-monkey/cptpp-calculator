@@ -16,4 +16,4 @@
   (pps ppx_blob))
  (preprocessor_deps
   (file hs_world_2022.csv))
- (libraries csv bignum cptpp_calculator.domain))
+ (libraries csv zarith cptpp_calculator.domain))

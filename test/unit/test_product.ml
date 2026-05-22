@@ -15,7 +15,7 @@ let bill_of_materials = [ pvc_pellet; paint; box ]
 let hatsune_miku =
   {
     hs_code = hs_figurine;
-    export_value = Bignum.of_string "20.00";
+    export_value = Q.of_string "20.00";
     origin_country = Country.Vietnam;
     destination_country = Country.Mexico;
     bill_of_materials;
@@ -36,7 +36,7 @@ let make_miku ~export_value =
 
   {
     hs_code = hs_figurine;
-    export_value = Bignum.of_string export_value;
+    export_value = Q.of_string export_value;
     origin_country = Country.Vietnam;
     destination_country = Country.Mexico;
     bill_of_materials;

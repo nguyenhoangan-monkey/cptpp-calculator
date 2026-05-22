@@ -14,7 +14,7 @@ depends: [
   "dune" {>= "3.11" & >= "3.11"}
   "ppx_blob" {>= "0.7.2"}
   "csv"
-  "bignum"
+  "zarith"
   "alcotest" {with-test}
   "qcheck" {with-test}
   "odoc" {with-doc}
