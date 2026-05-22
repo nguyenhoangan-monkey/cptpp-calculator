@@ -11,8 +11,4 @@ let of_string = function
   | _ -> None
 
 (* convert type to ISO 3-letter string *)
-let to_iso_string = function
-  | Vietnam -> "VNM"
-  | Mexico -> "MEX"
-  | China -> "CHN"
-  | Japan -> "JPN"
+let to_iso_string = function Vietnam -> "VNM" | Mexico -> "MEX" | China -> "CHN" | Japan -> "JPN"

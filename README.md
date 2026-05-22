@@ -26,40 +26,25 @@ You need to define the product as an OCaml record variable with type `product`:
 1. The bill of materials are defined with required attributes for CPTPP (type `material`).
 2. This is added to the bill of materials of `hatsune_miku` (type `product`)
 
-In this example below, I defined a (hypothetical) Hatsune Miku figurine that is officially licensed and has a very high profit margin, and then record it as a `hatsune_miku` variable. For simplicity, foreign currencies are not added for now as we default to USD for all countries, nor is the accumulation rule.
+In this example below, I defined a (hypothetical) Hatsune Miku figurine that is officially licensed and has a very high profit margin, and then record it as a `hatsune_miku` variable.
 
-You create an object by explicitly define the attributes. Once you create an object, it is immutable.
+There are two ways to create an object. The first way is the unsafe, explicit way. This is recommended for quick back-of-the-napkin math and experimentation where you don't mind programs being crashed.
 
 ```ocaml
-let hs_figurine = Hs_code.of_string_exn "9503.00.00"
-let hs_pvc      = Hs_code.of_string_exn "3904.10"
-let hs_paint    = Hs_code.of_string_exn "3208.20"
-let hs_box      = Hs_code.of_string_exn "4819.10"
+open Domain
 
-let pvc_pellet = make_material hs_pvc Country.China "5.00"
-let paint      = make_material hs_paint Country.Japan "2.50" 
-let box        = make_material hs_box Country.Vietnam "1.50"
+let pvc_pellet = Material.of_strings_exn "3904.10" Country.China "5.00"
+let paint = Material.of_strings_exn "3208.20" Country.Japan "2.50"
+let box = Material.of_strings_exn "4819.10" Country.Vietnam "1.50"
 
 let bill_of_materials = [ pvc_pellet; paint; box ]
 
-let hatsune_miku = {
-  hs_code = hs_figurine;
-  export_value = Q.of_string "20.00";
-  origin_country = Country.Vietnam;
-  destination_country = Country.Mexico;
-  bill_of_materials;
-}
-
-let akita_neru = {
-  hs_code = hs_figurine;
-  export_value = Q.of_string "30.00";
-  origin_country = Country.Vietnam;
-  destination_country = Country.Japan;
-  bill_of_materials;
-}
+(* 9503.00.00 is code for figurines *)
+let hatsune_miku = Good.of_strings_exn "9503.00.00" "20.00" Country.Vietnam Country.Mexico bill_of_materials
+let akita_neru = Good.of_strings_exn "9503.00.00" "30.00" Country.Vietnam Country.Japan bill_of_materials
 ```
 
-Or you can make a function for the generator to ingest:
+The first way is the safe, error handling way. This is recommended for actual production-grade work.
 
 ```ocaml
 (** Generator factory **)
