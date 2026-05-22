@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: true
 
@@ -24,12 +24,14 @@ jobs:
         with:
           ocaml-compiler: 5.1.0 
           dune-cache: true
+          opam-disable-cache: false 
 
-      - name: Install dependencies
-        run: |
-          opam update
-          opam install . --deps-only --with-test --with-doc
-          opam install ocamlformat.0.29.0 --yes
+      - name: Install Opam Dependencies
+        uses: ocaml/setup-ocaml/subactions/install-opam-deps@v3
+        with:
+          with-test: true
+          with-doc: true
+          extra-packages: ocamlformat.0.29.0
 
       - name: Check code formatting
         run: opam exec -- dune build @fmt
