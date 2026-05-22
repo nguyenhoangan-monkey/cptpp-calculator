@@ -21,8 +21,6 @@ let of_string s =
   else
     Error (Printf.sprintf "Invalid HS Code format: '%s'. Expected 6 to 10 digits." s)
 
-
-
 let of_string_exn (s : string) : t =
   match of_string s with
   | Ok t -> t

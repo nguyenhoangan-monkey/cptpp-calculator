@@ -103,7 +103,7 @@ The bill of materials of type `material`:
 * `cost`: this is the original value of the materials in USD, in `Bignum`
 * `origin`: `Country` variant type (e.g., `Country.Vietnam`)
 
-
+In practice, you don't want to use `Hs_code.of_string_exn`. You want to use `Hs_code.of_string` and perform error handling.
 
 
 ## Notes
