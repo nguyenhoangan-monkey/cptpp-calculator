@@ -1,5 +1,0 @@
-(test
- (name test_compliance)
- (libraries domain engine parser yojson)
- (deps
-  (source_tree fixtures)))

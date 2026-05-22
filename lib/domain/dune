@@ -1,6 +1,4 @@
 (library
  (name domain)
  (public_name cptpp_calculator.domain)
- (preprocess
-  (pps ppx_deriving_yojson))
- (libraries core bignum yojson))
+ (libraries core bignum))

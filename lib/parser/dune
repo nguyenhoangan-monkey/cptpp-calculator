@@ -1,6 +1,11 @@
+; 1. Copy the CSV into this subdirectory's build context
+(rule
+ (target hs_world_2022.csv)
+ (action (copy %{workspace_root}/data/parsed/harmonized_system/hs_world_2022.csv %{target})))
+
+; 2. Define the parser library
 (library
- (name parser)
+ (name cptpp_calculator_parser)
  (public_name cptpp_calculator.parser)
- (libraries domain yojson)
- (preprocess
-  (pps ppx_deriving_yojson)))
+ (preprocess (pps ppx_blob))
+ (libraries csv bignum cptpp_calculator.domain))
