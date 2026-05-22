@@ -7,16 +7,16 @@ progress
 ## Data sources
 **IMPORTANT: This section shows what kind of license is used. It has legal value.**
 
-### `data/harmonized_system`
+### `raw_data/harmonized_system`
 
 | Path | Description | Source | License / Terms of Use |
 | --- | --- | --- | --- |
-| `hs_world_2022.json` | Global HS Codes (2022) | [datasets/harmonized-system](https://github.com/datasets/harmonized-system) | [ODC Public Domain Dedication and Licence (PDDL)](http://opendatacommons.org/licenses/pddl/1-0/) |
-| `hs_vnm_2022.json` | Vietnam HS Subcodes (2022) | Vietnam Customs / Government Portal | Open Government Data (Verify local terms) |
-| `hs_mex_2022.json` | Mexico HS Subcodes (2022) | Government of Mexico (SIVIEX / SE) | Open Government Data (Verify local terms) |
+| `hs_world_2022` | Global HS Codes (2022) | [datasets/harmonized-system](https://github.com/datasets/harmonized-system) | [ODC Public Domain Dedication and Licence (PDDL)](http://opendatacommons.org/licenses/pddl/1-0/) |
+| `hs_vnm_2022` | Vietnam HS Subcodes (2022) | Vietnam Customs / Government Portal | Open Government Data (Verify local terms) |
+| `hs_mex_2022` | Mexico HS Subcodes (2022) | Government of Mexico (SIVIEX / SE) | Open Government Data (Verify local terms) |
 
 
-### `data/tariffs`
+### `raw_data/tariffs`
 
 | Path | Country Schedule | Source | License / Terms of Use |
 | --- | --- | --- | --- |
