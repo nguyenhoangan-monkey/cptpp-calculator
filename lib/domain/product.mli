@@ -16,4 +16,5 @@ type product = {
 
 val make_material : Hs_code.t -> Country.t -> string -> material
 
-val make_product : Hs_code.t -> string -> Country.t -> Country.t -> material list -> product
+val make_product :
+  Hs_code.t -> string -> Country.t -> Country.t -> material list -> product
