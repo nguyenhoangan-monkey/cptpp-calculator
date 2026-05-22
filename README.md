@@ -7,21 +7,21 @@ progress
 ## Data sources
 **IMPORTANT: This section shows what kind of license is used. It has legal value.**
 
-### Harmonized system
+### `data/harmonized_system`
 
-| Data File / Path | Description | Source | License / Terms of Use | Commercial Use? |
-| --- | --- | --- | --- | --- |
-| `harmonized_system/hs_world_2022.json` | Global HS Codes (2022) | [datasets/harmonized-system](https://github.com/datasets/harmonized-system) | [ODC Public Domain Dedication and Licence (PDDL)](http://opendatacommons.org/licenses/pddl/1-0/) | Yes |
-| `harmonized_system/hs_vnm_2022.json` | Vietnam HS Subcodes (2022) | Vietnam Customs / Government Portal | Open Government Data (Verify local terms) | Yes |
-| `harmonized_system/hs_mex_2022.json` | Mexico HS Subcodes (2022) | Government of Mexico (SIVIEX / SE) | Open Government Data (Verify local terms) | Yes |
+| Path | Description | Source | License / Terms of Use |
+| --- | --- | --- | --- |
+| `hs_world_2022.json` | Global HS Codes (2022) | [datasets/harmonized-system](https://github.com/datasets/harmonized-system) | [ODC Public Domain Dedication and Licence (PDDL)](http://opendatacommons.org/licenses/pddl/1-0/) |
+| `hs_vnm_2022.json` | Vietnam HS Subcodes (2022) | Vietnam Customs / Government Portal | Open Government Data (Verify local terms) |
+| `hs_mex_2022.json` | Mexico HS Subcodes (2022) | Government of Mexico (SIVIEX / SE) | Open Government Data (Verify local terms) |
 
 
-### CPTPP Tariff Schedules
+### `data/tariffs`
 
-| Data File / Path | Country Schedule | Source | License / Terms of Use | Commercial Use? |
-| --- | --- | --- | --- | --- |
-| `tariffs/cptpp/mex/` | Mexico | Mexican Ministry of Economy | Official Public Schedule | Yes |
-| `tariffs/cptpp/vnm/` | Vietnam | Vietnam Ministry of Industry & Trade | Official Public Schedule | Yes |
+| Path | Country Schedule | Source | License / Terms of Use |
+| --- | --- | --- | --- |
+| `/cptpp/mex/` | Mexico | Mexican Ministry of Economy | Official Public Schedule |
+| `/cptpp/vnm/` | Vietnam | Vietnam Ministry of Industry & Trade | Official Public Schedule |
 
 ---
 
