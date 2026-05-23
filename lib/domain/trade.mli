@@ -12,6 +12,8 @@ module Money : sig
 end
 
 module Material : sig
+  (** Materials might not be raw resources, they simply just mean the product is not shipped. **)
+
   type t = { hs_code : Hs_code.t; origin : Country.t; cost : Money.t }
 
   val of_strings_exn : string -> Country.t -> string -> t
@@ -19,6 +21,8 @@ module Material : sig
 end
 
 module Good : sig
+  (** Goods might not be finished products or components, they can be shipped raw products with no backlog. **)
+
   type t = {
     hs_code : Hs_code.t;
     free_on_board_value : Money.t;
@@ -29,4 +33,14 @@ module Good : sig
 
   val of_strings_exn : string -> string -> Country.t -> Country.t -> Material.t list -> t
   val print : Format.formatter -> t -> unit
+end
+
+module Tech_tree : sig
+  (** Represent an accumulation chain or, as a single node, additional metadata. It should be expected that these nodes
+      and leafs can be both goods and materials, and the value can be expanded as metadata. **)
+
+  type 'a t
+
+  val leaf : 'a -> 'a t
+  val node : 'a -> 'a t list -> 'a t
 end

@@ -70,3 +70,13 @@ module Good = struct
       (Format.pp_print_list ~pp_sep:Format.pp_force_newline Material.print)
       t.bill_of_materials
 end
+
+module Tech_tree = struct
+  type t = {
+    hs_code : Hs_code.t;
+    free_on_board_value : Money.t;  (** free-on-board value, USD, non-negative *)
+    shipped_from : Country.t;
+    shipped_to : Country.t;
+    bill_of_materials : Material.t list;
+  }
+end

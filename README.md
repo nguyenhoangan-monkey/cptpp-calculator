@@ -1,4 +1,9 @@
-# cptpp-calculator
+<h1 align="center">
+<img src="https://raw.githubusercontent.com/nguyenhoangan-monkey/cptpp-calculator/main/docs/assets/cover.jpg" width="600">
+</h1><br>
+
+<small>*Image by [Mahardika Maulana](https://www.flickr.com/photos/96081001@N07/15137625925/). Hatsune Miku © Crypton Future Media, Inc. 2007 (CC BY-NC)*</small>
+
 CPTPP rules of origin and tariffs calculator.
 
 **This calculator is for intuition/informational/education purposes, not for actual legal work. Please read the BSD 3-Clause License before usage because it contains important legal information.**
