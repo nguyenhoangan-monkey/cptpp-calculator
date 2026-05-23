@@ -55,7 +55,7 @@ let akita_neru = Good.of_strings_exn
 The second way is the safe, error handling way. This is recommended for actual production-grade work. In this example, the free-on-board value is adjustable as `fob_str`.
 
 ```ocaml
-let vocaloid_figurines fob_str =
+let make_figurine fob_str =
   let open Result.Syntax in
 
   (* let+ and and+ are used for error handling *)
@@ -87,10 +87,10 @@ let spec_validation res =
   | Ok product -> product
   | Error err  -> failwith ("Vocaloid figurine specification failed: " ^ err)
 
-(** Generate products at different price points with unwrapping **)
-let budget_miku   = spec_validation (vocaloid_figurines "20.00")
-let standard_miku = spec_validation (vocaloid_figurines "30.00")
-let giant_miku    = spec_validation (vocaloid_figurines "100.00")
+(** Generate products at different price points **)
+let budget_miku   = "20.00"  |> make_figurine |> spec_validation
+let standard_miku = "30.00"  |> make_figurine |> spec_validation
+let giant_miku    = "100.00" |> make_figurine |> spec_validation
 ```
 
 
