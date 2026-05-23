@@ -1,4 +1,10 @@
-# cptpp-parser
+<h1 align="center">
+<img src="https://raw.githubusercontent.com/nguyenhoangan-monkey/cptpp-parser/main/docs/assets/cover.jpg" width="750">
+</h1>
+
+Photo by author. Hatsune Miku © Crypton Future Media, Inc. 2007 (CC BY-NC)
+
+-----
 This directory holds the scripts used to clean data and JSON data files for the [cptpp-calculator](https://github.com/nguyenhoangan-monkey/cptpp-calculator). The /data folder is copied to the cptpp-calculator when doing recursive checkout or when the software is released.
 
 ## Parsing logic
