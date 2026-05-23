@@ -19,18 +19,31 @@ jobs:
         with:
           submodules: true
 
+      # 1. We create a cache key based on the OS and the exact hash of your lockfile
+      - name: Cache OPAM local switch
+        id: opam-cache
+        uses: actions/cache@v4
+        with:
+          path: _opam
+          key: ${{ runner.os }}-opam-${{ hashFiles('cptpp_calculator.opam.locked') }}
+          restore-keys: |
+            ${{ runner.os }}-opam-
+
+      # 2. Set up OCaml but instruct it NOT to build a generic global switch
       - name: setup ocaml
         uses: ocaml/setup-ocaml@v3
         with:
-          ocaml-compiler: 5.4.x  # Lock to 5.4+ to natively support Result.Syntax
+          ocaml-compiler: "5.4.x" # Lock to 5.4+ to natively support Result.Syntax
+          opam-local-packages: "cptpp_calculator.opam"
 
-      - name: add rocq prover upstream repository
+      # 3. ONLY run this step if there was a cache miss. 
+      - name: create local switch and install dependencies
+        if: steps.opam-cache.outputs.cache-hit != 'true'
         run: |
-          opam repo add rocq-released https://rocq-prover.org/opam/released ||
+          opam repo add rocq-released https://rocq-prover.org/opam/released || true
           opam update
-
-      - name: install project and rocq dependencies
-        run: opam install . rocq-prover --deps-only --with-test --yes
+          opam switch create . 5.4.x --locked --yes
+          opam install . --deps-only --with-test --yes
 
       - name: build ocaml components
         run: opam exec -- dune build
@@ -38,5 +51,5 @@ jobs:
       - name: run standard test suite (alcotest + qcheck)
         run: opam exec -- dune runtest
 
-      - name: verify legal chapter 3 specifications (rocq)
+      - name: verify legal Chapter 3 specifications (rocq)
         run: opam exec -- dune build proofs
