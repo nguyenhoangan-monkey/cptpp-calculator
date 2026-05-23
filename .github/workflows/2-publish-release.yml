@@ -1,4 +1,4 @@
-name: CPTPP release packaging
+name: Release packaging
 
 on:
   push:

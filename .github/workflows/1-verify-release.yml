@@ -1,4 +1,4 @@
-name: CPTPP release verification
+name: Release verification
 
 on:
   push:
