@@ -19,8 +19,7 @@ jobs:
         with:
           submodules: true
 
-      # 1. We create a cache key based on the OS and the exact hash of your lockfile
-      - name: Cache OPAM local switch
+      - name: cache opam local switch
         id: opam-cache
         uses: actions/cache@v4
         with:
@@ -29,20 +28,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-opam-
 
-      # 2. Set up OCaml but instruct it NOT to build a generic global switch
       - name: setup ocaml
         uses: ocaml/setup-ocaml@v3
         with:
-          ocaml-compiler: "5.4.x" # Lock to 5.4+ to natively support Result.Syntax
-          opam-local-packages: "cptpp_calculator.opam"
+          ocaml-compiler: "5.4.1" # Lock to 5.4.1 to natively support Result.Syntax
 
-      # 3. ONLY run this step if there was a cache miss. 
       - name: create local switch and install dependencies
         if: steps.opam-cache.outputs.cache-hit != 'true'
         run: |
+          eval $(opam env)
           opam repo add rocq-released https://rocq-prover.org/opam/released || true
           opam update
-          opam switch create . 5.4.x --locked --yes
+          opam switch create . 5.4.1 --locked --yes
           opam install . --deps-only --with-test --yes
 
       - name: build ocaml components
