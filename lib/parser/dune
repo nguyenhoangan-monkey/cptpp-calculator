@@ -7,6 +7,7 @@
 
 (rule
  (target csv_data.ml)
+ (deps hs_world_2022.csv)
  (action
   (with-outputs-to
    %{target}
@@ -18,4 +19,5 @@
 (library
  (name cptpp_calculator_parser)
  (public_name cptpp_calculator.parser)
+ (modules :standard)
  (libraries csv zarith cptpp_calculator.domain))
