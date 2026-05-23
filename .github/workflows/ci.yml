@@ -38,11 +38,11 @@ jobs:
       - name: build ocaml components
         run: opam exec -- dune build
 
-      - name: tier 1: verify legal Chapter 3 specifications (rocq)
+      - name: verify legal Chapter 3 specifications (rocq)
         run: opam exec -- dune build proofs
 
-      - name: tier 2: run standard test suite (alcotest + qcheck)
+      - name: run standard test suite (alcotest + qcheck)
         run: opam exec -- dune runtest
 
-      - name: tier 3: execute mutation analysis (munch)
+      - name: execute mutation analysis (munch)
         run: opam exec -- munch run
