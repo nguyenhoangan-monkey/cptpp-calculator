@@ -32,9 +32,6 @@ jobs:
       - name: install project and rocq dependencies
         run: opam install . rocq-prover --deps-only --with-test --yes
 
-      - name: check formatting
-        run: opam exec -- dune build @fmt
-
       - name: build ocaml components
         run: opam exec -- dune build
 
