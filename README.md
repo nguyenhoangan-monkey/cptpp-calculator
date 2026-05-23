@@ -59,6 +59,7 @@ let hatsune_miku_accumulation =
 let akita_neru_accumulation =
   Tech_tree.node 20071101 Good akita_neru
     [
+      Tech_tree.node 20070831 Good hatsune_miku;
       Tech_tree.leaf 390410 Material pvc_pellet;
       Tech_tree.leaf 320820 Material paint;
       Tech_tree.leaf 481910 Material box;
