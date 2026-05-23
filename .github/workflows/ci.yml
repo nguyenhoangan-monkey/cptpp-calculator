@@ -15,38 +15,20 @@ jobs:
 
     steps:
       - name: checkout code
-        uses: actions/checkout@v6 # Latest checkout
+        uses: actions/checkout@v6
         with:
           submodules: true
 
-      - name: cache opam local switch
-        id: opam-cache
-        uses: actions/cache@v4
-        with:
-          path: _opam
-          key: ${{ runner.os }}-opam-${{ hashFiles('cptpp_calculator.opam.locked') }}
-          restore-keys: |
-            ${{ runner.os }}-opam-
-
-      - name: setup ocaml
+      - name: setup ocaml, rocq, and caching
         uses: ocaml/setup-ocaml@v3
         with:
-          ocaml-compiler: "5.4.1" # Lock to 5.4.1 to natively support Result.Syntax
+          ocaml-compiler: "5.4.1"
+          opam-repositories: |
+            rocq-released: https://rocq-prover.org/opam/released
+            default: git+https://github.com/ocaml/opam-repository.git
 
-      - name: create local switch and install dependencies
-        if: steps.opam-cache.outputs.cache-hit != 'true'
-        run: |
-          eval $(opam env)
-          opam repo add rocq-released https://rocq-prover.org/opam/released || true
-          opam update
-          
-          if [ ! -d "_opam" ]; then
-            opam switch create . 5.4.1 --locked --yes
-          else
-            opam switch set .
-          fi
-          
-          opam install . --deps-only --with-test --yes
+      - name: install dependencies
+        run: opam install . --deps-only --with-test --locked --yes
 
       - name: build ocaml components
         run: opam exec -- dune build
@@ -56,3 +38,4 @@ jobs:
 
       - name: verify legal Chapter 3 specifications (rocq)
         run: opam exec -- dune build proofs
+
