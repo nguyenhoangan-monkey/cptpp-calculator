@@ -41,5 +41,5 @@ jobs:
       - name: run standard test suite (alcotest + qcheck)
         run: opam exec -- dune runtest
 
-      - name: verify legal Chapter 3 specifications (rocq)
+      - name: verify legal chapter 3 specifications (rocq)
         run: opam exec -- dune build proofs

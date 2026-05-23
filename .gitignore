@@ -38,3 +38,6 @@ _opam/
 # macOS system files
 .DS_Store
 **/.DS_Store
+
+# ignore locked rocq
+rocq-prover.opam.locked
