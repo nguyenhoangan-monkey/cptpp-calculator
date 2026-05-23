@@ -18,6 +18,7 @@ let of_string s =
 
 let of_string_exn s = match of_string s with Ok t -> t | Error msg -> failwith msg
 
-let to_string code =
-  if code.extension = "" then Printf.sprintf "%s%s.%s" code.chapter code.heading code.subheading
-  else Printf.sprintf "%s%s.%s.%s" code.chapter code.heading code.subheading code.extension
+let to_string { chapter; heading; subheading; extension } =
+  match extension with
+  | "" -> Printf.sprintf "%s%s.%s" chapter heading subheading
+  | ext -> Printf.sprintf "%s%s.%s.%s" chapter heading subheading ext

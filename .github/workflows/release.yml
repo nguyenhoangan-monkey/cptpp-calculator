@@ -1,0 +1,27 @@
+name: Release Asset Packager
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code with submodules
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Create fat tarball
+        run: |
+          # Package everything including the populated data/ directory
+          tar -czf cptpp_calculator-${{ github.ref_name }}.tar.gz * .[a-zA-Z]* 2>/dev/null || true
+
+      - name: Upload tarball to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: cptpp_calculator-${{ github.ref_name }}.tar.gz
