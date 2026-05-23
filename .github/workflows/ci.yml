@@ -28,7 +28,9 @@ jobs:
             default: git+https://github.com/ocaml/opam-repository.git
 
       - name: install dependencies
-        run: opam install . --deps-only --with-test --yes
+        run: |
+          opam install . --deps-only --with-test
+          opam install rocq-runtime qcheck-alcotest
 
       - name: build ocaml components
         run: opam exec -- dune build
