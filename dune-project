@@ -27,7 +27,6 @@
    (>= 5.4.0))
   csv
   zarith
-  rocq-runtime
   (alcotest :with-test)
   (qcheck :with-test)
   (qcheck-alcotest :with-test)))
