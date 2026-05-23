@@ -22,7 +22,7 @@
   "A compliance and regional value content rules engine for CPTPP tariffs evaluation.")
  (depends
   (ocaml
-   (>= 5.0.0))
+   (>= 5.4.0))
   csv
   zarith
   (alcotest :with-test)))
