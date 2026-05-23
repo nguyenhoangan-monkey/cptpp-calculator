@@ -7,11 +7,11 @@ let box = Material.of_strings_exn "4819.10" Country.Vietnam "1.50"
 let hatsune_miku = Good.of_strings_exn "9503.00.00" "20.00" Country.Vietnam Country.Mexico
 
 let unsafe_miku_tree =
-  Tech_tree.node "Hatsune Miku Figurine (Final Good)" Good hatsune_miku
+  Tech_tree.good "Hatsune Miku Figurine (Final Good)" hatsune_miku
     [
-      Tech_tree.leaf "PVC Plastic Pellets" Material pvc_pellet;
-      Tech_tree.leaf "Acrylic Paint Sub-component" Material paint;
-      Tech_tree.leaf "Cardboard Packaging Box" Material box;
+      Tech_tree.material "PVC Plastic Pellets" pvc_pellet [];
+      Tech_tree.material "Acrylic Paint Sub-component" paint [];
+      Tech_tree.material "Cardboard Packaging Box" box [];
     ]
 
 (** Safe definition **)
@@ -39,11 +39,11 @@ let make_miku () =
       }
   in
 
-  Tech_tree.node "Hatsune Miku Figurine (Final Good)" Good hatsune_miku
+  Tech_tree.good "Hatsune Miku Figurine (Final Good)" hatsune_miku
     [
-      Tech_tree.leaf "PVC Plastic Pellets" Material pvc_pellet;
-      Tech_tree.leaf "Acrylic Paint Sub-component" Material paint;
-      Tech_tree.leaf "Cardboard Packaging Box" Material box;
+      Tech_tree.material "PVC Plastic Pellets" pvc_pellet [];
+      Tech_tree.material "Acrylic Paint Sub-component" paint [];
+      Tech_tree.material "Cardboard Packaging Box" box [];
     ]
 
 let safe_miku_tree =

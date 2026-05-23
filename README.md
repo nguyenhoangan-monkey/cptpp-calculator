@@ -49,20 +49,19 @@ let paint = Material.of_strings_exn "3208.20" Country.Japan "2.50"
 let box = Material.of_strings_exn "4819.10" Country.Vietnam "1.50"
 
 (* creating an accumulation tech tree with custom descriptions *)
+(* notice, these descriptions must be of the same type *)
 let hatsune_miku_accumulation =
-  Tech_tree.node "Hatsune Miku Figurine (初音ミク)" Good hatsune_miku
+  Tech_tree.good "Hatsune Miku Figurine (初音ミク)" hatsune_miku
     [
-      Tech_tree.leaf "PVC Plastic 🇨🇳" Material pvc_pellet;
-      Tech_tree.leaf "Acrylic Paint 3208.20" Material paint;
-      Tech_tree.leaf "Cardboard box" Material box;
+      Tech_tree.material "PVC Plastic 🇨🇳" pvc_pellet [];
+      Tech_tree.material "Acrylic Paint 3208.20" paint [];
+      Tech_tree.material "Cardboard box" box [];
     ]
 let akita_neru_accumulation =
-  Tech_tree.node 20071101 Good akita_neru
+  Tech_tree.good "20071101" akita_neru
     [
-      Tech_tree.leaf 20070831 Good hatsune_miku;
-      Tech_tree.leaf 390410 Material pvc_pellet;
-      Tech_tree.leaf 320820 Material paint;
-      Tech_tree.leaf 481910 Material box;
+      hatsune_miku_accumulation;
+      Tech_tree.material "Cardboard box" box [];
     ]
 ```
 
@@ -97,12 +96,12 @@ let make_figurine fob_str =
   in
 
   (* return accumulation tree *)
-  Tech_tree.node "Hatsune Miku Figurine (Final Good)" Good hatsune_miku
-  [
-    Tech_tree.leaf "PVC Plastic Pellets" Material pvc_pellet;
-    Tech_tree.leaf "Acrylic Paint Sub-component" Material paint;
-    Tech_tree.leaf "Cardboard Packaging Box" Material box;
-  ]
+  Tech_tree.good "Hatsune Miku Figurine (Final Good)" hatsune_miku
+    [
+      Tech_tree.material "PVC Plastic Pellets" pvc_pellet [];
+      Tech_tree.material "Acrylic Paint Sub-component" paint [];
+      Tech_tree.material "Cardboard Packaging Box" box [];
+    ]
 
 let spec_validation = function
   | Ok tree -> Some tree
