@@ -1,4 +1,4 @@
-name: OCaml CI
+name: CPTPP CI suite
 
 on:
   push:
@@ -14,24 +14,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - name: checkout code
+        uses: actions/checkout@v6 # Latest checkout
         with:
           submodules: true
 
-      - name: Setup OCaml
+      - name: setup ocaml
         uses: ocaml/setup-ocaml@v3
         with:
-          ocaml-compiler: 5.x
+          ocaml-compiler: 5.4.x  # Lock to 5.4+ to natively support Result.Syntax
 
-      - name: Install dependencies
-        run: opam install . --deps-only --with-test --yes
+      - name: add rocq prover upstream repository
+        run: |
+          opam repo add rocq-released https://rocq-prover.org/opam/released
+          opam update
+
+      - name: install project, rocq, and mutation dependencies
+        run: opam install . rocq-prover munch --deps-only --with-test --yes
         
-      - name: Clean environment
+      - name: clean environment
         run: opam exec -- dune clean
 
-      - name: Build project
+      - name: build ocaml components
         run: opam exec -- dune build
 
-      - name: Run test suite
+      - name: tier 1: verify legal Chapter 3 specifications (rocq)
+        run: opam exec -- dune build proofs
+
+      - name: tier 2: run standard test suite (alcotest + qcheck)
         run: opam exec -- dune runtest
+
+      - name: tier 3: execute mutation analysis (munch)
+        run: opam exec -- munch run

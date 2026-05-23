@@ -1,0 +1,5 @@
+-R _build/default/proofs CptppSpec
+-arg -w -arg -deprecated-hint-without-locality
+
+Extraction.v
+Hs_code_proofs.v

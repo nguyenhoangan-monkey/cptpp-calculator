@@ -1,0 +1,5 @@
+(rocq.theory
+ (name CptppSpec)
+ (synopsis
+  "Formal algebraic specification of CPTPP Chapter 3 Rules of Origin")
+ (modules Extraction Hs_code_proofs))
