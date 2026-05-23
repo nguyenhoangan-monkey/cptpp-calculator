@@ -58,42 +58,39 @@ The second way is the safe, error handling way. This is recommended for actual p
 let vocaloid_figurines fob_str =
   let open Result.Syntax in
 
-  let validated_product_result =
-    (* let+ and and+ monad is used for error handling *)
-    let+ hs_figurine = Hs_code.of_string "9503.00.00"
-    and+ hs_pvc = Hs_code.of_string "3904.10"
-    and+ hs_paint = Hs_code.of_string "3208.20"
-    and+ hs_box = Hs_code.of_string "4819.10"
-    and+ cost_pvc = Money.of_string "5.00"
-    and+ cost_paint = Money.of_string "2.50"
-    and+ cost_box = Money.of_string "1.50"
-    and+ export_val = Money.of_string fob_str in
+  (* let+ and and+ are used for error handling *)
+  let+ hs_figurine = Hs_code.of_string "9503.00.00"
+  and+ hs_pvc = Hs_code.of_string "3904.10"
+  and+ hs_paint = Hs_code.of_string "3208.20"
+  and+ hs_box = Hs_code.of_string "4819.10"
+  and+ cost_pvc = Money.of_string "5.00"
+  and+ cost_paint = Money.of_string "2.50"
+  and+ cost_box = Money.of_string "1.50"
+  and+ export_val = Money.of_string fob_str in
 
-    (* all unsafe variables are now validated *)
-    let pvc_pellet = Material.{ hs_code = hs_pvc; origin = Country.China; cost = cost_pvc } in
-    let paint = Material.{ hs_code = hs_paint; origin = Country.Japan; cost = cost_paint } in
-    let box = Material.{ hs_code = hs_box; origin = Country.Vietnam; cost = cost_box } in
+  (* all unsafe variables are now validated *)
+  let pvc_pellet = Material.{ hs_code = hs_pvc; origin = Country.China; cost = cost_pvc } in
+  let paint = Material.{ hs_code = hs_paint; origin = Country.Japan; cost = cost_paint } in
+  let box = Material.{ hs_code = hs_box; origin = Country.Vietnam; cost = cost_box } in
 
-    (* creating the object *)
-    Good.{
-      hs_code = hs_figurine;
-      free_on_board_value = export_val;
-      shipped_from = Country.Vietnam;
-      shipped_to = Country.Mexico;
-      bill_of_materials = [ pvc_pellet; paint; box ];
-    }
-  in
+  (* creating the object *)
+  Good.{
+    hs_code = hs_figurine;
+    free_on_board_value = export_val;
+    shipped_from = Country.Vietnam;
+    shipped_to = Country.Mexico;
+    bill_of_materials = [ pvc_pellet; paint; box ];
+  }
 
-  (* Unwrapping the product *)
-  match validated_product_result with
+let spec_validation res =
+  match res with
   | Ok product -> product
-  | Error err -> failwith ("Vocaloid figurine specification failed: " ^ err)
+  | Error err  -> failwith ("Vocaloid figurine specification failed: " ^ err)
 
-
-(** Generate products at different price points **)
-let budget_miku   = vocaloid_figurines "20.00"
-let standard_miku = vocaloid_figurines "30.00"
-let giant_miku    = vocaloid_figurines "100.00"
+(** Generate products at different price points with unwrapping **)
+let budget_miku   = spec_validation (vocaloid_figurines "20.00")
+let standard_miku = spec_validation (vocaloid_figurines "30.00")
+let giant_miku    = spec_validation (vocaloid_figurines "100.00")
 ```
 
 

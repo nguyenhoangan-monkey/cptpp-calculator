@@ -11,37 +11,32 @@ let hatsune_miku_unsafe =
 (** Safe definition **)
 let make_miku () =
   let open Result.Syntax in
-  (* Unsafe handling *)
-  let validated_product_result =
-    let+ hs_figurine = Hs_code.of_string "9503.00.00"
-    and+ hs_pvc = Hs_code.of_string "3904.10"
-    and+ hs_paint = Hs_code.of_string "3208.20"
-    and+ hs_box = Hs_code.of_string "4819.10"
-    and+ cost_pvc = Money.of_string "5.00"
-    and+ cost_paint = Money.of_string "2.50"
-    and+ cost_box = Money.of_string "1.50"
-    and+ export_val = Money.of_string "20.00" in
+  let+ hs_figurine = Hs_code.of_string "9503.00.00"
+  and+ hs_pvc = Hs_code.of_string "3904.10"
+  and+ hs_paint = Hs_code.of_string "3208.20"
+  and+ hs_box = Hs_code.of_string "4819.10"
+  and+ cost_pvc = Money.of_string "5.00"
+  and+ cost_paint = Money.of_string "2.50"
+  and+ cost_box = Money.of_string "1.50"
+  and+ export_val = Money.of_string "20.00" in
 
-    let pvc_pellet = Material.{ hs_code = hs_pvc; origin = Country.China; cost = cost_pvc } in
-    let paint = Material.{ hs_code = hs_paint; origin = Country.Japan; cost = cost_paint } in
-    let box = Material.{ hs_code = hs_box; origin = Country.Vietnam; cost = cost_box } in
+  let pvc_pellet = Material.{ hs_code = hs_pvc; origin = Country.China; cost = cost_pvc } in
+  let paint = Material.{ hs_code = hs_paint; origin = Country.Japan; cost = cost_paint } in
+  let box = Material.{ hs_code = hs_box; origin = Country.Vietnam; cost = cost_box } in
 
-    Good.
-      {
-        hs_code = hs_figurine;
-        free_on_board_value = export_val;
-        shipped_from = Country.Vietnam;
-        shipped_to = Country.Mexico;
-        bill_of_materials = [ pvc_pellet; paint; box ];
-      }
-  in
+  Good.
+    {
+      hs_code = hs_figurine;
+      free_on_board_value = export_val;
+      shipped_from = Country.Vietnam;
+      shipped_to = Country.Mexico;
+      bill_of_materials = [ pvc_pellet; paint; box ];
+    }
 
-  (* Unwrapping the product *)
-  match validated_product_result with
+let hatsune_miku_safe =
+  match make_miku () with
   | Ok product -> product
   | Error err -> failwith ("Miku generation failed internal validation: " ^ err)
-
-let hatsune_miku_safe = make_miku ()
 
 (* --- TESTS --- *)
 let good_testable = Alcotest.testable Good.print ( = )
