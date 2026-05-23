@@ -39,7 +39,13 @@ jobs:
           eval $(opam env)
           opam repo add rocq-released https://rocq-prover.org/opam/released || true
           opam update
-          opam switch create . 5.4.1 --locked --yes
+          
+          if [ ! -d "_opam" ]; then
+            opam switch create . 5.4.1 --locked --yes
+          else
+            opam switch set .
+          fi
+          
           opam install . --deps-only --with-test --yes
 
       - name: build ocaml components
