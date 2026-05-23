@@ -1,12 +1,18 @@
 open Domain
 
 (* Unsafe definition *)
-let hatsune_miku_unsafe =
-  let pvc_pellet = Material.of_strings_exn "3904.10" Country.China "5.00" in
-  let paint = Material.of_strings_exn "3208.20" Country.Japan "2.50" in
-  let box = Material.of_strings_exn "4819.10" Country.Vietnam "1.50" in
+let pvc_pellet = Material.of_strings_exn "3904.10" Country.China "5.00"
+let paint = Material.of_strings_exn "3208.20" Country.Japan "2.50"
+let box = Material.of_strings_exn "4819.10" Country.Vietnam "1.50"
+let hatsune_miku = Good.of_strings_exn "9503.00.00" "20.00" Country.Vietnam Country.Mexico
 
-  Good.of_strings_exn "9503.00.00" "20.00" Country.Vietnam Country.Mexico [ pvc_pellet; paint; box ]
+let unsafe_miku_tree =
+  Tech_tree.node "Hatsune Miku Figurine (Final Good)" Good hatsune_miku
+    [
+      Tech_tree.leaf "PVC Plastic Pellets" Material pvc_pellet;
+      Tech_tree.leaf "Acrylic Paint Sub-component" Material paint;
+      Tech_tree.leaf "Cardboard Packaging Box" Material box;
+    ]
 
 (** Safe definition **)
 let make_miku () =
@@ -23,29 +29,39 @@ let make_miku () =
   let pvc_pellet = Material.{ hs_code = hs_pvc; origin = Country.China; cost = cost_pvc } in
   let paint = Material.{ hs_code = hs_paint; origin = Country.Japan; cost = cost_paint } in
   let box = Material.{ hs_code = hs_box; origin = Country.Vietnam; cost = cost_box } in
+  let hatsune_miku =
+    Good.
+      {
+        hs_code = hs_figurine;
+        free_on_board_value = export_val;
+        shipped_from = Country.Vietnam;
+        shipped_to = Country.Mexico;
+      }
+  in
 
-  Good.
-    {
-      hs_code = hs_figurine;
-      free_on_board_value = export_val;
-      shipped_from = Country.Vietnam;
-      shipped_to = Country.Mexico;
-      bill_of_materials = [ pvc_pellet; paint; box ];
-    }
+  Tech_tree.node "Hatsune Miku Figurine (Final Good)" Good hatsune_miku
+    [
+      Tech_tree.leaf "PVC Plastic Pellets" Material pvc_pellet;
+      Tech_tree.leaf "Acrylic Paint Sub-component" Material paint;
+      Tech_tree.leaf "Cardboard Packaging Box" Material box;
+    ]
 
-let hatsune_miku_safe =
+let safe_miku_tree =
   match make_miku () with
   | Ok product -> product
   | Error err -> failwith ("Miku generation failed internal validation: " ^ err)
 
 (* --- TESTS --- *)
-let good_testable = Alcotest.testable Good.print ( = )
+
+(* TODO: implement a proper tree printing function *)
+let dummy_tree_printer ppf _tree = Format.pp_print_string ppf "<abstract_tree>"
+let tree_testable = Alcotest.testable dummy_tree_printer ( = )
 
 let test_absolute_equality () =
-  Alcotest.(check good_testable)
-    "Unsafe and safe initialization are structurally identical" hatsune_miku_safe hatsune_miku_unsafe
+  Alcotest.(check tree_testable)
+    "Unsafe and safe initialization are structurally identical" safe_miku_tree unsafe_miku_tree
 
 let () =
   let open Alcotest in
-  run "CPTPP trade object tests"
+  run "CPTPP accumulation tree equality"
     [ ("Initialization", [ test_case "Unsafe and safe initialization" `Quick test_absolute_equality ]) ]

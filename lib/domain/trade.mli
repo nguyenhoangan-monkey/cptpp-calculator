@@ -23,15 +23,9 @@ end
 module Good : sig
   (** Goods might not be finished products or components, they can be shipped raw products with no backlog. **)
 
-  type t = {
-    hs_code : Hs_code.t;
-    free_on_board_value : Money.t;
-    shipped_from : Country.t;
-    shipped_to : Country.t;
-    bill_of_materials : Material.t list;
-  }
+  type t = { hs_code : Hs_code.t; free_on_board_value : Money.t; shipped_from : Country.t; shipped_to : Country.t }
 
-  val of_strings_exn : string -> string -> Country.t -> Country.t -> Material.t list -> t
+  val of_strings_exn : string -> string -> Country.t -> Country.t -> t
   val print : Format.formatter -> t -> unit
 end
 
@@ -40,16 +34,20 @@ module Tech_tree : sig
       and leafs can be both goods and materials, and the value can be expanded as metadata. **)
   type input = Material of Material.t | Good of Good.t
 
-  type metadata = { id : string; name : string }
-  type tech_spec = { metadata : metadata; input : input }
+  type 'meta tech_spec = { metadata : 'meta; input : input }
 
   (* abstract data type *)
-  type t
+  type 'meta t
 
-  val leaf : tech_spec -> t
-  val node : tech_spec -> t list -> t
-  val tech_spec : t -> tech_spec
-  val metadata : t -> metadata
-  val input : t -> input
-  val add_child : t -> t -> t
+  (** Type witnesses used to infer underlying domain classifications at compile time. *)
+  type _ kind = Material : Material.t kind | Good : Good.t kind
+
+  (* operations *)
+  val leaf : 'meta -> 'a kind -> 'a -> 'meta t
+  val node : 'meta -> 'a kind -> 'a -> 'meta t list -> 'meta t
+  val metadata : 'meta t -> 'meta
+  val input : 'meta t -> input
+
+  (* actual, real functions *)
+  val add_child : 'meta t -> 'meta t -> 'meta t
 end
