@@ -1,4 +1,4 @@
 (test
  (name prop_runner)
- (libraries domain engine qcheck alcotest alcotest-qcheck)
+ (libraries domain engine qcheck alcotest qcheck-alcotest) ; qcheck-alcotest, not alcotest-qcheck
  (modules prop_runner prop_regional_value))

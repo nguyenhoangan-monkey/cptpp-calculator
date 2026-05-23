@@ -2,7 +2,7 @@
  (name test_compliance)
  (libraries domain engine alcotest)
  (modules test_compliance)
- (data_files
-  fixtures/cptpp_tariff_subset_mx_ca.json
-  fixtures/invalid_hs_matrix_slice.json
-  fixtures/valid_auto_part_bom.json))
+ (deps
+  (file fixtures/cptpp_tariff_subset_mx_ca.json)
+  (file fixtures/invalid_hs_matrix_slice.json)
+  (file fixtures/valid_auto_part_bom.json)))
