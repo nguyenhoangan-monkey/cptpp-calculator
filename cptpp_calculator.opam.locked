@@ -1,0 +1,56 @@
+opam-version: "2.0"
+name: "cptpp_calculator"
+version: "dev"
+synopsis: "CPTPP rules of origin and tariffs calculator"
+description:
+  "A compliance and regional value content rules engine for CPTPP tariffs evaluation."
+maintainer: "Nguyen Hoang An <nguyenhoangan1235@gmail.com>"
+authors: "Nguyen Hoang An"
+license: "BSD-3-Clause"
+homepage: "https://github.com/nguyenhoangan-monkey/cptpp-calculator"
+bug-reports:
+  "https://github.com/nguyenhoangan-monkey/cptpp-calculator/issues"
+depends: [
+  "alcotest" {= "1.9.1" & with-test}
+  "astring" {= "0.8.5" & with-test}
+  "base-bigarray" {= "base"}
+  "base-bytes" {= "base"}
+  "base-domains" {= "base"}
+  "base-effects" {= "base"}
+  "base-nnp" {= "base"}
+  "base-threads" {= "base"}
+  "base-unix" {= "base"}
+  "cmdliner" {= "2.1.1" & with-test}
+  "conf-gmp" {= "5"}
+  "conf-pkg-config" {= "4"}
+  "csv" {= "2.4"}
+  "dune" {= "3.23.1"}
+  "fmt" {= "0.11.0" & with-test}
+  "ocaml" {= "5.4.1"}
+  "ocaml-base-compiler" {= "5.4.1"}
+  "ocaml-compiler" {= "5.4.1"}
+  "ocaml-config" {= "3"}
+  "ocaml-options-vanilla" {= "1"}
+  "ocaml-syntax-shims" {= "1.0.0" & with-test}
+  "ocamlbuild" {= "0.16.1" & with-test}
+  "ocamlfind" {= "1.9.8"}
+  "re" {= "1.14.0" & with-test}
+  "stdlib-shims" {= "0.3.0" & with-test}
+  "topkg" {= "1.1.1" & with-test}
+  "uutf" {= "1.0.4" & with-test}
+  "zarith" {= "1.14"}
+]
+build: [
+  ["dune" "subst"] {dev}
+  [
+    "dune"
+    "build"
+    "-p"
+    name
+    "-j"
+    jobs
+    "@install"
+    "@runtest" {with-test}
+    "@doc" {with-doc}
+  ]
+]

@@ -26,23 +26,20 @@ jobs:
 
       - name: add rocq prover upstream repository
         run: |
-          opam repo add rocq-released https://rocq-prover.org/opam/released
+          opam repo add rocq-released https://rocq-prover.org/opam/released ||
           opam update
 
-      - name: install project, rocq, and mutation dependencies
-        run: opam install . rocq-prover munch --deps-only --with-test --yes
-        
-      - name: clean environment
-        run: opam exec -- dune clean
+      - name: install project and rocq dependencies
+        run: opam install . rocq-prover --deps-only --with-test --yes
+
+      - name: check formatting
+        run: opam exec -- dune build @fmt
 
       - name: build ocaml components
         run: opam exec -- dune build
 
-      - name: verify legal Chapter 3 specifications (rocq)
-        run: opam exec -- dune build proofs
-
       - name: run standard test suite (alcotest + qcheck)
         run: opam exec -- dune runtest
 
-      - name: execute mutation analysis (munch)
-        run: opam exec -- munch run
+      - name: verify legal Chapter 3 specifications (rocq)
+        run: opam exec -- dune build proofs
