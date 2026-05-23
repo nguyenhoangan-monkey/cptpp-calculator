@@ -1,4 +1,4 @@
-name: Release Asset Packager
+name: Release hook
 
 on:
   push:
@@ -18,10 +18,12 @@ jobs:
 
       - name: Create fat tarball
         run: |
-          # Package everything including the populated data/ directory
-          tar -czf cptpp_calculator-${{ github.ref_name }}.tar.gz * .[a-zA-Z]* 2>/dev/null || true
+          TAR_NAME="cptpp_calculator-${{ github.ref_name }}.tar.gz"
+          tar --exclude='.git' --exclude="$TAR_NAME" -czf "$TAR_NAME" .
 
       - name: Upload tarball to release
         uses: softprops/action-gh-release@v2
         with:
           files: cptpp_calculator-${{ github.ref_name }}.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

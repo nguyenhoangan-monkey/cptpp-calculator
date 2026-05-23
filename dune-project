@@ -4,11 +4,6 @@
 
 (generate_opam_files true)
 
-(synopsis "CPTPP rules of origin and tariffs calculator")
-
-(description
- "A compliance and regional value content rules engine for CPTPP tariffs evaluation.")
-
 (maintainers "Nguyen Hoang An <nguyenhoangan1235@gmail.com>")
 
 (authors "Nguyen Hoang An")
@@ -22,6 +17,9 @@
 
 (package
  (name cptpp_calculator)
+ (synopsis "CPTPP rules of origin and tariffs calculator")
+ (description
+  "A compliance and regional value content rules engine for CPTPP tariffs evaluation.")
  (depends
   (ocaml
    (>= 5.0.0))
