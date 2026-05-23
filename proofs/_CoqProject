@@ -1,4 +1,0 @@
--R _build/default/proofs CptppSpec
--arg -w -arg -deprecated-hint-without-locality
-
-chapter_3_cptpp.v

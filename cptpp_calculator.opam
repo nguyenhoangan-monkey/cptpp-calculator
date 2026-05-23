@@ -10,11 +10,13 @@ homepage: "https://github.com/nguyenhoangan-monkey/cptpp-calculator"
 bug-reports:
   "https://github.com/nguyenhoangan-monkey/cptpp-calculator/issues"
 depends: [
-  "ocaml" {>= "5.0.0"}
-  "dune" {>= "3.11"}
+  "dune" {>= "3.23"}
+  "ocaml" {>= "5.4.0"}
   "csv"
   "zarith"
   "alcotest" {with-test}
+  "qcheck" {with-test}
+  "qcheck-alcotest" {with-test}
   "odoc" {with-doc}
 ]
 build: [
@@ -31,3 +33,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
+x-maintenance-intent: ["(latest)"]
