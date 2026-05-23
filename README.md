@@ -104,10 +104,11 @@ let make_figurine fob_str =
     Tech_tree.leaf "Cardboard Packaging Box" Material box;
   ]
 
-let spec_validation res =
-  match res with
-  | Ok product -> product
-  | Error err  -> failwith ("Vocaloid figurine specification failed: " ^ err)
+let spec_validation = function
+  | Ok tree -> Some tree
+  | Error err -> 
+      Printf.eprintf "[ERROR] Specification failed: %s\n" err;
+      None
 
 (** Generate products at different price points **)
 let budget_miku_tree   = "20.00"  |> make_figurine |> spec_validation
