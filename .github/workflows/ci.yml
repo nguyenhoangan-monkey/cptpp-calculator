@@ -28,7 +28,7 @@ jobs:
             default: git+https://github.com/ocaml/opam-repository.git
 
       - name: install dependencies
-        run: opam install . --deps-only --with-test --locked --yes
+        run: opam install . --deps-only --with-test --yes
 
       - name: install rocq and qcheck-alcotest
         run: opam install rocq-runtime qcheck-alcotest --yes

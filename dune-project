@@ -27,4 +27,11 @@
    (>= 5.4.0))
   csv
   zarith
-  (alcotest :with-test)))
+  rocq-runtime
+  (alcotest :with-test)
+  (qcheck-alcotest :with-test)))
+
+; This maps your (rocq.theory) definitions to your OPAM package
+
+(rocq.package
+ (name cptpp_calculator))
