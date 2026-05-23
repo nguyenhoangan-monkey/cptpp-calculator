@@ -1,4 +1,4 @@
-name: CPTPP CI suite
+name: CPTPP commit check suite
 
 on:
   push:
@@ -19,25 +19,16 @@ jobs:
         with:
           submodules: true
 
-      - name: setup ocaml, rocq, and caching
+      - name: setup ocaml and caching
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: "5.4.1"
-          opam-repositories: |
-            rocq-released: https://rocq-prover.org/opam/released
-            default: git+https://github.com/ocaml/opam-repository.git
 
       - name: install dependencies
-        run: |
-          opam install . --deps-only --with-test
-          opam install rocq-runtime qcheck-alcotest
+        run: opam install . --deps-only --with-test
 
       - name: build ocaml components
         run: opam exec -- dune build
 
       - name: run standard test suite (alcotest + qcheck)
         run: opam exec -- dune runtest
-
-      - name: verify CPTPP chapter 3 specifications (rocq)
-        run: opam exec -- dune build proofs
-

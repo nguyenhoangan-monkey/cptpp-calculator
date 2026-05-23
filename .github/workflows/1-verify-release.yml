@@ -1,0 +1,32 @@
+name: CPTPP release verification
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  verify_proofs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Setup ocaml, rocq, and caching
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: "5.4.1"
+          opam-repositories: |
+            rocq-released: https://rocq-prover.org/opam/released
+            default: git+https://github.com/ocaml/opam-repository.git
+
+      - name: Install dependencies
+        run: opam install . --deps-only --with-test
+
+      - name: Run standard test suite (alcotest + qcheck)
+        run: opam exec -- dune runtest
+
+      - name: Verify CPTPP chapter 3 specifications (rocq)
+        run: opam exec -- dune build proofs

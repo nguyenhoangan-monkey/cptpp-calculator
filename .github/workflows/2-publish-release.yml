@@ -1,4 +1,4 @@
-name: Release hook
+name: CPTPP release packaging
 
 on:
   push:
