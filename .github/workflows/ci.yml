@@ -30,9 +30,6 @@ jobs:
       - name: install dependencies
         run: opam install . --deps-only --with-test --yes
 
-      - name: install rocq and qcheck-alcotest
-        run: opam install rocq-runtime qcheck-alcotest --yes
-
       - name: build ocaml components
         run: opam exec -- dune build
 
