@@ -18,8 +18,8 @@ jobs:
 
       - name: Create fat tarball
         run: |
-          TAR_NAME="cptpp_calculator-${{ github.ref_name }}.tar.gz"
-          tar --exclude='.git' --exclude="$TAR_NAME" -czf "$TAR_NAME" .
+          tar --exclude='.git' -czf "/tmp/cptpp_calculator-${{ github.ref_name }}.tar.gz" .
+          mv "/tmp/cptpp_calculator-${{ github.ref_name }}.tar.gz" .
 
       - name: Upload tarball to release
         uses: softprops/action-gh-release@v2
