@@ -31,8 +31,3 @@
   (alcotest :with-test)
   (qcheck :with-test)
   (qcheck-alcotest :with-test)))
-
-; This maps your (rocq.theory) definitions to your OPAM package
-
-(rocq.package
- (name cptpp_calculator))

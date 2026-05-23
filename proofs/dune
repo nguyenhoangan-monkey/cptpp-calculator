@@ -1,5 +1,6 @@
 (rocq.theory
  (name CptppSpec)
+ (package cptpp_calculator)
  (synopsis
   "Formal algebraic specification of CPTPP Chapter 3 Rules of Origin")
- (modules chapter_3_cptpp))
+ (modules chapter_3_cptpp hs_code))
