@@ -72,11 +72,27 @@ module Good = struct
 end
 
 module Tech_tree = struct
-  type t = {
-    hs_code : Hs_code.t;
-    free_on_board_value : Money.t;  (** free-on-board value, USD, non-negative *)
-    shipped_from : Country.t;
-    shipped_to : Country.t;
-    bill_of_materials : Material.t list;
-  }
+  (* input is the union of Material and Good *)
+  type input = Material of Material.t | Good of Good.t
+
+  (* metadata is ID and natural language descriptions *)
+  type metadata = { id : string; name : string }
+
+  (* tech_spec is the full description of a product 
+     that is placed in the accumulation hierarchy *)
+  type tech_spec = { metadata : metadata; input : input }
+  type t = Leaf of tech_spec | Node of tech_spec * t list Lazy.t
+
+  (* operations to use the tree *)
+  let leaf spec = Leaf spec
+  let node spec children = Node (spec, Lazy.from_val children)
+  let tech_spec tree = match tree with Leaf spec -> spec | Node (spec, _) -> spec
+  let metadata t = (tech_spec t).metadata
+  let input t = (tech_spec t).input
+
+  (* add element, it is implicit that tech_spec is the type *)
+  let add_child parent child =
+    match parent with
+    | Leaf spec -> Node (spec, Lazy.from_val [ child ])
+    | Node (spec, (lazy existing_children)) -> Node (spec, Lazy.from_val (child :: existing_children))
 end

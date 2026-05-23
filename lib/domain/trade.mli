@@ -38,9 +38,18 @@ end
 module Tech_tree : sig
   (** Represent an accumulation chain or, as a single node, additional metadata. It should be expected that these nodes
       and leafs can be both goods and materials, and the value can be expanded as metadata. **)
+  type input = Material of Material.t | Good of Good.t
 
-  type 'a t
+  type metadata = { id : string; name : string }
+  type tech_spec = { metadata : metadata; input : input }
 
-  val leaf : 'a -> 'a t
-  val node : 'a -> 'a t list -> 'a t
+  (* abstract data type *)
+  type t
+
+  val leaf : tech_spec -> t
+  val node : tech_spec -> t list -> t
+  val tech_spec : t -> tech_spec
+  val metadata : t -> metadata
+  val input : t -> input
+  val add_child : t -> t -> t
 end
