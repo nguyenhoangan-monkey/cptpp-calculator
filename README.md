@@ -10,6 +10,8 @@ CPTPP rules of origin and tariffs calculator.
 
 **This calculator is for intuition/informational/education purposes, not for actual legal work. Please read the BSD 3-Clause License before usage because it contains important legal information.**
 
+The calculator uses the [official CPTPP text](https://www.mfat.govt.nz/en/trade/free-trade-agreements/free-trade-agreements-in-force/cptpp/comprehensive-and-progressive-agreement-for-trans-pacific-partnership-text-and-resources), specifically Chapter 3, as part of the proof engine.
+
 ## Installation
 Download the zip, cd to the folder then:
 
