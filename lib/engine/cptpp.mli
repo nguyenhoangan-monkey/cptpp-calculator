@@ -50,26 +50,18 @@ module Z :
   val mul : z -> z -> z
  end
 
-type q = { qnum : z; qden : positive }
+val qmult : Q.t -> Q.t -> Q.t
 
-val qplus : q -> q -> q
+val qminus : Q.t -> Q.t -> Q.t
 
-val qmult : q -> q -> q
+val qdiv : Q.t -> Q.t -> Q.t
 
-val qopp : q -> q
+val hundred : Q.t
 
-val qminus : q -> q -> q
+val rvc_focused_value : Q.t -> Q.t -> Q.t
 
-val qinv : q -> q
+val rvc_build_down : Q.t -> Q.t -> Q.t
 
-val qdiv : q -> q -> q
+val rvc_build_up : Q.t -> Q.t -> Q.t
 
-val hundred : q
-
-val rvc_focused_value : q -> q -> q
-
-val rvc_build_down : q -> q -> q
-
-val rvc_build_up : q -> q -> q
-
-val rvc_net_cost : q -> q -> q
+val rvc_net_cost : Q.t -> Q.t -> Q.t
