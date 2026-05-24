@@ -1,9 +1,7 @@
 (rule
  (target hs_world_2022.csv)
  (action
-  (copy
-   %{workspace_root}/data/parsed/harmonized_system/hs_world_2022.csv
-   %{target})))
+  (copy %{workspace_root}/data/harmonized_system/hs_world_2022.csv %{target})))
 
 (rule
  (target csv_data.ml)
