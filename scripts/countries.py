@@ -118,9 +118,25 @@ def generate_ocaml_variants(output_path: str):
         
         f.write("\n\n")
 
-        f.write("let of_string = function\n")
+        # --- to_iso_string ---
+        f.write("let to_iso_string = function\n")
+        for variant, iso3 in sorted(to_iso_matches.items()):
+            f.write(f'  | {variant} -> "{iso3}"\n')
+            
+        f.write("\n\n")
+
+        # --- to_string ---
+        f.write("let to_string = function\n")
+        for variant, english_name in sorted(to_name_matches.items()):
+            # Escape double quotes just in case the name contains them
+            escaped_name = english_name.replace('"', '\\"')
+            f.write(f'  | {variant} -> "{escaped_name}"\n')
+
+        f.write("\n\n")
+
+        # --- of_string_base, unexposed ---
+        f.write("let of_string_base = function\n")
         for variant, aliases in sorted(country_strings.items()):
-            # Only write a match arm if the country still has aliases left
             if aliases:
                 collapsed_aliases = " | ".join(sorted(aliases))
                 f.write(f"  | {collapsed_aliases} -> Some {variant}\n")
@@ -128,7 +144,8 @@ def generate_ocaml_variants(output_path: str):
         
         f.write("\n\n")
 
-        f.write("let of_iso_string str =\n")
+        # --- of_iso_string_base, unexposed ---
+        f.write("let of_iso_string_base str =\n")
         f.write("  match String.uppercase_ascii str with\n")
         for im in sorted(iso_matches):
             f.write(f"{im}\n")
@@ -136,33 +153,36 @@ def generate_ocaml_variants(output_path: str):
         
         f.write("\n\n")
 
-        # --- NEW CODE: Generate to_iso_string ---
-        f.write("let to_iso_string = function\n")
-        for variant, iso3 in sorted(to_iso_matches.items()):
-            f.write(f'  | {variant} -> "{iso3}"\n')
-            
-        f.write("\n\n")
-
-        # --- NEW CODE: Generate to_string ---
-        f.write("let to_string = function\n")
-        for variant, english_name in sorted(to_name_matches.items()):
-            # Escape double quotes just in case the name contains them
-            escaped_name = english_name.replace('"', '\\"')
-            f.write(f'  | {variant} -> "{escaped_name}"\n')
-        
+        # --- of_string_exn, unsafe ---
+        # --- of_iso_string_exn, unsafe ---
+        # --- of_string, monadic ---
+        # --- of_iso_string, monadic ---
         f.write(f"""
-
 let of_string_exn s =
-  match of_string s with
-  | Some v -> v
-  | None -> invalid_arg "Country.of_string_exn: invalid string format"
+  match of_string_base s with
+  | Some country -> country
+  | None -> invalid_arg (Printf.sprintf "Country.of_string_exn: invalid string format '%s'" s)
 
 
 let of_iso_string_exn s =
-  match of_iso_string s with
-  | Some v -> v
-  | None -> invalid_arg "Country.of_iso_string_exn: invalid ISO string format"
-""")
+  match of_iso_string_base s with
+  | Some country -> country
+  | None -> invalid_arg (Printf.sprintf "Country.of_iso_string_exn: invalid ISO string format '%s'" s)
+
+
+let of_string s =
+  match of_string_base s with
+  | Some country -> Ok country
+  | None -> Error (Printf.sprintf "Invalid country string: '%s'" s)
+
+
+let of_iso_string s =
+  match of_iso_string_base s with
+  | Some country -> Ok country
+  | None -> Error (Printf.sprintf "Invalid ISO country string: '%s'" s)
+
+
+""")        
         
     print("Country generation complete.")
 
