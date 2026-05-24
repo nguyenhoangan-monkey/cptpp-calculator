@@ -1,4 +1,4 @@
-(test
- (name prop_runner)
+(tests
+ (names prop_domain prop_engine prop_parser)
  (libraries domain engine qcheck alcotest qcheck-alcotest) ; qcheck-alcotest, not alcotest-qcheck
- (modules prop_runner prop_regional_value))
+ )
