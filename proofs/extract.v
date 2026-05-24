@@ -32,7 +32,7 @@ From Stdlib Require ExtrOcamlZInt.
 (* Z *)
 (* Use a standard library, disable type-violating functions *)
 (* Also I explicitly write some functions here to ensure type consistency. *)
-Extract Inductive Z => "Z.t" [ "Z.zero" "Z.succ" "Z.pred" ].
+Extract Inductive Z => "Z.t" [ "Z.zero" "Z.succ" "Z.pred" ]. (* Idk how to subsitute type directly *)
 Extract Constant Z.add => "Z.add".
 Extract Constant Z.opp => "Z.neg".
 Extract Constant Z.mul => "Z.mul".
@@ -62,8 +62,7 @@ Proof.
   (* Because the denominator is 0, Coq decides the answer is 0. *)
   reflexivity.
 Qed. *)
-
-Extract Inductive Q => "Q.t" [ "Q.make" ].
+Extract Inductive Q => "Q.t" [ "Q.make" ]. (* Idk how to subsitute type directly *)
 Extract Constant Qplus  => "Q.add".
 Extract Constant Qmult  => "Q.mul".
 Extract Constant Qminus => "Q.sub".
