@@ -6,7 +6,16 @@ type t = {
 }
 
 (* unsafe creation *)
-let of_strings_exn hs_code_str fob_str shipped_from shipped_to =
+let of_strings_exn hs_code_str fob_str shipped_from_str shipped_to_str =
+  (* Get country string *)
+  let shipped_from =
+    try Country.of_iso_string_exn shipped_from_str with Invalid_argument _ -> Country.of_string_exn shipped_from_str
+  in
+
+  let shipped_to =
+    try Country.of_iso_string_exn shipped_to_str with Invalid_argument _ -> Country.of_string_exn shipped_to_str
+  in
+
   {
     hs_code = Hs_code.of_string_exn hs_code_str;
     free_on_board_value = Money.of_string_exn fob_str;

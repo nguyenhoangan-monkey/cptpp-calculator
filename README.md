@@ -41,13 +41,13 @@ There are two ways to create an object. The first way is the unsafe, explicit wa
 open Domain
 
 (* HS code -> free on board value USD -> departure country -> arrival country -> Good.t*)
-let hatsune_miku = Good.of_strings_exn "9503.00.00" "20.00" Country.Vietnam Country.Mexico
-let akita_neru = Good.of_strings_exn "9503.00.00" "30.00" Country.Vietnam Country.Japan
+let hatsune_miku = Good.of_strings_exn "9503.00.00" "20.00" "Vietnam" "México"
+let akita_neru = Good.of_strings_exn "9503.00.00" "30.00" "ベトナム" "日本"
 
 (* HS code -> Country -> material value USD -> Material.t*)
-let pvc_pellet = Material.of_strings_exn "3904.10" Country.China "5.00"
-let paint = Material.of_strings_exn "3208.20" Country.Japan "2.50"
-let box = Material.of_strings_exn "4819.10" Country.Vietnam "1.50"
+let pvc_pellet = Material.of_strings_exn "3904.10" "China" "5.00"
+let paint = Material.of_strings_exn "3208.20" "Japan" "2.50"
+let box = Material.of_strings_exn "4819.10" "Vietnam" "1.50"
 
 (* creating an accumulation tech tree with custom descriptions *)
 (* notice, these descriptions must be of the same type *)
@@ -80,19 +80,23 @@ let make_figurine fob_str =
   and+ cost_pvc = Money.of_string "5.00"
   and+ cost_paint = Money.of_string "2.50"
   and+ cost_box = Money.of_string "1.50"
-  and+ export_val = Money.of_string fob_str in
+  and+ export_val = Money.of_string fob_str
+  and+ china = Country.of_string "China"
+  and+ japan = Country.of_string "Japan"
+  and+ mexico = Country.of_string "Mexico"
+  and+ vietnam = Country.of_string "Vietnam" in
 
   (* all unsafe variables are now validated *)
-  let pvc_pellet = Material.{ hs_code = hs_pvc; origin = Country.China; cost = cost_pvc } in
-  let paint = Material.{ hs_code = hs_paint; origin = Country.Japan; cost = cost_paint } in
-  let box = Material.{ hs_code = hs_box; origin = Country.Vietnam; cost = cost_box } in
+  let pvc_pellet = Material.{ hs_code = hs_pvc; origin = china; cost = cost_pvc } in
+  let paint = Material.{ hs_code = hs_paint; origin = japan; cost = cost_paint } in
+  let box = Material.{ hs_code = hs_box; origin = vietnam; cost = cost_box } in
   let hatsune_miku =
     Good.
       {
         hs_code = hs_figurine;
         free_on_board_value = export_val; (* export value is here *)
-        shipped_from = Country.Vietnam;
-        shipped_to = Country.Mexico;
+        shipped_from = vietnam;
+        shipped_to = mexico;
       }
   in
 
@@ -115,7 +119,7 @@ let budget_miku_tree   = "20.00"  |> make_figurine |> spec_validation
 let standard_miku_tree = "30.00"  |> make_figurine |> spec_validation
 let giant_miku_tree    = "100.00" |> make_figurine |> spec_validation
 
-(** And since the metadata are of the same type... **)
+(** May have None if it broke! **)
 let miku_tree_list = [budget_miku_tree; standard_miku_tree; giant_miku_tree;]
 ```
 

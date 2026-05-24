@@ -1,10 +1,10 @@
 open Domain
 
 (* Unsafe definition *)
-let pvc_pellet = Material.of_strings_exn "3904.10" Country.China "5.00"
-let paint = Material.of_strings_exn "3208.20" Country.Japan "2.50"
-let box = Material.of_strings_exn "4819.10" Country.Vietnam "1.50"
-let hatsune_miku = Good.of_strings_exn "9503.00.00" "20.00" Country.Vietnam Country.Mexico
+let pvc_pellet = Material.of_strings_exn "3904.10" "China" "5.00"
+let paint = Material.of_strings_exn "3208.20" "Japan" "2.50"
+let box = Material.of_strings_exn "4819.10" "Vietnam" "1.50"
+let hatsune_miku = Good.of_strings_exn "9503.00.00" "20.00" "Vietnam" "Mexico"
 
 let unsafe_miku_tree =
   Tech_tree.good "Hatsune Miku Figurine (Final Good)" hatsune_miku
@@ -24,19 +24,17 @@ let make_miku () =
   and+ cost_pvc = Money.of_string "5.00"
   and+ cost_paint = Money.of_string "2.50"
   and+ cost_box = Money.of_string "1.50"
-  and+ export_val = Money.of_string "20.00" in
+  and+ export_val = Money.of_string "20.00"
+  and+ china = Country.of_string "China"
+  and+ japan = Country.of_string "Japan"
+  and+ mexico = Country.of_string "Mexico"
+  and+ vietnam = Country.of_string "Vietnam" in
 
-  let pvc_pellet = Material.{ hs_code = hs_pvc; origin = Country.China; cost = cost_pvc } in
-  let paint = Material.{ hs_code = hs_paint; origin = Country.Japan; cost = cost_paint } in
-  let box = Material.{ hs_code = hs_box; origin = Country.Vietnam; cost = cost_box } in
+  let pvc_pellet = Material.{ hs_code = hs_pvc; origin = china; cost = cost_pvc } in
+  let paint = Material.{ hs_code = hs_paint; origin = japan; cost = cost_paint } in
+  let box = Material.{ hs_code = hs_box; origin = vietnam; cost = cost_box } in
   let hatsune_miku =
-    Good.
-      {
-        hs_code = hs_figurine;
-        free_on_board_value = export_val;
-        shipped_from = Country.Vietnam;
-        shipped_to = Country.Mexico;
-      }
+    Good.{ hs_code = hs_figurine; free_on_board_value = export_val; shipped_from = vietnam; shipped_to = mexico }
   in
 
   Tech_tree.good "Hatsune Miku Figurine (Final Good)" hatsune_miku
