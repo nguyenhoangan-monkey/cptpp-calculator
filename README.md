@@ -7,6 +7,9 @@ Photo by author. Hatsune Miku © Crypton Future Media, Inc. 2007 (CC BY-NC)
 -----
 This directory holds the scripts used to clean data and JSON data files for the [cptpp-calculator](https://github.com/nguyenhoangan-monkey/cptpp-calculator). The /data folder is copied to the cptpp-calculator when doing recursive checkout or when the software is released.
 
+## How to run
+Run the Makefile by `make`. DO NOT ATTEMPT TO RUN `scripts/parse.py`, IT WON'T WORK due to missing permissions.
+
 ## Parsing logic
 progress
 
