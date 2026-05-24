@@ -1,21 +1,30 @@
 (** Master Extraction File *)
 
-(* 1. Import all your verified modules *)
-Require Import cptpp.chapter3.article5.
+(* Import all modules *)
+(** Master Extraction File *)
+
+(* Import all modules *)
+From Stdlib Require Import QArith.
+From cptpp.chapter3 Require Import article5.
 
 Require Import Extraction.
+
 Extraction Language OCaml.
 
-(* 2. Set up your OCaml environment mappings *)
-Require Import ExtrOcamlZBigInt.
-Extract Constant Q => "Q.t".
-Extract Constant Qmake => "Q.make".
-Extract Constant Qminus => "Q.sub".
-Extract Constant Qmult => "Q.mul".
-Extract Constant Qdiv => "Q.div".
+(* Q *)
+(* Extract Inductive Q => "Q.t" [ "Q.make" ]. 
 
-(* 3. Extract EVERYTHING into a single file *)
-Extraction "lib/engine/cptpp.ml"
+Extract Constant Qplus  => "Q.add".
+Extract Constant Qminus => "Q.sub".
+Extract Constant Qmult  => "Q.mul".
+Extract Constant Qdiv   => "Q.div".
+Extract Constant Qinv   => "Q.inv".
+Extract Constant Qeq    => "Q.equal". *)
+
+(* Extract *)
+Set Extraction Output Directory "../lib/engine".
+
+Extraction "cptpp.ml"
   rvc_focused_value
   rvc_build_down
   rvc_build_up

@@ -1,8 +1,8 @@
 (** * Chapter 3: Rules of Origin and Origin Procedures
     * Article 3.5: Regional Value Content (RVC) *)
 
-Require Import QArith.
-Require Import List.
+From Stdlib Require Import QArith.
+From Stdlib Require Import List.
 
 Open Scope Q_scope.
 
