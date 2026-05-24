@@ -21,25 +21,27 @@ Extraction Language OCaml.
 (* If the numbers are wrong, well... might as well start using SAP GTS. *)
 
 (* Libraries *)
-From Stdlib Require Import ZArith.
+From Stdlib Require Import Qcanon.
 From Stdlib Require Import QArith.
+From Stdlib Require Import ZArith.
 
 
 (* Successor functions *)
-From Stdlib Require ExtrOcamlZInt.
-
+(* Avoid polluting, don't use: From Stdlib Require ExtrOcamlZInt. *)
+(*  ExtrOcamlZInt has a disclaimer: *)
+(** Disclaimer: trying to obtain efficient certified programs
+    by extracting [Z] into [int] is definitively *not* a good idea.
+    See the Disclaimer in [ExtrOcamlNatInt]. *)
 
 (* Z *)
-(* Use a standard library, disable type-violating functions *)
-(* Also I explicitly write some functions here to ensure type consistency. *)
-Extract Inductive Z => "Z.t" [ "" "" "" ] "(fun _ _ _ -> failwith 'Forbidden Z destructuring!')".
+(* Use a standard library, disable deconstruction *)
+Extract Inductive Z => "Z.t" 
+  [ "Z.zero" "failwith ""Forbidden Zpos constructor!""" "failwith ""Forbidden Zneg constructor!""" ] 
+  "(fun f_zero f_pos f_neg z -> failwith ""Forbidden Z destructuring!"")".
 Extract Constant Z.add => "Z.add".
 Extract Constant Z.opp => "Z.neg".
 Extract Constant Z.mul => "Z.mul".
-Extract Constant Z.pos_sub => "fun x y -> Z.sub (Z.of_int x) (Z.of_int y)".
-Extract Constant Z.double      => "fun x -> Z.(shift_left x 1)".
-Extract Constant Z.succ_double => "fun x -> Z.(add (shift_left x 1) one)".
-Extract Constant Z.pred_double => "fun x -> Z.(sub (shift_left x 1) one)".
+Extract Constant Z.abs => "Z.abs".
 
 
 (* Q *)
@@ -48,9 +50,16 @@ Extract Constant Z.pred_double => "fun x -> Z.(sub (shift_left x 1) one)".
 (* since we have Q.make to do automatic simplification. *)
 (* 1/2 != 2/4. however, 1/2 == 2/4 *)
 
+(* Thus we force it to keep its internal representation as Z.t/positive and... *)
+Extract Inductive Q => "{ qnum : Z.t; qden : int }" [ "" ].
+
+
+(* Qc *)
+(* Qc allow for reduced fractions so we can say 1/2 != 2/4. *)
+
 (* Another important notice is that there is no check for divide by zero. *)
 (* Therefore, all proofs with division need to make provision like: *)
-(* Definition safe_div (num den : Q) (not_zero : den <> 0) : Q := num / den. *)
+(* Definition safe_div (num den : Qc) (not_zero : den <> 0) : Qc := num / den. *)
 
 (* Else we will can prove that 1/0 = 0 and that is just wrong: *)
 (* Definition simplify_fraction (x : Q) : Q := x / x. *)
@@ -62,14 +71,16 @@ Proof.
   (* Because the denominator is 0, Coq decides the answer is 0. *)
   reflexivity.
 Qed. *)
-Extract Inductive Q => "Q.t" [ "" ] "(fun _ _ -> failwith 'Forbidden Q destructuring!')".
-Extract Constant Qplus  => "Q.add".
-Extract Constant Qmult  => "Q.mul".
-Extract Constant Qminus => "Q.sub".
-Extract Constant Qinv   => "Q.inv".
-Extract Constant Qdiv   => "Q.div".
 
-Extract Constant hundred => "Q.of_int 100".
+(* Use a standard library, disable deconstruction *)
+Extract Inductive Qc => "Q.t" 
+  [ "failwith ""Forbidden Qc constructor!""" ] 
+  "(fun f_match q -> failwith ""Forbidden Qc destructuring!"")".
+Extract Constant Qcplus  => "Q.add".
+Extract Constant Qcmult  => "Q.mul".
+Extract Constant Qcminus => "Q.sub".
+Extract Constant Qcinv   => "Q.inv".
+Extract Constant Qcdiv   => "Q.div".
 
 
 (* And... that's it. As long as rocq proof works, CPTPP rules work.*)
@@ -85,7 +96,6 @@ Extract Constant hundred => "Q.of_int 100".
 Set Extraction Output Directory "../lib/engine".
 
 Extraction "cptpp.ml"
-  rvc_focused_value
   rvc_build_down
   rvc_build_up
   rvc_net_cost.
