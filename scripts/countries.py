@@ -150,6 +150,20 @@ def generate_ocaml_variants(output_path: str):
             escaped_name = english_name.replace('"', '\\"')
             f.write(f'  | {variant} -> "{escaped_name}"\n')
         
+        f.write(f"""
+
+let of_string_exn s =
+  match of_string s with
+  | Some v -> v
+  | None -> invalid_arg "Country.of_string_exn: invalid string format"
+
+
+let of_iso_string_exn s =
+  match of_iso_string s with
+  | Some v -> v
+  | None -> invalid_arg "Country.of_iso_string_exn: invalid ISO string format"
+""")
+        
     print("Country generation complete.")
 
 if __name__ == "__main__":

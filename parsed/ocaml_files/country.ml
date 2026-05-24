@@ -1269,3 +1269,15 @@ let to_string = function
   | Yemen -> "Yemen"
   | Zambia -> "Zambia"
   | Zimbabwe -> "Zimbabwe"
+
+
+let of_string_exn s =
+  match of_string s with
+  | Some v -> v
+  | None -> invalid_arg "Country.of_string_exn: invalid string format"
+
+
+let of_iso_string_exn s =
+  match of_iso_string s with
+  | Some v -> v
+  | None -> invalid_arg "Country.of_iso_string_exn: invalid ISO string format"
