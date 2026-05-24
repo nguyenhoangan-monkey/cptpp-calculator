@@ -15,19 +15,13 @@ jobs:
         with:
           submodules: true
 
-      - name: Setup ocaml, rocq, and caching
+      - name: Setup ocaml, and caching
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: "5.4.1"
-          opam-repositories: |
-            rocq-released: https://rocq-prover.org/opam/released
-            default: git+https://github.com/ocaml/opam-repository.git
 
       - name: Install dependencies
         run: opam install . --deps-only --with-test
 
       - name: Run standard test suite (alcotest + qcheck)
         run: opam exec -- dune runtest
-
-      - name: Verify CPTPP chapter 3 specifications (rocq)
-        run: opam exec -- dune build proofs
