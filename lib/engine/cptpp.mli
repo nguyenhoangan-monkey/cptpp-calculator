@@ -1,53 +1,43 @@
 
-type positive =
-| XI of positive
-| XO of positive
-| XH
-
-type z =
-| Z0
-| Zpos of positive
-| Zneg of positive
-
 module Pos :
  sig
-  val succ : positive -> positive
+  val succ : int -> int
 
-  val add : positive -> positive -> positive
+  val add : int -> int -> int
 
-  val add_carry : positive -> positive -> positive
+  val add_carry : int -> int -> int
 
-  val pred_double : positive -> positive
+  val pred_double : int -> int
 
-  val mul : positive -> positive -> positive
+  val mul : int -> int -> int
  end
 
 module Coq_Pos :
  sig
-  val succ : positive -> positive
+  val succ : int -> int
 
-  val add : positive -> positive -> positive
+  val add : int -> int -> int
 
-  val add_carry : positive -> positive -> positive
+  val add_carry : int -> int -> int
 
-  val mul : positive -> positive -> positive
+  val mul : int -> int -> int
  end
 
 module Z :
  sig
-  val double : z -> z
+  val double : Z.t -> Z.t
 
-  val succ_double : z -> z
+  val succ_double : Z.t -> Z.t
 
-  val pred_double : z -> z
+  val pred_double : Z.t -> Z.t
 
-  val pos_sub : positive -> positive -> z
+  val pos_sub : int -> int -> Z.t
 
-  val add : z -> z -> z
+  val add : Z.t -> Z.t -> Z.t
 
-  val opp : z -> z
+  val opp : Z.t -> Z.t
 
-  val mul : z -> z -> z
+  val mul : Z.t -> Z.t -> Z.t
  end
 
 val qmult : Q.t -> Q.t -> Q.t
