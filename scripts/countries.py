@@ -30,8 +30,11 @@ def generate_ocaml_variants(output_path: str):
     data = json.loads(response.read().decode())
 
     variants = set()
-    country_strings = {}  # Map variant -> set of match strings
     iso_matches = []
+    
+    # New dictionaries to track mapping for the serializers
+    to_iso_matches = {}  # Map variant -> ISO3 string
+    to_name_matches = {} # Map variant -> English Name string
 
     global_string_registry = {}
     country_strings = {}
@@ -43,10 +46,15 @@ def generate_ocaml_variants(output_path: str):
         variant = clean_variant_name(english_name)
         variants.add(variant)
         
+        # Track serialization data
+        iso3 = country.get("cca3", "")
+        to_iso_matches[variant] = iso3
+        to_name_matches[variant] = english_name
+        
         if variant not in country_strings:
             country_strings[variant] = set()
             
-    # Pass 1: Gather all aliases per country and track global usage
+        # Pass 1: Gather all aliases per country and track global usage
         aliases = {english_name}
 
         for native in country.get("name", {}).get("native", {}).values():
@@ -78,8 +86,6 @@ def generate_ocaml_variants(output_path: str):
                 # Add to local country map
                 country_strings[variant].add(quoted_alias)
                 
-        # (Keep your iso_matches logic here as it was)
-        iso3 = country.get("cca3")
         iso_matches.append(f'  | "{iso3}" -> Some {variant}')
 
     # Pass 2: Purge any alias that belongs to MORE THAN ONE country
@@ -113,7 +119,7 @@ def generate_ocaml_variants(output_path: str):
         f.write("\n\n")
 
         f.write("let of_string = function\n")
-        for variant, aliases in country_strings.items():
+        for variant, aliases in sorted(country_strings.items()):
             # Only write a match arm if the country still has aliases left
             if aliases:
                 collapsed_aliases = " | ".join(sorted(aliases))
@@ -124,12 +130,27 @@ def generate_ocaml_variants(output_path: str):
 
         f.write("let of_iso_string str =\n")
         f.write("  match String.uppercase_ascii str with\n")
-        for im in iso_matches:
+        for im in sorted(iso_matches):
             f.write(f"{im}\n")
         f.write("  | _ -> None\n")
+        
+        f.write("\n\n")
+
+        # --- NEW CODE: Generate to_iso_string ---
+        f.write("let to_iso_string = function\n")
+        for variant, iso3 in sorted(to_iso_matches.items()):
+            f.write(f'  | {variant} -> "{iso3}"\n')
+            
+        f.write("\n\n")
+
+        # --- NEW CODE: Generate to_string ---
+        f.write("let to_string = function\n")
+        for variant, english_name in sorted(to_name_matches.items()):
+            # Escape double quotes just in case the name contains them
+            escaped_name = english_name.replace('"', '\\"')
+            f.write(f'  | {variant} -> "{escaped_name}"\n')
         
     print("Country generation complete.")
 
 if __name__ == "__main__":
-    # Fallback for testing the script locally by itself
     generate_ocaml_variants("country.ml")
