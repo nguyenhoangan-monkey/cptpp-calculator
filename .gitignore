@@ -58,3 +58,6 @@ proofs/**/.*.aux
 # CoqIDE and Proof General session/cache files
 proofs/**/.*.cache
 proofs/**/.coqide.keys.xml
+.lia.cache
+.gitignore
+.nra.cache

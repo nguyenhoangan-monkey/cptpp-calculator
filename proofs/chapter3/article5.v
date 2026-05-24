@@ -10,16 +10,30 @@ Section RegionalValueContent.
 
   Definition hundred : Q := 100 # 1.
 
-  Definition rvc_focused_value (value_of_good fvnm : Q) : Q :=
-    ((value_of_good - fvnm) / value_of_good) * hundred.
+  Definition safe_div (num den : Q) (not_zero : den <> 0) : Q :=
+    num / den.
 
-  Definition rvc_build_down (value_of_good vnm : Q) : Q :=
-    ((value_of_good - vnm) / value_of_good) * hundred.
+  (* Assumptions *)
+  Context (value_of_good nc vnm vom : Q).
+  Hypothesis (vg_not_zero : value_of_good <> 0).
+  Hypothesis (nc_not_zero : nc <> 0).
 
-  Definition rvc_build_up (value_of_good vom : Q) : Q :=
-    (vom / value_of_good) * hundred.
+  (* Definitions *)
+  Definition rvc_build_down : Q :=
+    (safe_div (value_of_good - vnm) value_of_good vg_not_zero) * hundred.
 
-  Definition rvc_net_cost (nc vnm : Q) : Q :=
-    ((nc - vnm) / nc) * hundred.
+  Definition rvc_build_up : Q :=
+    (safe_div vom value_of_good vg_not_zero) * hundred.
+
+  Definition rvc_net_cost : Q :=
+    (safe_div (nc - vnm) nc nc_not_zero) * hundred.
+  
+
+  (* Theorems *)
+  Theorem rvc_methods_equivalent :
+    value_of_good = vnm + vom ->
+    rvc_build_down = rvc_build_up.
+  Proof.
+  Abort.
 
 End RegionalValueContent.
