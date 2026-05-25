@@ -1,21 +1,5 @@
-(rule
- (target hs_world_2022.csv)
- (action
-  (copy %{workspace_root}/data/harmonized_system/hs_world_2022.csv %{target})))
-
-(rule
- (target csv_data.ml)
- (deps hs_world_2022.csv)
- (action
-  (with-outputs-to
-   %{target}
-   (progn
-    (run echo "let data = {|")
-    (run cat hs_world_2022.csv)
-    (run echo "|}")))))
-
 (library
  (name parser)
  (public_name cptpp_calculator.parser)
  (modules :standard)
- (libraries csv zarith domain))
+ (libraries zarith domain))

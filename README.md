@@ -170,6 +170,8 @@ this is for trees: `tree -I "_build|_opam|*.install|dune.lock"`
 first I need to convert json of tariffs.
 
 before commit:
+* `opam switch create 5.4.1`
+* `opam install dune`
 * `dune build @install --auto-promote`
 * `opam install . --deps-only --with-test`
 * `dune build`
