@@ -3,11 +3,11 @@
 type t
 
 module Raw : sig
-  type ('a, 'e) maybe_raw = Raw of string | Ready of 'a | Maybe of ('a, 'e) result Lazy.t
+  type ('value, 'error) maybe_raw = Raw of string | Ready of 'value | Maybe of ('value, 'error) result Lazy.t
 
   type t = {
     hs_code : (Hs_code.t, string) maybe_raw;
-    origin : (Country.t, string) maybe_raw;
+    origin : (Country.t option, string) maybe_raw;
     cost : (Money.t, string) maybe_raw;
   }
 end

@@ -26,7 +26,7 @@ let make_miku () =
   let mock_hs_function () = Hs_code.of_string "4819.10" in
 
   let+ pvc_pellet = Material.make Material.{ hs_code = Raw "3904.10"; origin = Raw china; cost = Raw "5.00" }
-  and+ paint = Material.make Material.{ hs_code = Maybe (mock_hs_api ()); origin = Ready japan; cost = Raw "2.50" }
+  and+ paint = Material.make Material.{ hs_code = Maybe (mock_hs_api ()); origin = Ready (Some japan); cost = Raw "2.50" }
   and+ box =
     Material.make Material.{ hs_code = Maybe (lazy (mock_hs_function ())); origin = Raw "Việt Nam"; cost = Raw "1.50" }
   and+ hatsune_miku =

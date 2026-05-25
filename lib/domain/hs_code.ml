@@ -1,3 +1,5 @@
+(* HS codes are structured *)
+
 type t = { chapter : string; heading : string; subheading : string; extension : string }
 
 let of_string s =
