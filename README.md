@@ -112,7 +112,7 @@ let miku_tree_list =
   |> List.filter_map spec_validation
 ```
 
-Another example demostrating how data is processes, as `Raw` (raw user input), `Maybe` (a lazy stream, from an API or a generator) and `Ready` (evaluated proper types). It is worth to note that most software assumes that:
+Another example demonstrating how data is processed, as `Raw` (raw user input), `Maybe` (a lazy stream, from an API or a generator) and `Ready` (evaluated proper types). It is worth noting that most software assumes that:
 * goods can be made of materials since it is an assembly
 * goods can be made of other goods, since it is a higher order assembly
 
@@ -126,10 +126,11 @@ let generate_akita_neru_tree api_data_thunk underlying_miku_tree =
   let open Result.Syntax in
 
   (* 1. Material utilizing deferred API result states via lazy thunks *)
+  let api_data = api_data_thunk () in
   let* box_material = Material.make Material.{ 
-    hs_code = Maybe api_data_thunk.api_hs; 
-    origin  = Maybe api_data_thunk.api_country; 
-    cost    = Maybe api_data_thunk.api_price;
+    hs_code = Maybe api_data.api_hs; 
+    origin  = Maybe api_data.api_country; 
+    cost    = Maybe api_data.api_price;
   } in
 
   (* 2. Raw input fallback execution path *)
