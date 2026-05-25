@@ -1,47 +1,51 @@
 open Domain
 
 (* Unsafe definition *)
-let pvc_pellet = Material.of_strings_exn "3904.10" "China" "5.00"
-let paint = Material.of_strings_exn "3208.20" "Japan" "2.50"
-let box = Material.of_strings_exn "4819.10" "Vietnam" "1.50"
-let hatsune_miku = Good.of_strings_exn "9503.00.00" "20.00" "Vietnam" "Mexico"
+(* Country names are truly multilingual: China, Japan, Vietnam, Vietnam -> Mexico*)
+let pvc_pellet = Material.of_strings_exn "3904.10" "中国" "5.00"
+let paint = Material.of_strings_exn "3208.20" "日本" "2.50"
+let box = Material.of_strings_exn "4819.10" "Việt Nam" "1.50"
+let hatsune_miku = Good.of_strings_exn "9503.00.00" "20.00" "Vietnam" "México"
 
 let unsafe_miku_tree =
-  Tech_tree.good "Hatsune Miku Figurine (Final Good)" hatsune_miku
+  Tech_tree.good "Hatsune Miku Figurine (初音ミク) - Juguete de plástico 🇯🇵" hatsune_miku
     [
-      Tech_tree.material "PVC Plastic Pellets" pvc_pellet [];
-      Tech_tree.material "Acrylic Paint Sub-component" paint [];
-      Tech_tree.material "Cardboard Packaging Box" box [];
+      Tech_tree.material "PVC Plastic Pellets / 聚氯乙烯树脂颗粒" pvc_pellet [];
+      Tech_tree.material "Acrylic Paint Sub-component / アクリル塗料" paint [];
+      Tech_tree.material "Cardboard Packaging Box / Thùng carton đóng gói" box [];
     ]
 
 (** Safe definition **)
 let make_miku () =
   let open Result.Syntax in
-  let+ hs_figurine = Hs_code.of_string "9503.00.00"
-  and+ hs_pvc = Hs_code.of_string "3904.10"
-  and+ hs_paint = Hs_code.of_string "3208.20"
-  and+ hs_box = Hs_code.of_string "4819.10"
-  and+ cost_pvc = Money.of_string "5.00"
-  and+ cost_paint = Money.of_string "2.50"
-  and+ cost_box = Money.of_string "1.50"
-  and+ export_val = Money.of_string "20.00"
-  and+ china = Country.of_string "China"
-  and+ japan = Country.of_string "Japan"
-  and+ mexico = Country.of_string "Mexico"
-  and+ vietnam = Country.of_string "Vietnam" in
+  (* make some loading, ask well as shuffle the names a bit *)
+  let china = "中国" in
+  let japan = Country.of_string_exn "日本" in
+  let mock_cost_api () = lazy (Money.of_string "20.00") in
+  let mock_hs_api () = lazy (Hs_code.of_string "3208.20") in
+  let mock_hs_function () = Hs_code.of_string "4819.10" in
 
-  let pvc_pellet = Material.{ hs_code = hs_pvc; origin = china; cost = cost_pvc } in
-  let paint = Material.{ hs_code = hs_paint; origin = japan; cost = cost_paint } in
-  let box = Material.{ hs_code = hs_box; origin = vietnam; cost = cost_box } in
-  let hatsune_miku =
-    Good.{ hs_code = hs_figurine; free_on_board_value = export_val; shipped_from = vietnam; shipped_to = mexico }
+  let+ pvc_pellet = Material.make Material.{ hs_code = Raw "3904.10"; origin = Raw china; cost = Raw "5.00" }
+  and+ paint = Material.make Material.{ hs_code = Maybe (mock_hs_api ()); origin = Ready japan; cost = Raw "2.50" }
+  and+ box =
+    Material.make Material.{ hs_code = Maybe (lazy (mock_hs_function ())); origin = Raw "Việt Nam"; cost = Raw "1.50" }
+  and+ hatsune_miku =
+    Good.make
+      Good.
+        {
+          hs_code = Raw "9503.00.00";
+          free_on_board_value = Maybe (mock_cost_api ());
+          shipped_from = Raw "VNM";
+          shipped_to = Raw "MEX";
+        }
   in
 
-  Tech_tree.good "Hatsune Miku Figurine (Final Good)" hatsune_miku
+  (* but from this point on everything is identical *)
+  Tech_tree.good "Hatsune Miku Figurine (初音ミク) - Juguete de plástico 🇯🇵" hatsune_miku
     [
-      Tech_tree.material "PVC Plastic Pellets" pvc_pellet [];
-      Tech_tree.material "Acrylic Paint Sub-component" paint [];
-      Tech_tree.material "Cardboard Packaging Box" box [];
+      Tech_tree.material "PVC Plastic Pellets / 聚氯乙烯树脂颗粒" pvc_pellet [];
+      Tech_tree.material "Acrylic Paint Sub-component / アクリル塗料" paint [];
+      Tech_tree.material "Cardboard Packaging Box / Thùng carton đóng gói" box [];
     ]
 
 let safe_miku_tree =
