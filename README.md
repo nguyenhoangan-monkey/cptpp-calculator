@@ -123,7 +123,9 @@ However, in this engine:
 ```ocaml
 (* Note: Akita Neru is a derivative from Hatsune Miku *)
 (* We take Hatsune Miku box, put it to another box with Akita Neru graphics *)
-(* This is obviously a non-compliant CPTPP product *)
+
+(* Under non-qualifying operations, this is obviously a non-compliant CPTPP product *)
+(* Aka we are committing origin fraud *)
 let generate_akita_neru_tree api_data_thunk underlying_miku_tree =
   let open Result.Syntax in
 
