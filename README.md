@@ -121,11 +121,13 @@ However, in this engine:
 * material can be made of other materials (same origin or unknown origin raw material)
 
 ```ocaml
-(* Testing self-certification for complex derivative products with IP *)
+(* Note: Akita Neru is a derivative from Hatsune Miku *)
+(* We take Hatsune Miku box, put it to another box with Akita Neru graphics *)
+(* This is obviously a non-compliant CPTPP product *)
 let generate_akita_neru_tree api_data_thunk underlying_miku_tree =
   let open Result.Syntax in
 
-  (* 1. Material utilizing deferred API result states via lazy thunks *)
+  (* 1. Material got from MercadoLibre, got from Developer API via lazy thunks *)
   let api_data = api_data_thunk () in
   let* box_material = Material.make Material.{ 
     hs_code = Maybe api_data.api_hs; 
@@ -133,14 +135,14 @@ let generate_akita_neru_tree api_data_thunk underlying_miku_tree =
     cost    = Maybe api_data.api_price;
   } in
 
-  (* 2. Raw input fallback execution path *)
+  (* 2. Material added by user, user don't know exactly the source *)
   let* paper_material = Material.make Material.{ 
     hs_code = Raw "48";
     origin  = Raw "Guatemala"; 
     cost    = Raw "0.10" 
   } in
 
-  (* 3. Injected pre-validated country objects *)
+  (* 3. Test multilingual processing and Ready type *)
   let japan = Country.of_string_exn "日本" in
   let mexico = Country.of_string_exn "メキシコ" in
   
