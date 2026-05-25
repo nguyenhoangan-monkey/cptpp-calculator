@@ -1,4 +1,0 @@
-(executable
- (name main)
- (public_name cptpp-calculator)
- (libraries cptpp_calculator layoutz))

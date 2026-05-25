@@ -1,8 +1,10 @@
-(lang dune 3.19)
+(lang dune 3.23)
 
 (name cptpp_calculator)
 
 (generate_opam_files true)
+
+(using rocq 0.11)
 
 (maintainers "Nguyen Hoang An <nguyenhoangan1235@gmail.com>")
 
@@ -23,8 +25,8 @@
  (depends
   (ocaml
    (>= 5.4.0))
+  csv
   zarith
-  layoutz
   (alcotest :with-test)
   (qcheck :with-test)
   (qcheck-alcotest :with-test)))

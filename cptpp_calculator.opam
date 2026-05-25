@@ -10,10 +10,10 @@ homepage: "https://github.com/nguyenhoangan-monkey/cptpp-calculator"
 bug-reports:
   "https://github.com/nguyenhoangan-monkey/cptpp-calculator/issues"
 depends: [
-  "dune" {>= "3.19"}
+  "dune" {>= "3.23"}
   "ocaml" {>= "5.4.0"}
+  "csv"
   "zarith"
-  "layoutz"
   "alcotest" {with-test}
   "qcheck" {with-test}
   "qcheck-alcotest" {with-test}
