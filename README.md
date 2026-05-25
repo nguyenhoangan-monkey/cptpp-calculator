@@ -156,12 +156,12 @@ let generate_akita_neru_tree api_data_thunk underlying_miku_tree =
   } in
 
   (* Assemble the fully resolved structural tree matrix *)
-  Tech_tree.good "Akita Neru para Mercadolibre" akita_neru_good
+  Ok (Tech_tree.good "Akita Neru para Mercadolibre" akita_neru_good
     [
       underlying_miku_tree; (* Explicitly nested sub-assembly branch *)
       Tech_tree.material "Caja de Mercadolibre MX 🇲🇽/ Cardboard box" box_material
         [Tech_tree.material "Papel (paper)" paper_material []];
-    ]
+    ])
 ```
 
 ## Notes
