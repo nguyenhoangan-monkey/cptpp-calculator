@@ -47,7 +47,7 @@ type t = {
   extension : string option;
 }
 
-(* of_string makes an implicit assumption that the hs are structured as *)
+(* of_string make an implicit assumption that the hs are structured as *)
 (* XX.XX.XX or XX.XX.XX.<custom>. the caller should clean their own string. *)
 (* Note: single digit printed and string are explicitly disallowed in HS code *)
 let of_string s =
@@ -68,12 +68,13 @@ let of_string s =
         | parts -> Some (String.concat "." parts)
       in
 
-      (* Helper to ensure character is a digit '0'..'9' *)
       let is_digit c = '0' <= c && c <= '9' in
 
       let parse_component str err =
         if String.length str = 2 && is_digit str.[0] && is_digit str.[1] then
-          int_of_string_opt str |> Result.of_option ~error:err
+          match int_of_string_opt str with
+          | Some i -> Ok i
+          | None -> Error err
         else
           Error err
       in
@@ -83,7 +84,7 @@ let of_string s =
       let* s_raw = parse_component s_str "Invalid subheading" in
       
       let+ chapter    = Chapter.make c_raw
-      and+ heading   = Heading.make h_raw
+      and+ heading    = Heading.make h_raw
       and+ subheading = Subheading.make s_raw in
       { chapter; heading; subheading; extension = ext }
       
