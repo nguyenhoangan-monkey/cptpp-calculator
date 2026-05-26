@@ -170,6 +170,13 @@ this is for trees: `tree -I "_build|_opam|*.install|dune.lock"`
 first I need to convert json of tariffs.
 
 before commit:
-* `dune build @install --auto-promote`
-* `opam install . --deps-only --with-test`
-* `dune build`
+* `dune build @install --auto-promote` - for .opam to be happy
+* `opam install . --deps-only --with-test` - install everything
+* `dune build` - actually building
+
+
+also I need to split country.ml to country.ml (the interface, not heavy) and country_data.ml (has all of the crazy json-like pattern matching and names). preferably I can put country_Data in /data instead of /lib/domain
+
+write the harness so that when I fuzz, I can replace country_data.ml with country_data_light.ml that doesn't destroy the fuzzing capabilities. then I can make the fuzzer compilable here? idk
+
+write a script that copy from a folder in cptpp-parser to /data here

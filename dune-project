@@ -26,4 +26,6 @@
   zarith
   (alcotest :with-test)
   (qcheck :with-test)
-  (qcheck-alcotest :with-test)))
+  (qcheck-alcotest :with-test)
+  (crowbar :with-test)
+  (afl-persistent :with-test)))
