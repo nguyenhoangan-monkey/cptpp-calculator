@@ -1,10 +1,8 @@
 (lang dune 3.23)
 
-(name cptpp_calculator)
+(name cptpp-calculator)
 
 (generate_opam_files true)
-
-(using rocq 0.11)
 
 (maintainers "Nguyen Hoang An <nguyenhoangan1235@gmail.com>")
 
@@ -18,14 +16,13 @@
  "https://github.com/nguyenhoangan-monkey/cptpp-calculator/issues")
 
 (package
- (name cptpp_calculator)
+ (name cptpp-calculator)
  (synopsis "CPTPP rules of origin and tariffs calculator")
  (description
   "A compliance and regional value content rules engine for CPTPP tariffs evaluation.")
  (depends
   (ocaml
    (>= 5.4.0))
-  csv
   zarith
   (alcotest :with-test)
   (qcheck :with-test)

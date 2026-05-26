@@ -1,5 +1,5 @@
 (library
  (name parser)
- (public_name cptpp_calculator.parser)
+ (public_name cptpp-calculator.parser)
  (modules :standard)
  (libraries zarith domain))

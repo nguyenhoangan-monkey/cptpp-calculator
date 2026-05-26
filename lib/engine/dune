@@ -1,4 +1,4 @@
 (library
  (name engine)
- (public_name cptpp_calculator.engine)
+ (public_name cptpp-calculator.engine)
  (libraries domain zarith))
