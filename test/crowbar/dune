@@ -1,3 +1,3 @@
 (test
- (name test_compliance)
+ (name test_domain)
  (libraries domain engine alcotest))
