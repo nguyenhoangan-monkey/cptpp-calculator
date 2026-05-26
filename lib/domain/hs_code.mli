@@ -1,3 +1,5 @@
+(* HS codes are structured as an abstract type *)
+
 type t
 
 val of_string : string -> (t, string) result

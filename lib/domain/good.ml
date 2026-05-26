@@ -1,6 +1,3 @@
-(* Goods are anything that is meant to go to international trade *)
-(* It does not imply origin. It must have a value, arrival and departure location *)
-
 type t = {
   hs_code : Hs_code.t;
   free_on_board_value : Money.t;  (** free-on-board value, USD, non-negative *)
