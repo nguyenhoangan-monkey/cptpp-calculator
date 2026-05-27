@@ -1,43 +1,56 @@
 (* hs_code.ml *)
 
-(* For the first six digits, I want to make illegal states unrepresentable *)
+module type Bounded_int_config = sig
+  val min : int
+  val max : int
+  val name : string
+end
+
 (* Note: single digit printed and string are explicitly disallowed in HS code *)
 (* Note: HS code must be XX.XX.XX, any lower and is rejected *)
-module Chapter : sig
-  type t = private int
+module Make_bounded_int (Config : Bounded_int_config) : sig
+  type t
 
-  val make : int -> (t, string) result
+  val make : string -> (t, string) result
   val to_int : t -> int
 end = struct
   type t = int
 
-  let make n = if n >= 1 && n <= 99 then Ok n else Error "Chapter must be between 01 and 99"
+  let make s =
+    if String.length s <> 2 then
+      Error (Printf.sprintf "%s segment must be exactly 2 characters" Config.name)
+    else
+      match int_of_string_opt s with
+      | None -> 
+          Error (Printf.sprintf "%s segment must contain numeric digits only" Config.name)
+      | Some n ->
+          if n >= Config.min && n <= Config.max then 
+            Ok n
+          else
+            Error (Printf.sprintf "%s must be between %02d and %02d" Config.name Config.min Config.max)
+
   let to_int n = n
 end
 
-module Heading : sig
-  type t = private int
+(* calling the functor *)
+module Chapter = Make_bounded_int (struct
+  let min = 1
+  let max = 99
+  let name = "Chapter"
+end)
 
-  val make : int -> (t, string) result
-  val to_int : t -> int
-end = struct
-  type t = int
+module Heading = Make_bounded_int (struct
+  let min = 0
+  let max = 99
+  let name = "Heading"
+end)
 
-  let make n = if n >= 0 && n <= 99 then Ok n else Error "Heading must be between 00 and 99"
-  let to_int n = n
-end
+module Subheading = Make_bounded_int (struct
+  let min = 0
+  let max = 99
+  let name = "Subheading"
+end)
 
-module Subheading : sig
-  type t = private int
-
-  val make : int -> (t, string) result
-  val to_int : t -> int
-end = struct
-  type t = int
-
-  let make n = if n >= 0 && n <= 99 then Ok n else Error "Subheading must be between 00 and 99"
-  let to_int n = n
-end
 
 (* For the extensions, since the max length for any commodity number
   according to Data Element 7357 / TDED 7357 (WCO Data Model)
@@ -48,24 +61,20 @@ end
   brackets and delimiters. Thus this is how we store the extension internally.
 *)
 module Extension : sig
-  type t = private string
+  type t
 
   val make : string -> (t option, string) result
+  val to_string : t -> string
 end = struct
   type t = string
 
-  let is_valid_hs_ext_char = function
-    | '0' .. '9' | 'A' .. 'Z' | '[' | ']' | '(' | ')' | '*' | '.' | '-' | '/' | '_' | ':' | ' ' -> true
-    | _ -> false
-
   let make s =
-    (* one-liner to stop formatting error *)
-    let cleaned = String.to_seq s |> Seq.filter is_valid_hs_ext_char |> String.of_seq |> String.trim in
-
-    match String.length cleaned with
+    match String.length s with
     | 0 -> Ok None
     | len when len > 16 -> Error "Extension exceeded 16 valid characters"
-    | _ -> Ok (Some cleaned)
+    | _ -> Ok (Some s)
+
+  let to_string t = t
 end
 
 type t = { chapter : Chapter.t; heading : Heading.t; subheading : Subheading.t; extension : Extension.t option }
@@ -73,27 +82,37 @@ type t = { chapter : Chapter.t; heading : Heading.t; subheading : Subheading.t; 
 (* of_string with maximum naivety. *)
 (* Smash everything into a pile of digits, cut out the first 6, *)
 (* and blindly shove the original raw string into the extension. *)
-(* AKA this is giving me an excuse to use crowbar to narrow the string universe *)
+let is_valid_hs_ext_char = function
+  | '0' .. '9' | 'A' .. 'Z' | '[' | ']' | '(' | ')' | '*' | '.' | '-' | '/' | '_' | ':' | ' ' -> true
+  | _ -> false
+
 let of_string s =
   let open Result.Syntax in
-  let all_digits = String.to_seq s |> Seq.filter (fun c -> '0' <= c && c <= '9') |> String.of_seq in
-
-  if String.length all_digits < 6 then Error "Not enough digits"
+  
+  if String.length s < 6 then 
+    Error "Input string too short to contain a valid prefix"
   else
-    (* Blindly slice the first 6 digits out of the pile *)
-    (* then the extension is the rest *)
-    let c_raw = String.sub all_digits 0 2 |> int_of_string in
-    let h_raw = String.sub all_digits 2 2 |> int_of_string in
-    let s_raw = String.sub all_digits 4 2 |> int_of_string in
+    let c_raw = String.sub s 0 2 in
+    let h_raw = String.sub s 2 2 in
+    let s_raw = String.sub s 4 2 in
+    let e_raw = 
+      String.sub s 6 (String.length s - 6)
+      |> String.to_seq
+      |> Seq.filter is_valid_hs_ext_char 
+      |> String.of_seq 
+      |> String.trim 
+    in
 
     let+ chapter = Chapter.make c_raw
     and+ heading = Heading.make h_raw
     and+ subheading = Subheading.make s_raw
-    and+ extension = Extension.make s in
+    and+ extension = Extension.make e_raw in
     { chapter; heading; subheading; extension }
+
 
 let of_string_exn s = match of_string s with Ok t -> t | Error msg -> failwith msg
 
+(* Handle cases where extension = None and there is extension *)
 let to_string { chapter; heading; subheading; extension } =
   let c = Chapter.to_int chapter in
   let h = Heading.to_int heading in
@@ -101,5 +120,5 @@ let to_string { chapter; heading; subheading; extension } =
   match extension with
   | None -> Printf.sprintf "%02d.%02d.%02d" c h s
   | Some e ->
-      let e_str = (e :> string) in
+      let e_str = Extension.to_string e in
       Printf.sprintf "%02d.%02d.%02d.%s" c h s e_str

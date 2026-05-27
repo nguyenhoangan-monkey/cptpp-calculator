@@ -11,6 +11,7 @@ let () =
       let input = really_input_string ic len in
       close_in ic;
 
+      (* we are testing Hs_code.of_string *)
       let _ = Hs_code.of_string input in
       ()
     with
