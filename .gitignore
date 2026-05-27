@@ -1,0 +1,13 @@
+# Dune / OCaml build artifacts
+/_build/
+.merlin
+*.install
+
+# AFL Fuzzing artifacts
+/output/
+/output.txt
+
+# Editor / OS specific files
+.DS_Store
+*.swp
+*~
