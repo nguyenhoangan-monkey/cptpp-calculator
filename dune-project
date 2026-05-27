@@ -4,24 +4,18 @@
 
 (generate_opam_files true)
 
-(source
- (github username/reponame))
+(maintainers "Nguyen Hoang An <nguyenhoangan1235@gmail.com>")
 
-(authors "Author Name <author@example.com>")
+(authors "Nguyen Hoang An")
 
-(maintainers "Maintainer Name <maintainer@example.com>")
+(license "BSD-3-Clause")
 
-(license LICENSE)
+(homepage "https://github.com/nguyenhoangan-monkey/cptpp-fuzz")
 
-(documentation https://url/to/documentation)
+(bug_reports "https://github.com/nguyenhoangan-monkey/cptpp-fuzz/issues")
 
 (package
  (name cptpp-fuzz)
- (allow_empty)
- (synopsis "A short synopsis")
- (description "A longer description")
- (depends ocaml)
- (tags
-  ("add topics" "to describe" your project)))
-
-; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html
+ (synopsis "CPTPP rules of origin and tariffs calculator fuzzing suite")
+ (description
+  "An automated fuzz testing harness for cptpp-calculator functions"))
