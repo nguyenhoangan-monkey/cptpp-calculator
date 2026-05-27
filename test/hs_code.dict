@@ -1,0 +1,29 @@
+# --- HS Code Structural Digits ---
+# Boundaries to trigger your Bounded_int logic
+digit_00="00"
+digit_01="01"
+digit_99="99"
+
+# Common valid 2-digit chunks
+chunk_10="10"
+chunk_45="45"
+
+# --- Extension Delimiters & Valid Chars ---
+# Giving the fuzzer exactly what is_valid_hs_ext_char looks for
+ext_dot="."
+ext_dash="-"
+ext_slash="/"
+ext_underscore="_"
+ext_colon=":"
+ext_space=" "
+ext_star="*"
+
+# Bracket structures (AFL++ will learn to pair these)
+ext_bracket_open="["
+ext_bracket_close="]"
+ext_paren_open="("
+ext_paren_close=")"
+
+# A couple of uppercase letters to trigger the 'A'..'Z' branch
+ext_char_A="A"
+ext_char_Z="Z"

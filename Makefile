@@ -33,18 +33,15 @@ build:
 	$(DUNE) build test/fuzz.exe --instrument-with afl
 
 fuzz: build
-	@echo "Starting 4-core fuzzing for fuzz_sys..."
 	@mkdir -p input
-	@echo "Configuring unhinged OCaml runtime chaos options..."
 	export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1; \
 	export AFL_SKIP_CPUFREQ=1; \
+	export AFL_POST_PROCESS_KEEP_ORIGINAL=1; \
 	export AFL_MAP_SIZE=256000; \
-	echo "Launching secondary instances (cpu2-4) in background with Fidgety Mode..."; \
-	afl-fuzz -d -P explore -i input -o output -S cpu2 $(FUZZ) @@ > /dev/null 2>&1 & \
-	afl-fuzz -d -P explore -i input -o output -S cpu3 $(FUZZ) @@ > /dev/null 2>&1 & \
-	afl-fuzz -d -P explore -i input -o output -S cpu4 $(FUZZ) @@ > /dev/null 2>&1 & \
-	echo "Launching main supervisor in foreground with deep exploration strategy..."; \
-	afl-fuzz -P explore -i input -o output -M main $(FUZZ) @@
+	afl-fuzz -t 50 -d -P explore -x test/hs_code.dict -i input -o output -S cpu2 $(FUZZ) @@ > /dev/null 2>&1 & \
+	afl-fuzz -t 50 -d -P explore -x test/hs_code.dict -i input -o output -S cpu3 $(FUZZ) @@ > /dev/null 2>&1 & \
+	afl-fuzz -t 50 -d -P explore -x test/hs_code.dict -i input -o output -S cpu4 $(FUZZ) @@ > /dev/null 2>&1 & \
+	afl-fuzz -t 50 -P explore -x test/hs_code.dict -i input -o output -M main $(FUZZ) @@
 
 status:
 	@if [ -d output ]; then afl-whatsup output/; else echo "No active fuzzing session found."; fi
