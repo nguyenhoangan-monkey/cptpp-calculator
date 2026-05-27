@@ -73,7 +73,6 @@ type t = { chapter : Chapter.t; heading : Heading.t; subheading : Subheading.t; 
 (* of_string with maximum naivety. *)
 (* Smash everything into a pile of digits, cut out the first 6, *)
 (* and blindly shove the original raw string into the extension. *)
-(* AKA this is giving me an excuse to use crowbar to narrow the string universe *)
 let of_string s =
   let open Result.Syntax in
   let all_digits = String.to_seq s |> Seq.filter (fun c -> '0' <= c && c <= '9') |> String.of_seq in
