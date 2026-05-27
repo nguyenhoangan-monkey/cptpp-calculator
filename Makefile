@@ -35,12 +35,16 @@ build:
 fuzz: build
 	@echo "Starting 4-core fuzzing for fuzz_sys..."
 	@mkdir -p input
-	@echo "Launching secondary instances (cpu2-4) in background."
-	AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 AFL_SKIP_CPUFREQ=1 afl-fuzz -i input -o output -S cpu2 $(FUZZ) @@ > /dev/null 2>&1 &
-	AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 AFL_SKIP_CPUFREQ=1 afl-fuzz -i input -o output -S cpu3 $(FUZZ) @@ > /dev/null 2>&1 &
-	AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 AFL_SKIP_CPUFREQ=1 afl-fuzz -i input -o output -S cpu4 $(FUZZ) @@ > /dev/null 2>&1 &
-	@echo "Launching main instance in foreground..."
-	AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 AFL_SKIP_CPUFREQ=1 afl-fuzz -i input -o output -M main $(FUZZ) @@
+	@echo "Configuring unhinged OCaml runtime chaos options..."
+	export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1; \
+	export AFL_SKIP_CPUFREQ=1; \
+	export AFL_MAP_SIZE=256000; \
+	echo "Launching secondary instances (cpu2-4) in background with Fidgety Mode..."; \
+	afl-fuzz -d -P explore -i input -o output -S cpu2 $(FUZZ) @@ > /dev/null 2>&1 & \
+	afl-fuzz -d -P explore -i input -o output -S cpu3 $(FUZZ) @@ > /dev/null 2>&1 & \
+	afl-fuzz -d -P explore -i input -o output -S cpu4 $(FUZZ) @@ > /dev/null 2>&1 & \
+	echo "Launching main supervisor in foreground with deep exploration strategy..."; \
+	afl-fuzz -P explore -i input -o output -M main $(FUZZ) @@
 
 status:
 	@if [ -d output ]; then afl-whatsup output/; else echo "No active fuzzing session found."; fi
