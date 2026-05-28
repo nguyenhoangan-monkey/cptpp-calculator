@@ -1,4 +1,4 @@
-(* exposing the config *)
+(***** HS CODE FUNCTORS AND TYPES ******)
 module type Bounded_int_config = sig
   val min : int
   val max : int
@@ -7,7 +7,6 @@ end
 
 (* Here we parse the 2 char string, check digit, and manually parse digit to int *)
 (* Note: single digit printed and string are explicitly disallowed in HS code *)
-(* Note: HS code must be XX.XX.XX, any lower and is rejected *)
 module Bounded_int (Config : Bounded_int_config) : sig
   type t
 
@@ -101,62 +100,170 @@ end
 
 type t = { chapter : Chapter.t; heading : Heading.t; subheading : Subheading.t; extension : Extension.t option }
 
-type prefix_result =
-  | ValidPrefix of string * string
-  | Invalid of string
 
-let prefix_parser raw_s len =
-  let rec verify i last =
-    if i >= len then Ok ()
+(***** HS CODE PREFIX (12.34.56) PARSING ******)
+(* chunk denote digits next to each other *)
+module Chunk = struct
+  type t = C1 | C2 | C4 | C6 | Space | Dash | Slash_dot
+
+  let of_int = function
+    | 1 -> Ok C1 | 2 -> Ok C2 | 4 -> Ok C4 | 6 -> Ok C6
+    | n -> Error (Printf.sprintf "Invalid digit block size: %d" n)
+
+  let to_int = function
+    | C1 -> 1 | C2 -> 2 | C4 -> 4 | C6 -> 6
+    | _ -> 0
+end
+
+type prefix_token = 
+  | Digits of string
+  | Delims of string
+
+(* Consume exactly up to 6 digits from the input stream. It groups consecutive digits
+into strings, validates and skips delimiters, and immediately stops when it has seen
+6 digits, returning the unconsumed rest of the stream *)
+let tokenize_prefix unicode_stream =
+  (* converts char list to string, *)
+  (* wraps it in the correct token type, and appends to list *)
+  let flush state chars acc_list =
+    if chars = [] then acc_list
     else
-      let c = raw_s.[i] in
-      match last, c with
-      | '-', '_' -> Error (Printf.sprintf "Illegal sequence '-_' at position %d" (i + 1))
-      | '_', '-' -> Error (Printf.sprintf "Illegal sequence '_-' at position %d" (i + 1))
-      | ('.'|'/'), ('.'|'/') -> Error (Printf.sprintf "Illegal consecutive delimiters at position %d" (i + 1))
-      | _ -> verify (i + 1) c
+      let str = chars |> List.rev |> List.to_seq |> String.of_seq in
+      match state with
+      | `Digits -> Digits str :: acc_list
+      | `Delims -> Delims str :: acc_list
+      | `None   -> acc_list
   in
 
-  let rec collect i digits_acc =
-    let digits_count = List.length digits_acc in
-    if digits_count = 6 then
-      Some (List.rev digits_acc, i)
-    else if i >= len then
-      None
-    else
-      match raw_s.[i] with
-      | '0'..'9' as digit -> 
-          collect (i + 1) (digit :: digits_acc)
-      | ' ' | '_' | '-' -> 
-          collect (i + 1) digits_acc
-      | '.' | '/' ->
-          (* Delimiters can only appear after Chapter or Heading *)
-          begin match digits_count with
-          | 2 | 4 -> collect (i + 1) digits_acc
-          | _ -> None
-          end    
-      | _ -> None
+  let rec loop acc_list current_chars state digits_needed stream =
+    match digits_needed with
+    | 0 ->
+      let final_blocks = flush state current_chars acc_list in
+      Ok (List.rev final_blocks, stream)
+    | _ ->
+      match stream with
+      | [] -> Error "Input ended before 6 digits were collected"
+      | u :: rest ->
+          let code = Uchar.to_int u in
+          if code > 127 then Error "Multi-byte/Non-ASCII characters are not allowed"
+          else match Uchar.to_char u with
+          | '0'..'9' as d -> 
+              (match state with
+              | `Digits | `None ->
+                  loop acc_list (d :: current_chars) `Digits (digits_needed - 1) rest
+              | `Delims ->
+                  let new_list = flush state current_chars acc_list in
+                  loop new_list [d] `Digits (digits_needed - 1) rest)
+                
+          | ' ' | '_' | '-' | '.' | '/' as c ->
+              (match state with
+              | `Delims | `None ->
+                  loop acc_list (c :: current_chars) `Delims digits_needed rest
+              | `Digits ->
+                  let new_list = flush state current_chars acc_list in
+                  loop new_list [c] `Delims digits_needed rest)
+                
+          | _ -> Error "Illegal character in prefix"
+  in
+  loop [] [] `None 6 unicode_stream
+
+let classify_delims str =
+  let open Result.Syntax in
+
+  let tally_step acc char =
+    let* (dashes, underscores, dots) = acc in
+    match char with
+    | ' ' -> Ok (dashes, underscores, dots)
+    | '-' -> Ok (dashes + 1, underscores, dots)
+    | '_' -> Ok (dashes, underscores + 1, dots)
+    | '.' | '/' -> Ok (dashes, underscores, dots + 1)
+    | _ -> Error "Unrecognized delimiter character"
   in
 
-  (* initiate matching logic *)
-  match verify 0 '\000' with
-  | Error msg -> Error msg
-  | Ok () ->
-      match collect 0 [] with
-      | None -> Error "Malformed HS code prefix structure or illegal characters detected"
-      | Some (digits, ext_start_idx) -> Ok (digits, ext_start_idx)
+  (* tally number of dashes, underscores and dot+slash *)
+  let* (dashes, underscores, dots_slashes) = 
+    String.fold_left tally_step (Ok (0, 0, 0)) str 
+  in
 
-let prefix_unicode_parser raw_s =
-  let len = String.length raw_s in
-  match prefix_parser raw_s len with
-  | Error msg -> Invalid msg
-  | Ok (digits, ext_start_idx) ->
-      let prefix = String.of_seq (List.to_seq digits) in
-      let extension = String.sub raw_s ext_start_idx (len - ext_start_idx) in
-      ValidPrefix (prefix, extension)
+  match (dashes, underscores, dots_slashes) with
+  (* accepted states *)
+  | (0, 0, 0) -> Ok Chunk.Space
+  | (0, 0, 1) -> Ok Chunk.Slash_dot
+  | (d, 0, 0) when d > 0 -> Ok Chunk.Dash  (* Clean separation of dashes *)
+  | (0, u, 0) when u > 0 -> Ok Chunk.Dash  (* Clean separation of underscores *)
+
+  (* rejected states *)
+  | (d, u, _) when d > 0 && u > 0 -> 
+      Error "Illegal sequence: Cannot mix '-' and '_' in the same delimiter block"
+  | (_, _, dot) when dot > 1 -> 
+      Error "Illegal sequence: Consecutive or multiple '.' or '/' characters"
+  | _ -> 
+      Error "Illegal sequence: Cannot mix dashes with '.' or '/'"
+
+let map_to_chunks tokens =
+  let open Result.Syntax in
+  let rec loop acc remaining_tokens =
+    match remaining_tokens with
+    | [] -> Ok (List.rev acc)
+    | token :: rest ->
+        let* next_chunk = 
+          match token with
+          | Digits d -> 
+              (* Map the length of the string to a Chunk (C1, C2, C4, C6) *)
+              Chunk.of_int (String.length d)
+          | Delims c -> 
+              (* Apply our strict delimiter classification rules *)
+              classify_delims c
+        in
+        loop (next_chunk :: acc) rest
+  in
+  loop [] tokens
+
+(* Essentially is a list of all acceptable formats *)
+let build_containers chunks digit_strings =
+  let open Result.Syntax in
+  
+  match chunks, digit_strings with
+  (* 1 2 3 4 5 6 *)
+  (* We match wildcards on the delimiter chunks, keeping the digit list clean *)
+  | [Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1], [c1; c2; h1; h2; s1; s2] ->
+      let* chapter    = Chapter.of_string (c1 ^ c2) in
+      let* heading    = Heading.of_string (h1 ^ h2) in
+      let* subheading = Subheading.of_string (s1 ^ s2) in
+      Ok (chapter, heading, subheading)
+
+  (* 12-34-56 *)
+  | [Chunk.C2; Chunk.Dash; Chunk.C2; Chunk.Dash; Chunk.C2], [c_str; h_str; s_str] ->
+      let* chapter    = Chapter.of_string c_str in
+      let* heading    = Heading.of_string h_str in
+      let* subheading = Subheading.of_string s_str in
+      Ok (chapter, heading, subheading)
+
+  (* 1234.56 *)
+  | [Chunk.C4; Chunk.Slash_dot; Chunk.C2], [c_str; s_str] ->
+      let c_raw = String.sub c_str 0 2 in
+      let h_raw = String.sub c_str 2 2 in
+      let* chapter    = Chapter.of_string c_raw in
+      let* heading    = Heading.of_string h_raw in
+      let* subheading = Subheading.of_string s_str in
+      Ok (chapter, heading, subheading)
+
+  (* 123456 *)
+  | [Chunk.C6], [c_str] ->
+      let c_raw = String.sub c_str 0 2 in
+      let h_raw = String.sub c_str 2 2 in
+      let s_raw = String.sub c_str 4 2 in
+      let* chapter    = Chapter.of_string c_raw in
+      let* heading    = Heading.of_string h_raw in
+      let* subheading = Subheading.of_string s_raw in
+      Ok (chapter, heading, subheading)
+
+  | _ -> 
+      Error "Layout configuration is mathematically forbidden or incorrectly sized"
+  
 
 
-(* tracking the state of brackets *)
+(***** HS CODE EXTENSION (12.34.56-789AB) PARSING ******)
 type bracket_context =
 | Outside
 | Inside of char * bool
@@ -247,31 +354,6 @@ let extension_parser uchars =
   in
   loop [] 0 uchars
 
-let extension_unicode_parser raw_ext =
-  let decoder = Uutf.decoder (`String raw_ext) in
-  let rec decode_all acc =
-    match Uutf.decode decoder with
-    | `Await -> Error "Unexpected streaming block"
-    | `Malformed _ -> Error "Input contains invalid UTF-8 byte sequences"
-    | `End -> Ok (List.rev acc)
-    | `Uchar uchar -> decode_all (uchar :: acc)
-  in
-  let open Result.Syntax in
-  let* tokens = decode_all [] in
-  let* validated_tokens = extension_validator raw_ext tokens in
-  extension_parser validated_tokens
-
-
-(* Sometimes, strings have \0 as an artefact from C *)
-(* we allow \0 inside the string, but only at the very end *)
-(* else it is rejected *)
-let validate_and_strip_nulls raw_s =
-  let len = String.length raw_s in
-  match String.index_from_opt raw_s 0 '\000' with
-  | None -> Ok raw_s
-  | Some idx when idx = len - 1 -> Ok (String.sub raw_s 0 idx)
-  | Some idx -> Error (Printf.sprintf "Security Exception: Embedded null byte detected at position %d" idx)
-
 
 
 (* of_string, a public API that handle prefix_unicode_parser crashes,
@@ -287,46 +369,65 @@ let validate_and_strip_nulls raw_s =
    3452" (23\n3452) as a valid HS code.
 
    Thus I added two guards: one for string length, one for null bytes.
+   Then I parse it to unicode tokens to consume.
 *)
 let of_string raw_s =
+  (***** Guards and preprocessing *****)
+  (* 1. no strings longer than >128 characters *)
+  (* 2. allow \0 inside the string, but only at the very end *)
+  (* 3. Turn raw string into an atomic UTF-8 token stream *)
   let open Result.Syntax in
 
-  (* GUARD 1: O(1) Quick length check to prevent memory/CPU resource exhaustion *)
   let* () =
     if String.length raw_s > 128 then
-      Error "Malformed HS code: string exceeds maximum length (128 characters)"
+      Error "Input string length exceeds the maximum allowable limit of 128 characters"
     else Ok ()
   in
 
-  (* GUARD 2: Scan for embedded C null bytes *)
-  let* clean_s = validate_and_strip_nulls raw_s in
+  let* clean_s =
+    match String.index_from_opt raw_s 0 '\000' with
+    | None -> Ok raw_s
+    | Some idx when idx = String.length raw_s - 1 -> Ok (String.sub raw_s 0 idx)
+    | Some idx -> 
+        Error (Printf.sprintf "Security Exception: Embedded null byte detected at position %d" idx)
+  in
 
-  (* First parse the prefix to a 6 digit prefix, then match the error *)
-  match prefix_unicode_parser clean_s with
-  | Invalid msg -> Error msg
-  | ValidPrefix (prefix, raw_ext) ->
+  let* tokens = 
+    let decoder = Uutf.decoder (`String clean_s) in
+    let rec decode_all acc =
+      match Uutf.decode decoder with
+      | `Await -> Error "Unexpected streaming block"
+      | `Malformed _ -> Error "Input contains invalid UTF-8 byte sequences"
+      | `End -> Ok (List.rev acc)
+      | `Uchar uchar -> decode_all (uchar :: acc)
+    in
+    decode_all []
+  in
 
-      (* Slice the prefix buckets, guaranteed to be exactly
-         6 pure ASCII numeric chars by the scanner *)
-      let c_raw = String.sub prefix 0 2 in
-      let h_raw = String.sub prefix 2 2 in
-      let s_raw = String.sub prefix 4 2 in
-      let* chapter    = Chapter.of_string c_raw in
-      let* heading    = Heading.of_string h_raw in
-      let* subheading = Subheading.of_string s_raw in
+  (***** Consume stream to get prefix *****)
+  let* (token_list, extension_tokens) = tokenize_prefix tokens in
+  let* chunks = map_to_chunks token_list in
+  let digit_strings = 
+    List.filter_map (function Digits s -> Some s | Delims _ -> None) token_list 
+  in
+  let* (chapter, heading, subheading) = build_containers chunks digit_strings in
 
-      (* validate and parse extension *)
-      let* extension_opt = extension_unicode_parser raw_ext in
-      let* extension =
-        match extension_opt with
-        | None -> Ok None
-        | Some e ->
-            let* valid_ext = Extension.of_string e in
-            Ok (Some valid_ext)
-      in
+  (***** Consume stream to get extension *****)
+  let* validated_ext_tokens = extension_validator raw_s extension_tokens in
+  let* extension_opt        = extension_parser validated_ext_tokens in
+  let* extension =
+    match extension_opt with
+    | None -> Ok None
+    | Some e ->
+        let* valid_ext = Extension.of_string e in
+        Ok (Some valid_ext)
+  in
 
-      Ok { chapter; heading; subheading; extension }
+  (***** Return *****)
+  Ok { chapter; heading; subheading; extension }
 
+
+(* other useful helpers *)
 let of_string_exn s = match of_string s with Ok t -> t | Error msg -> failwith msg
 
 let to_string { chapter; heading; subheading; extension } =

@@ -11,3 +11,7 @@
 (executable
  (name seed_generator)
  (modes exe))
+
+(executable
+ (name knapsack)
+ (modes exe))
