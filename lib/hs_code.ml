@@ -303,7 +303,6 @@ let of_string raw_s =
 
 let of_string_exn s = match of_string s with Ok t -> t | Error msg -> failwith msg
 
-(* Handle cases where extension = None and there is extension *)
 let to_string { chapter; heading; subheading; extension } =
   let c = Chapter.to_int chapter in
   let h = Heading.to_int heading in
@@ -313,3 +312,61 @@ let to_string { chapter; heading; subheading; extension } =
   | Some e ->
       let e_str = Extension.to_string e in
       Printf.sprintf "%02d.%02d.%02d.%s" c h s e_str
+
+let pp ppf t = 
+  Format.pp_print_string ppf (to_string t)
+
+  
+(* getters *)
+let chapter t = Chapter.to_int t.chapter
+let heading t = Heading.to_int t.heading
+let subheading t = Subheading.to_int t.subheading
+let extension t = 
+  match t.extension with
+  | None -> None
+  | Some e -> Some (Extension.to_string e)
+
+
+(* comparison *)
+type match_level =
+  | Identical
+  | Chapter_mismatch
+  | Heading_mismatch
+  | Subheading_mismatch
+  | Extension_mismatch
+
+let match_level a b =
+  let c = Chapter.to_int a.chapter = Chapter.to_int b.chapter in
+  let h = Heading.to_int a.heading = Heading.to_int b.heading in
+  let s = Subheading.to_int a.subheading = Subheading.to_int b.subheading in
+  let e = Option.equal String.equal 
+            (Option.map Extension.to_string a.extension) 
+            (Option.map Extension.to_string b.extension) 
+  in
+  
+  match (c, h, s, e) with
+  | (true,  true,  true,  true)  -> Identical
+  | (true,  true,  true,  false) -> Extension_mismatch
+  | (true,  true,  false, _)     -> Subheading_mismatch
+  | (true,  false, _,     _)     -> Heading_mismatch
+  | (false, _,     _,     _)     -> Chapter_mismatch
+
+
+let compare a b =
+  match match_level a b with
+  | Identical -> 0
+  | Chapter_mismatch -> 
+      Int.compare (Chapter.to_int a.chapter) (Chapter.to_int b.chapter)
+  | Heading_mismatch -> 
+      Int.compare (Heading.to_int a.heading) (Heading.to_int b.heading)
+  | Subheading_mismatch -> 
+      Int.compare (Subheading.to_int a.subheading) (Subheading.to_int b.subheading)
+  | Extension_mismatch ->
+      Option.compare String.compare 
+        (Option.map Extension.to_string a.extension) 
+        (Option.map Extension.to_string b.extension)
+
+let equal a b =
+  match match_level a b with
+  | Identical -> true
+  | _ -> false
