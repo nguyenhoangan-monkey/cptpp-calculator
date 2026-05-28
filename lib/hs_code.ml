@@ -228,40 +228,117 @@ let prefix_unicode_parser raw_s =
   | Ok uchars -> extract_six_digits uchars
 
 
+(* tracking the state of brackets *)
+type bracket_context =
+| Outside
+| Inside of char * bool
+
 (* Now, we clean and check whether it has any semantic meaning *)
+(* The caller has the responsibility to enforce data hierarchy. *)
+let extension_validator raw_s uchars =
+  let rec loop ctx streak chars =
+    match chars with
+    | [] ->
+        (match ctx with
+         | Outside -> ValidPrefix (Bytes.of_string raw_s, raw_s)
+         | Inside _ -> Invalid "Unclosed bracket at end of extension")
+    | u :: rest ->
+        let code = Uchar.to_int u in
+        if code < 0 || code > 127 then 
+          Invalid "Multi-byte/Non-ASCII characters are not allowed"
+        else
+          let c = Char.chr code in
+          match c with
+          | ' ' -> 
+              loop ctx streak rest 
+
+          | 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' ->
+              let next_ctx = match ctx with
+                | Outside -> Outside
+                | Inside (close, _) -> Inside (close, true)
+              in
+              loop next_ctx None rest 
+
+          | '[' | '(' ->
+              (match ctx with
+              | Inside _ -> Invalid "Nested brackets are not allowed"
+              | Outside ->
+                  let expected_close = if c = '[' then ']' else ')' in
+                  loop (Inside (expected_close, false)) None rest)
+
+          | ']' | ')' ->
+              (match ctx with
+              | Outside -> Invalid "Unmatched closing bracket"
+              | Inside (expected, has_alnum) ->
+                  if c <> expected then Invalid "Mismatched closing bracket type"
+                  else if not has_alnum then Invalid "Bracket contains no alphanumeric characters"
+                  else loop Outside None rest)
+
+          | '-' | '/' | ':' | '_' | '.' ->
+              (match streak with
+              | None -> loop ctx (Some c) rest
+              | Some last_delim ->
+                  if c <> last_delim then Invalid "Heterogeneous continuous delimiters detected"
+                  else loop ctx (Some c) rest)
+
+          | _ ->
+              Invalid (Printf.sprintf "Invalid character '%c' in extension" c)
+  in
+  loop Outside None uchars
+
+let extension_unicode_validator raw_s =
+  let decoder = Uutf.decoder (`String raw_s) in
+  let rec decode_all acc =
+    match Uutf.decode decoder with
+    | `Await -> Invalid "Unexpected streaming block"
+    | `Malformed _ -> Invalid "Input contains invalid UTF-8 byte sequences"
+    | `End -> extension_validator raw_s (List.rev acc)
+    | `Uchar uchar -> decode_all (uchar :: acc)
+  in
+  decode_all []
+
+
 (* here we flatten the implicit hierarchy of the extension for the densest *)
 (* most compact representation, as recommended by the *)
 (* Data Element 7357 / TDED 7357 (WCO Data Model). *)
-(* The caller has the responsibility to enforce data hierarchy. *)
-let parse_extension raw_ext =
-  let is_delimiter = function
-    | '[' | ']' | '(' | ')' | '-' | '/' | ':' | '_' | '.' | ' ' -> true
-    | _ -> false
+let extension_parser uchars =
+  (* acc holds the characters in reverse order, count tracks length dynamically *)
+  let rec loop acc count chars =
+    match chars with
+    | [] ->
+        (match count with
+        | 0 -> Ok None
+        | c when c > 16 -> Error "Flattened extension exceeds 16-character ceiling"
+        | _ -> 
+            let final_str = String.of_seq (List.to_seq (List.rev acc)) in
+            Ok (Some final_str))
+          
+    | u :: rest ->
+        let code = Uchar.to_int u in
+        if code < 0 || code > 127 then
+          loop acc count rest
+        else
+          let c = Char.chr code in
+          match c with
+          | 'a' .. 'z' -> 
+              loop (Char.uppercase_ascii c :: acc) (count + 1) rest
+          | 'A' .. 'Z' | '0' .. '9' -> 
+              loop (c :: acc) (count + 1) rest
+          | _ -> 
+              loop acc count rest
   in
+  loop [] 0 uchars
 
-  let is_alphanumeric = function
-    | 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' -> true
-    | _ -> false
+let extension_unicode_parser raw_s =
+  let decoder = Uutf.decoder (`String raw_s) in
+  let rec decode_all acc =
+    match Uutf.decode decoder with
+    | `Await -> Error "Unexpected streaming block"
+    | `Malformed _ -> Error "Input contains invalid UTF-8 byte sequences"
+    | `End -> extension_parser (List.rev acc) (* remember, acc is reversed! *)
+    | `Uchar uchar -> decode_all (uchar :: acc)
   in
-
-  let chars = String.to_seq raw_ext in
-  
-  let has_illegal_char = Seq.exists (fun c -> not (is_delimiter c || is_alphanumeric c)) chars in
-  if has_illegal_char then
-    Error "Illegal character encountered in extension"
-  else
-    (* 2. Filter delimiters and normalize to uppercase *)
-    let normalized_seq = 
-      chars
-      |> Seq.filter is_alphanumeric
-      |> Seq.map Char.uppercase_ascii
-    in
-    let normalized_str = String.of_seq normalized_seq in
-    
-    match String.length normalized_str with
-    | 0 -> Ok None
-    | len when len > 16 -> Error "Flattened extension exceeds 16-character ceiling"
-    | _ -> Ok (Some normalized_str)
+  decode_all []
 
 
 (* of_string, a public API that handle prefix_unicode_parser crashes,
@@ -276,6 +353,7 @@ let parse_extension raw_ext =
    Aka, no custom data forms would accept "23
    3452" (23\n3452) as a valid HS code.
 *)
+
 let of_string raw_s =
   let open Result.Syntax in
   
@@ -293,8 +371,13 @@ let of_string raw_s =
       let* heading    = Heading.of_string h_raw in
       let* subheading = Subheading.of_string s_raw in
 
-      (* put it as a string in the data structure *)
-      let* extension_opt = parse_extension raw_ext in
+      (* validate and parse extension *)
+      let* extension_opt = 
+        match extension_unicode_validator raw_ext with
+        | Invalid msg -> Error msg
+        | ValidPrefix (_, _) -> 
+            extension_unicode_parser raw_ext
+      in
       let* extension = 
         match extension_opt with
         | None -> Ok None
