@@ -122,7 +122,7 @@ type prefix_token =
 (* Consume exactly up to 6 digits from the input stream. It groups consecutive digits
 into strings, validates and skips delimiters, and immediately stops when it has seen
 6 digits, returning the unconsumed rest of the stream *)
-let tokenize_prefix unicode_stream =
+let tokens_of_unicode unicode_stream =
   (* converts char list to string, *)
   (* wraps it in the correct token type, and appends to list *)
   let flush state chars acc_list =
@@ -200,7 +200,7 @@ let classify_delims str =
   | _ -> 
       Error "Illegal sequence: Cannot mix dashes with '.' or '/'"
 
-let map_to_chunks tokens =
+let chunks_of_tokens tokens =
   let open Result.Syntax in
   let rec loop acc remaining_tokens =
     match remaining_tokens with
@@ -220,7 +220,7 @@ let map_to_chunks tokens =
   loop [] tokens
 
 (* Essentially is a list of all acceptable formats *)
-let build_containers chunks digit_strings =
+let prefix_of_chunks chunks digit_strings =
   let open Result.Syntax in
   
   match chunks, digit_strings with
@@ -271,7 +271,7 @@ type bracket_context =
 (* Now, we clean and check whether it has any semantic meaning *)
 (* The caller has the responsibility to enforce data hierarchy. *)
 (* because of it, we use a state machine. *)
-let extension_validator raw_s uchars =
+let clean_of_tokens raw_s uchars =
   let rec loop ctx streak chars =
     match chars with
     | [] ->
@@ -328,7 +328,7 @@ let extension_validator raw_s uchars =
 (* here we flatten the implicit hierarchy of the extension for the densest *)
 (* most compact representation, as recommended by the *)
 (* Data Element 7357 / TDED 7357 (WCO Data Model). *)
-let extension_parser uchars =
+let extension_of_tokens uchars =
   (* acc holds the characters in reverse order, count tracks length dynamically *)
   let rec loop acc count chars =
     match chars with
@@ -392,7 +392,7 @@ let of_string raw_s =
         Error (Printf.sprintf "Security Exception: Embedded null byte detected at position %d" idx)
   in
 
-  let* tokens = 
+  let* input_str = 
     let decoder = Uutf.decoder (`String clean_s) in
     let rec decode_all acc =
       match Uutf.decode decoder with
@@ -404,17 +404,19 @@ let of_string raw_s =
     decode_all []
   in
 
+  (***** Tokenizer *****)
+  let* (prefix_tokens, remaining_tokens) = tokens_of_unicode input_str in
+
   (***** Consume stream to get prefix *****)
-  let* (token_list, extension_tokens) = tokenize_prefix tokens in
-  let* chunks = map_to_chunks token_list in
+  let* chunks = chunks_of_tokens prefix_tokens in
   let digit_strings = 
-    List.filter_map (function Digits s -> Some s | Delims _ -> None) token_list 
+    List.filter_map (function Digits s -> Some s | Delims _ -> None) prefix_tokens 
   in
-  let* (chapter, heading, subheading) = build_containers chunks digit_strings in
+  let* (chapter, heading, subheading) = prefix_of_chunks chunks digit_strings in
 
   (***** Consume stream to get extension *****)
-  let* validated_ext_tokens = extension_validator raw_s extension_tokens in
-  let* extension_opt        = extension_parser validated_ext_tokens in
+  let* clean_ext_tokens = clean_of_tokens raw_s remaining_tokens in
+  let* extension_opt    = extension_of_tokens clean_ext_tokens in
   let* extension =
     match extension_opt with
     | None -> Ok None
@@ -427,7 +429,8 @@ let of_string raw_s =
   Ok { chapter; heading; subheading; extension }
 
 
-(* other useful helpers *)
+(***** OTHER USEFUL HS CODE HELPERS ******)
+(* string-related operations *)
 let of_string_exn s = match of_string s with Ok t -> t | Error msg -> failwith msg
 
 let to_string { chapter; heading; subheading; extension } =
