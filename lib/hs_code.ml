@@ -255,7 +255,7 @@ let of_string raw_s =
       (* The caller has the reponsibility to enforce data hierarchy. *)
 
       let is_delimiter = function
-        | '-' | '/' | ':' | '_' | '.' | ' ' -> true
+        | '[' | ']' | '(' | ')' | '-' | '/' | ':' | '_' | '.' | ' ' -> true
         | _ -> false
       in
 
