@@ -109,10 +109,6 @@ module Chunk = struct
   let of_int = function
     | 1 -> Ok C1 | 2 -> Ok C2 | 4 -> Ok C4 | 6 -> Ok C6
     | n -> Error (Printf.sprintf "Invalid digit block size: %d" n)
-
-  let to_int = function
-    | C1 -> 1 | C2 -> 2 | C4 -> 4 | C6 -> 6
-    | _ -> 0
 end
 
 type prefix_token = 
@@ -271,7 +267,7 @@ type bracket_context =
 (* Now, we clean and check whether it has any semantic meaning *)
 (* The caller has the responsibility to enforce data hierarchy. *)
 (* because of it, we use a state machine. *)
-let clean_of_tokens raw_s uchars =
+let clean_of_tokens uchars =
   let rec loop ctx streak chars =
     match chars with
     | [] ->
@@ -415,7 +411,7 @@ let of_string raw_s =
   let* (chapter, heading, subheading) = prefix_of_chunks chunks digit_strings in
 
   (***** Consume stream to get extension *****)
-  let* clean_ext_tokens = clean_of_tokens raw_s remaining_tokens in
+  let* clean_ext_tokens = clean_of_tokens remaining_tokens in
   let* extension_opt    = extension_of_tokens clean_ext_tokens in
   let* extension =
     match extension_opt with
