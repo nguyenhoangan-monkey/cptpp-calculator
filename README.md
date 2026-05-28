@@ -2,6 +2,12 @@
 
 This is where I post signed binaries (tagged git commit with my signature) and an (in)formal verification certification (printout of AFL output, my seeds, my accepted output and rejected output)
 
+**For this tag, the function is `lib/domain/hs_code.ml` and the interface `lib/domain/hs_code.mli` at [cptpp-calculator.](https://github.com/nguyenhoangan-monkey/cptpp-calculator/tree/main/lib/domain)**
+
+The commit hash is [insert hash here] and this commit is signed and published on github by nguyenhoangan-monkey (me).
+
+## How to verify `lib/domain/hs_code.ml`
+
 before commit:
 * `dune build @install --auto-promote` - for .opam to be happy
 * `opam install . --deps-only --with-test` - install everything
@@ -33,7 +39,7 @@ check with `for f in input/*; do cat "$f"; echo ""; done`
 * 01ä2345
 * 012345#EXT
 
-Please check output_fail.txt and output_pass.txt to see whether the parsing makes sense.
+Please check output_fail.txt and output_pass.txt to see whether the parsing makes sense. I halted the test at 420 corpus count because by this time, output_fail.txt is just outputting garbage masquading as a new execution pattern.
 
 
 ## Informal verfication certificate
