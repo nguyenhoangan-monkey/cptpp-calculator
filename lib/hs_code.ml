@@ -64,6 +64,8 @@ end)
 
   Plus, they are strictly enforced to be only uppercase and numbers,
   brackets and delimiters. Thus this is how we store the extension internally.
+
+  Here, we only check the characters in place. There is no state machine.
 *)
 module Extension : sig
   type t
@@ -73,46 +75,204 @@ module Extension : sig
 end = struct
   type t = string
 
+  let is_alphanum = function
+    | '0' .. '9' | 'A' .. 'Z' -> true
+    | _ -> false
+
+  let is_delimiter = function 
+    | '[' | ']' | '(' | ')' | '-' | '/' | ':' | '_' | '.' -> true
+    | _ -> false
+
+  let is_valid_char c = 
+    is_alphanum c || is_delimiter c
+  
+  (* in-place check of delimiters at last character *)
+  let is_valid_last_char c =
+    is_alphanum c || c = ']' || c = ')'
+
   let of_string s =
     match String.length s with
     | 0 -> Ok None
-    | len when len > 16 -> Error "Extension exceeded 16 valid characters"
-    | _ -> Ok (Some s)
+    | 1 -> 
+        let c = String.get s 0 in
+        if is_alphanum c then Ok (Some s)
+        else Error "Single-character extension must be alphanumeric"
+    | len when len >= 2 && len <= 16 ->
+        let first_char = String.get s 0 in
+        let last_char = String.get s (len - 1) in
+        
+        if not (is_alphanum first_char) then
+          Error "Extension must start with an alphanumeric character"
+        else if not (is_valid_last_char last_char) then
+          Error "Extension cannot end with a structural divider"
+        else
+          let remaining_seq = String.to_seq s |> Seq.drop 1 in
+          if Seq.for_all is_valid_char remaining_seq then
+            Ok (Some s)
+          else
+            Error "Extension contains invalid characters or forbidden whitespaces"
+    | _ -> Error "Extension exceeded 16 characters"
 
   let to_string t = t
 end
 
+
+
 type t = { chapter : Chapter.t; heading : Heading.t; subheading : Subheading.t; extension : Extension.t option }
 
-(* of_string with maximum naivety. *)
-(* Smash everything into a pile of digits, cut out the first 6, *)
-(* and blindly shove the original raw string into the extension. *)
-let is_valid_hs_ext_char = function
-  | '0' .. '9' | 'A' .. 'Z' | '[' | ']' | '(' | ')' | '*' | '.' | '-' | '/' | '_' | ':' | ' ' -> true
-  | _ -> false
+(* It is impossible to encode byte length as a type *)
+type prefix_result = 
+  | ValidPrefix of bytes * string
+  | Invalid of string
 
-let of_string s =
+(*
+  INDUCTION PROOF: STRICT 6-BYTE GUARANTEE
+  
+  Loop Invariant: At step n, `prefix_bytes` contains exactly `digits_found` 
+  bytes, where 0 <= digits_found <= 6.
+
+  - Base Case (n=0): `digits_found = 0`, `prefix_bytes` is empty. (True)
+  - Inductive Step (n -> n+1): 
+    * If `digits_found < 6`, a valid digit mutates the buffer and increments 
+      `digits_found` to n+1. Invariant holds.
+    * If `digits_found = 6`, the guard matches `false`, short-circuiting all 
+      future writes to `extension_buf`. `digits_found` stays 6. Invariant holds.
+
+  The function only yields `ValidPrefix` on `End` if `digits_found = 6`.
+  By the invariant, `digits_found = 6` implies exactly 6 bytes were written.
+
+  Contrapositive: If bytes written <> 6, then `digits_found <> 6`, forcing 
+  the `End` branch to evaluate to `Invalid`. 
+  *)
+let extract_six_digits_unicode raw_s =
+  let decoder = Uutf.decoder (`String raw_s) in
+
+  (* Allocate exactly 6 bytes, no resizing logic attached *)
+  let prefix_bytes = Bytes.create 6 in 
+  
+  (* This is resizable *)
+  let extension_buf = Buffer.create 16 in 
+  
+  (* We use a state machine "scan" to parse the prefix. The states are:
+  - digits_found acts as the index for prefix_bytes: 0, 1, 2, 3, 4, 5
+  - total_chars_read is... well... total chars read
+  - last_char is the last read char *)
+  let rec scan digits_found total_chars_read last_char =
+    match Uutf.decode decoder with
+    | `Await -> Invalid "Unexpected streaming block"
+    | `Malformed _ -> Invalid "Input contains invalid UTF-8 byte sequences"
+    | `End -> 
+        if digits_found = 6 then 
+          ValidPrefix (prefix_bytes, Buffer.contents extension_buf)
+        else 
+          Invalid "String ended before 6 digits were found"
+    | `Uchar uchar ->
+        let code = Uchar.to_int uchar in
+        let next_total = total_chars_read + 1 in
+        
+        match (digits_found < 6) with
+        | true -> begin
+            if code < 0 || code > 127 then
+              Invalid (Printf.sprintf "Illegal multi-byte character at position %d" next_total)
+            else
+              let c = Char.chr code in
+              match c with
+              | '0' .. '9' ->
+                  Bytes.set prefix_bytes digits_found c;
+                  scan (digits_found + 1) next_total '0'
+              | ' ' ->
+                  scan digits_found next_total ' '
+              | '_' -> begin
+                  match last_char with
+                  | '-' -> Invalid (Printf.sprintf "Illegal sequence '-_' at position %d" next_total)
+                  | _   -> scan digits_found next_total '_'
+                end
+              | '-' -> begin
+                  match last_char with
+                  | '_' -> Invalid (Printf.sprintf "Illegal sequence '_-' at position %d" next_total)
+                  | _   -> scan digits_found next_total '-'
+                end
+              | '.' | '/' -> begin
+                  match last_char with
+                  | '.' | '/' -> 
+                      Invalid (Printf.sprintf "Illegal consecutive delimiters at position %d" next_total)
+                  | _ -> 
+                      if digits_found = 2 || digits_found = 4 then
+                        scan digits_found next_total c
+                      else
+                        Invalid (Printf.sprintf "Malformed HS structure: delimiter '%c' placed at invalid digit count %d" c digits_found)
+                end
+              | _ ->
+                  Invalid (Printf.sprintf "Illegal formatting character '%c' at position %d" c next_total)
+          end
+
+        | false ->
+            Uutf.Buffer.add_utf_8 extension_buf uchar;
+            scan digits_found next_total last_char
+  in
+
+  (* Start parsing of prefix:
+  - digits_found acts as the index for prefix_bytes: 0, 1, 2, 3, 4, 5
+  - total_chars_read is... well... total chars read
+  - last_char start with a null character *)
+
+  scan 0 0 '\000'
+
+
+(* of_string, a public API that handle extract_six_digits_unicode crashes,
+  then we put the pile of digits into the container, then parse the extension
+  raw string and pack it into a 16 character buffer. If the provided extension
+  cannot fit to the 16 characters buffer, it will return an error.
+
+  We disallow whitespaces other than " " because here we don't have any context
+  of where these whitespaces exist and why do they spawn to existance, thus it is better
+  for the caller of the function to figure out the semantics.
+  
+  Aka, no custom data forms would accept "23
+  3452" (23\n3452) as a valid HS code.
+*)
+let of_string raw_s =
   let open Result.Syntax in
   
-  if String.length s < 6 then 
-    Error "Input string too short to contain a valid prefix"
-  else
-    let c_raw = String.sub s 0 2 in
-    let h_raw = String.sub s 2 2 in
-    let s_raw = String.sub s 4 2 in
-    let e_raw = 
-      String.sub s 6 (String.length s - 6)
-      |> String.to_seq
-      |> Seq.filter is_valid_hs_ext_char 
-      |> String.of_seq 
-      |> String.trim 
-    in
+  (* First parse the prefix to a 6 digit prefix, then match the error *)
+  match extract_six_digits_unicode raw_s with
+  | Invalid msg -> Error msg
+  | ValidPrefix (prefix, raw_extension) ->
+  
+      (* Slice the prefix buckets, guaranteed to be exactly
+        6 pure ASCII numeric chars by the scanner *)
+      let c_raw = Bytes.sub_string prefix 0 2 in
+      let h_raw = Bytes.sub_string prefix 2 2 in
+      let s_raw = Bytes.sub_string prefix 4 2 in
+      let* chapter    = Chapter.of_string c_raw in
+      let* heading    = Heading.of_string h_raw in
+      let* subheading = Subheading.of_string s_raw in
 
-    let+ chapter = Chapter.of_string c_raw
-    and+ heading = Heading.of_string h_raw
-    and+ subheading = Subheading.of_string s_raw
-    and+ extension = Extension.of_string e_raw in
-    { chapter; heading; subheading; extension }
+      (* Now, we clean and parse the extension *)
+      (* The extension contains the delimiter: *)
+      (* 8471.30:BATCH-2026A -> prefix: "847130", extension ":BATCH-2026A"*)
+      let clean_extension =
+        raw_extension
+        |> String.uppercase_ascii
+        |> String.map (fun c -> 
+             match c with 
+             | '-' | '/' | ':' | '_' | '.' -> ' ' 
+             | _ -> c)
+        (* Insert your space-collapsing logic here *)
+        |> String.trim
+      in
+      
+      let extension_opt = 
+        if String.length clean_extension = 0 then None 
+        else Some clean_extension 
+      in
+
+      (* Step 4: Validate and lift into typed domain structures *)
+      let+ extension  = match extension_opt with
+                        | None -> Ok None
+                        | Some e -> let+ ext = Extension.of_string e in Some ext
+      in
+      { chapter; heading; subheading; extension }
 
 
 let of_string_exn s = match of_string s with Ok t -> t | Error msg -> failwith msg
