@@ -162,7 +162,7 @@ let extract_six_digits_unicode raw_s =
     | `Await -> Invalid "Unexpected streaming block"
     | `Malformed _ -> Invalid "Input contains invalid UTF-8 byte sequences"
     | `End -> 
-        if digits_found = 6 then 
+        if digits_found = 6 then (* technically excessive, but help myself *)
           ValidPrefix (prefix_bytes, Buffer.contents extension_buf)
         else 
           Invalid "String ended before 6 digits were found"
@@ -248,32 +248,58 @@ let of_string raw_s =
       let* heading    = Heading.of_string h_raw in
       let* subheading = Subheading.of_string s_raw in
 
-      (* Now, we clean and parse the extension *)
-      (* The extension contains the delimiter: *)
-      (* 8471.30:BATCH-2026A -> prefix: "847130", extension ":BATCH-2026A"*)
-      let clean_extension =
-        raw_extension
-        |> String.uppercase_ascii
-        |> String.map (fun c -> 
-             match c with 
-             | '-' | '/' | ':' | '_' | '.' -> ' ' 
-             | _ -> c)
-        (* Insert your space-collapsing logic here *)
-        |> String.trim
-      in
-      
-      let extension_opt = 
-        if String.length clean_extension = 0 then None 
-        else Some clean_extension 
+      (* Now, we clean and check whether it has any semantic meaning *)
+      (* here we flatten the implicit hierarchy of the extension for the densest *)
+      (* most compact representation, as recommended by the *)
+      (* Data Element 7357 / TDED 7357 (WCO Data Model). *)
+      (* The caller has the reponsibility to enforce data hierarchy. *)
+
+      let is_delimiter = function
+        | '-' | '/' | ':' | '_' | '.' | ' ' -> true
+        | _ -> false
       in
 
-      (* Step 4: Validate and lift into typed domain structures *)
-      let+ extension  = match extension_opt with
-                        | None -> Ok None
-                        | Some e -> let+ ext = Extension.of_string e in Some ext
+      let is_alphanumeric = function
+        | 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' -> true
+        | _ -> false
       in
-      { chapter; heading; subheading; extension }
 
+      (* packing the extension *)
+      let parse_extension raw_extension =
+        if String.length raw_extension = 0 then 
+          Ok None
+        else
+          let chars = String.to_seq raw_extension in
+          
+          (* validate for illegal characters up front *)
+          let has_illegal_char = Seq.exists (fun c -> not (is_delimiter c || is_alphanumeric c)) chars in
+          if has_illegal_char then
+            Error "Illegal character encountered in extension"
+          else
+            (* filter delimiters and normalize to uppercase *)
+            let normalized_seq = 
+              chars
+              |> Seq.filter is_alphanumeric
+              |> Seq.map Char.uppercase_ascii
+            in
+            let normalized_str = String.of_seq normalized_seq in
+            
+            (* validate length boundaries *)
+            match String.length normalized_str with
+            | 0 -> Error "Trailing garbage or invalid delimiters found after HS6 prefix"
+            | len when len > 16 -> Error "Flattened extension exceeds 16-character ceiling"
+            | _ -> Ok (Some normalized_str)
+      in
+
+      (* put it as a string in the data structure *)
+      let* extension_opt = parse_extension raw_extension in
+      let* extension = 
+        match extension_opt with
+        | None -> Ok None
+        | Some e -> Extension.of_string e
+      in
+
+      Ok { chapter; heading; subheading; extension }
 
 let of_string_exn s = match of_string s with Ok t -> t | Error msg -> failwith msg
 
