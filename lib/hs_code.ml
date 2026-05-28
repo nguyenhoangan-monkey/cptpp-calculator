@@ -74,49 +74,15 @@ end)
 *)
 module Extension : sig
   type t
-
-  val of_string : string -> (t option, string) result
+  val of_string : string -> (t, string) result
   val to_string : t -> string
 end = struct
   type t = string
-
-  let is_alphanum = function
-    | '0' .. '9' | 'A' .. 'Z' -> true
-    | _ -> false
-
-  let is_delimiter = function 
-    | '[' | ']' | '(' | ')' | '-' | '/' | ':' | '_' | '.' -> true
-    | _ -> false
-
-  let is_valid_char c = 
-    is_alphanum c || is_delimiter c
   
-  (* in-place check of delimiters at last character *)
-  let is_valid_last_char c =
-    is_alphanum c || c = ']' || c = ')'
-
   let of_string s =
-    match String.length s with
-    | 0 -> Ok None
-    | 1 -> 
-        let c = String.get s 0 in
-        if is_alphanum c then Ok (Some s)
-        else Error "Single-character extension must be alphanumeric"
-    | len when len >= 2 && len <= 16 ->
-        let first_char = String.get s 0 in
-        let last_char = String.get s (len - 1) in
-        
-        if not (is_alphanum first_char) then
-          Error "Extension must start with an alphanumeric character"
-        else if not (is_valid_last_char last_char) then
-          Error "Extension cannot end with a structural divider"
-        else
-          let remaining_seq = String.to_seq s |> Seq.drop 1 in
-          if Seq.for_all is_valid_char remaining_seq then
-            Ok (Some s)
-          else
-            Error "Extension contains invalid characters or forbidden whitespaces"
-    | _ -> Error "Extension exceeded 16 characters"
+    if String.length s = 0 then Error "Extension cannot be empty"
+    else if String.length s > 16 then Error "Extension exceeded 16 characters"
+    else Ok s
 
   let to_string t = t
 end
@@ -381,7 +347,9 @@ let of_string raw_s =
       let* extension = 
         match extension_opt with
         | None -> Ok None
-        | Some e -> Extension.of_string e
+        | Some e -> 
+            let* valid_ext = Extension.of_string e in
+            Ok (Some valid_ext)
       in
 
       Ok { chapter; heading; subheading; extension }
