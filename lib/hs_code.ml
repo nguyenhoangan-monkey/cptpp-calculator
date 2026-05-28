@@ -285,10 +285,20 @@ let validate_and_strip_nulls raw_s =
 
    Aka, no custom data forms would accept "23
    3452" (23\n3452) as a valid HS code.
+
+   Thus I added two guards: one for string length, one for null bytes.
 *)
 let of_string raw_s =
   let open Result.Syntax in
 
+  (* GUARD 1: O(1) Quick length check to prevent memory/CPU resource exhaustion *)
+  let* () =
+    if String.length raw_s > 128 then
+      Error "Malformed HS code: string exceeds maximum length (128 characters)"
+    else Ok ()
+  in
+
+  (* GUARD 2: Scan for embedded C null bytes *)
   let* clean_s = validate_and_strip_nulls raw_s in
 
   (* First parse the prefix to a 6 digit prefix, then match the error *)
