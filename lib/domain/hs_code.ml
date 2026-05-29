@@ -154,9 +154,8 @@ let classify_delims str =
         | _ -> (s, d, u, pt, sl))
       (0, 0, 0, 0, 0) str
   in
-  let dot_slash = dots + slashes in
 
-  match (spaces, dashes, underscores, dot_slash) with
+  match (spaces, dashes, underscores, dots + slashes) with
   | _, 0, 0, 0 -> Ok Chunk.Space
   | 0, 0, 0, 1 -> Ok Chunk.Slash_dot
   | 0, d, 0, 0 when d > 0 -> Ok Chunk.Dash
