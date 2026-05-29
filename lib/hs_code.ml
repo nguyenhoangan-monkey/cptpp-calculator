@@ -9,34 +9,24 @@ end
 (* Note: single digit printed and string are explicitly disallowed in HS code *)
 module Bounded_int (Config : Bounded_int_config) : sig
   type t
-
   val of_string : string -> (t, string) result
   val to_int : t -> int
 end = struct
   type t = int
 
   let of_string s =
-    let open Result.Syntax in
-
-    let* () =
-      if String.length s = 2 then Ok ()
-      else Error (Printf.sprintf "%s segment must be exactly 2 characters long (received %S)" Config.name s)
-    in
-    let* c1 = match s.[0] with
-      | '0' .. '9' as c -> Ok c
-      | _ -> Error (Printf.sprintf "Invalid character %C in %s segment; must be a digit" s.[0] Config.name)
-    in
-    let* c2 = match s.[1] with
-      | '0' .. '9' as c -> Ok c
-      | _ -> Error (Printf.sprintf "Invalid character %C in %s segment; must be a digit" s.[1] Config.name)
-    in
-
-    let n = (int_of_char c1 - 48) * 10 + (int_of_char c2 - 48) in
-    if n >= Config.min && n <= Config.max then
-      Ok n
+    if String.length s <> 2 then
+      Error (Printf.sprintf "%s segment must be exactly 2 characters long (received %S)" Config.name s)
     else
-      Error (Printf.sprintf "%s value %02d is out of bounds (must be between %02d and %02d)"
-               Config.name n Config.min Config.max)
+      match s.[0], s.[1] with
+      | ('0'..'9' as c1), ('0'..'9' as c2) ->
+          let n = (int_of_char c1 - 48) * 10 + (int_of_char c2 - 48) in
+          if n >= Config.min && n <= Config.max then Ok n
+          else Error (Printf.sprintf "%s value %02d is out of bounds (must be between %02d and %02d)"
+                     Config.name n Config.min Config.max)
+
+      | _, _ ->
+          Error (Printf.sprintf "Invalid character in %s segment; must be a digit" Config.name)
 
   let to_int n = n
 end
@@ -163,38 +153,30 @@ let tokens_of_unicode unicode_stream =
   in
   loop [] [] `None 6 unicode_stream
 
+(* Classify other strings as delimiter tokens *)
 let classify_delims str =
-  let open Result.Syntax in
-
-  let tally_step acc char =
-    let* (dashes, underscores, dots) = acc in
-    match char with
-    | ' ' -> Ok (dashes, underscores, dots)
-    | '-' -> Ok (dashes + 1, underscores, dots)
-    | '_' -> Ok (dashes, underscores + 1, dots)
-    | '.' | '/' -> Ok (dashes, underscores, dots + 1)
-    | _ -> Error "Unrecognized delimiter character"
+  let count c =
+    let rec loop acc i =
+      (* If we've reached the end of the string, return our accumulated count *)
+      if i >= String.length str then 
+        acc
+      else
+        (* Check the character at the current index *)
+        match str.[i] with
+        | x when x = c -> loop (acc + 1) (i + 1)
+        | _            -> loop acc       (i + 1)
+    in
+    loop 0 0
   in
 
-  (* tally number of dashes, underscores and dot+slash *)
-  let* (dashes, underscores, dots_slashes) = 
-    String.fold_left tally_step (Ok (0, 0, 0)) str 
-  in
-
-  match (dashes, underscores, dots_slashes) with
-  (* accepted states *)
-  | (0, 0, 0) -> Ok Chunk.Space
-  | (0, 0, 1) -> Ok Chunk.Slash_dot
-  | (d, 0, 0) when d > 0 -> Ok Chunk.Dash
-  | (0, u, 0) when u > 0 -> Ok Chunk.Dash
-
-  (* rejected states *)
-  | (d, u, _) when d > 0 && u > 0 -> 
-      Error "Illegal sequence: Cannot mix '-' and '_' in the same delimiter block"
-  | (_, _, dot) when dot > 1 -> 
-      Error "Illegal sequence: Consecutive or multiple '.' or '/' characters"
-  | _ -> 
-      Error "Illegal sequence: Cannot mix dashes with '.' or '/'"
+  match (count ' ', count '-', count '_', count '.' + count '/') with
+  | (_, 0, 0, 0) -> Ok Chunk.Space
+  | (0, 0, 0, 1) -> Ok Chunk.Slash_dot
+  | (0, d, 0, 0) when d > 0 -> Ok Chunk.Dash
+  | (0, 0, u, 0) when u > 0 -> Ok Chunk.Dash
+  | (_, d, u, _) when d > 0 && u > 0 -> Error "Illegal sequence: Cannot mix '-' and '_'"
+  | (_, _, _, dot) when dot > 1 -> Error "Illegal sequence: Consecutive or multiple '.' or '/'"
+  | _ -> Error "Illegal sequence: Cannot mix dashes with '.' or '/'"
 
 let chunks_of_tokens tokens =
   let open Result.Syntax in
@@ -216,6 +198,7 @@ let chunks_of_tokens tokens =
   loop [] tokens
 
 (* Essentially is a list of all acceptable formats *)
+(* Aka this is a compiler *)
 let prefix_of_chunks chunks digit_strings =
   let open Result.Syntax in
   
@@ -268,53 +251,29 @@ type bracket_context =
 (* The caller has the responsibility to enforce data hierarchy. *)
 (* because of it, we use a state machine. *)
 let clean_of_tokens uchars =
-  let rec loop ctx streak chars =
-    match chars with
-    | [] ->
-        (match ctx with
-         | Outside -> Ok uchars
-         | Inside _ -> Error "Unclosed bracket at end of extension")
+  let rec loop ctx streak = function
+    | [] -> if ctx = Outside then Ok uchars else Error "Unclosed bracket at end"
     | u :: rest ->
         let code = Uchar.to_int u in
-        if code > 127 then
-          Error "Multi-byte/Non-ASCII characters are not allowed"
-        else
-          let c = Char.chr code in
-          match c with
-          | ' ' ->
-              loop ctx streak rest
-
-          | 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' ->
-              let next_ctx = match ctx with
-                | Outside -> Outside
-                | Inside (close, _) -> Inside (close, true)
-              in
-              loop next_ctx None rest
-
-          | '[' | '(' ->
-              (match ctx with
-              | Inside _ -> Error "Nested brackets are not allowed"
-              | Outside ->
-                  let expected_close = if c = '[' then ']' else ')' in
-                  loop (Inside (expected_close, false)) None rest)
-
-          | ']' | ')' ->
-              (match ctx with
-              | Outside -> Error "Unmatched closing bracket"
-              | Inside (expected, has_alnum) ->
-                  if c <> expected then Error "Mismatched closing bracket type"
-                  else if not has_alnum then Error "Bracket contains no alphanumeric characters"
-                  else loop Outside None rest)
-
-          | '-' | '/' | ':' | '_' | '.' ->
-              (match streak with
-              | Some last_delim when c <> last_delim -> 
-                  Error "Heterogeneous continuous delimiters detected"
-              | _ -> 
-                  loop ctx (Some c) rest)
-
-          | _ ->
-              Error (Printf.sprintf "Invalid character '%c' in extension" c)
+        if code > 127 then Error "Non-ASCII characters not allowed"
+        else match Char.chr code with
+        | ' ' -> loop ctx streak rest
+        | 'A'..'Z' | 'a'..'z' | '0'..'9' -> 
+            let next_ctx = match ctx with Inside (c, _) -> Inside (c, true) | Outside -> Outside in
+            loop next_ctx None rest
+        | ('[' | '(') as c -> 
+            if ctx <> Outside then Error "Nested brackets not allowed" 
+            else loop (Inside ((if c = '[' then ']' else ')'), false)) None rest
+        | (']' | ')') as c ->
+            (match ctx with
+             | Inside (exp, true) when c = exp -> loop Outside None rest
+             | Inside (_, false) -> Error "Bracket contains no alphanumeric characters"
+             | _ -> Error "Mismatched or unmatched closing bracket")
+        | ('-' | '/' | ':' | '_' | '.') as c ->
+            if Option.fold ~none:false ~some:(fun last -> c <> last) streak then 
+              Error "Heterogeneous continuous delimiters detected"
+            else loop ctx (Some c) rest
+        | c -> Error (Printf.sprintf "Invalid character '%c' in extension" c)
   in
   loop Outside None uchars
 
