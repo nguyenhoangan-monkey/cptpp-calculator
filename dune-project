@@ -24,7 +24,7 @@
   (ocaml
    (>= 5.4.0))
   zarith
+  uutf
   (alcotest :with-test)
   (qcheck :with-test)
-  (qcheck-alcotest :with-test)
-  (afl-persistent :with-test)))
+  (qcheck-alcotest :with-test)))

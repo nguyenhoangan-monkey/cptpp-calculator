@@ -13,11 +13,10 @@ depends: [
   "dune" {>= "3.23"}
   "ocaml" {>= "5.4.0"}
   "zarith"
+  "uutf"
   "alcotest" {with-test}
   "qcheck" {with-test}
   "qcheck-alcotest" {with-test}
-  "crowbar" {with-test}
-  "afl-persistent" {with-test}
   "odoc" {with-doc}
 ]
 build: [
