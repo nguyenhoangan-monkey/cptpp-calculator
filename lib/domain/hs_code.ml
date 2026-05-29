@@ -16,18 +16,18 @@ end = struct
   type t = int
 
   let of_string s =
-    if String.length s <> 2 then
-      Error (Printf.sprintf "%s segment must be exactly 2 characters long (received %S)" Config.name s)
-    else
-      match (s.[0], s.[1]) with
-      | ('0' .. '9' as c1), ('0' .. '9' as c2) ->
-          let n = ((int_of_char c1 - 48) * 10) + (int_of_char c2 - 48) in
-          if n >= Config.min && n <= Config.max then Ok n
-          else
-            Error
-              (Printf.sprintf "%s value %02d is out of bounds (must be between %02d and %02d)" Config.name n Config.min
-                 Config.max)
-      | _, _ -> Error (Printf.sprintf "Invalid character in %s segment; must be a digit" Config.name)
+    match String.length s with
+    | 2 -> (
+        match (s.[0], s.[1]) with
+        | ('0' .. '9' as c1), ('0' .. '9' as c2) ->
+            let n = ((int_of_char c1 - 48) * 10) + (int_of_char c2 - 48) in
+            if n >= Config.min && n <= Config.max then Ok n
+            else
+              Error
+                (Printf.sprintf "%s value %02d is out of bounds (must be between %02d and %02d)" Config.name n
+                   Config.min Config.max)
+        | _, _ -> Error (Printf.sprintf "Invalid character in %s segment; must be a digit" Config.name))
+    | _ -> Error (Printf.sprintf "%s segment must be exactly 2 characters long (received %S)" Config.name s)
 
   let to_int n = n
 end
@@ -106,10 +106,11 @@ let tokens_of_unicode unicode_stream =
   (* converts char list to string, *)
   (* wraps it in the correct token type, and appends to list *)
   let flush state chars acc_list =
-    if chars = [] then acc_list
-    else
-      let str = chars |> List.rev |> List.to_seq |> String.of_seq in
-      match state with `Digits -> Digits str :: acc_list | `Delims -> Delims str :: acc_list | `None -> acc_list
+    match chars with
+    | [] -> acc_list
+    | _ -> (
+        let str = chars |> List.rev |> List.to_seq |> String.of_seq in
+        match state with `Digits -> Digits str :: acc_list | `Delims -> Delims str :: acc_list | `None -> acc_list)
   in
 
   let rec loop acc_list current_chars state digits_needed stream =
@@ -298,12 +299,10 @@ let extension_of_tokens uchars =
   (* acc holds the characters in reverse order, count tracks length dynamically *)
   let rec loop acc count chars =
     match chars with
-    | [] ->
-        begin match count with
-        | 0 -> Ok None
-        | c when c > 16 -> Error "Flattened extension exceeds 16-character ceiling"
-        | _ -> Ok (Some (String.of_seq (List.to_seq (List.rev acc))))
-        end
+    | [] -> (
+        if count > 16 then Error "Flattened extension exceeds 16-character ceiling"
+        else
+          match count with 0 -> Ok None | _ -> acc |> List.rev |> List.to_seq |> String.of_seq |> fun s -> Ok (Some s))
     | u :: rest -> (
         let c = Char.chr (Uchar.to_int u) in
         match c with
@@ -343,8 +342,9 @@ let of_string raw_s =
   let* clean_s =
     match String.index_from_opt raw_s 0 '\000' with
     | None -> Ok raw_s
-    | Some idx when idx = String.length raw_s - 1 -> Ok (String.sub raw_s 0 idx)
-    | Some idx -> Error (Printf.sprintf "Security Exception: Embedded null byte detected at position %d" idx)
+    | Some idx ->
+        if idx = String.length raw_s - 1 then Ok (String.sub raw_s 0 idx)
+        else Error (Printf.sprintf "Security Exception: Embedded null byte detected at position %d" idx)
   in
 
   let* input_str =
