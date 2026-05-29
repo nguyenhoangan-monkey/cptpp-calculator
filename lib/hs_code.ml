@@ -146,23 +146,22 @@ let tokens_of_unicode unicode_stream =
   in
   loop [] [] `None 6 unicode_stream
 
+
 (* Classify other strings as delimiter tokens *)
 let classify_delims str =
-  let count c =
-    let rec loop acc i =
-      (* If we've reached the end of the string, return our accumulated count *)
-      if i >= String.length str then 
-        acc
-      else
-        (* Check the character at the current index *)
-        match str.[i] with
-        | x when x = c -> loop (acc + 1) (i + 1)
-        | _            -> loop acc       (i + 1)
-    in
-    loop 0 0
+  let (spaces, dashes, underscores, dots, slashes) =
+    String.fold_left (fun (s, d, u, pt, sl) -> function
+      | ' ' -> (s+1, d, u, pt, sl)
+      | '-' -> (s, d+1, u, pt, sl)
+      | '_' -> (s, d, u+1, pt, sl)
+      | '.' -> (s, d, u, pt+1, sl)
+      | '/' -> (s, d, u, pt, sl+1)
+      | _   -> (s, d, u, pt, sl)
+    ) (0, 0, 0, 0, 0) str
   in
+  let dot_slash = dots + slashes in
 
-  match (count ' ', count '-', count '_', count '.' + count '/') with
+  match (spaces, dashes, underscores, dot_slash) with
   | (_, 0, 0, 0) -> Ok Chunk.Space
   | (0, 0, 0, 1) -> Ok Chunk.Slash_dot
   | (0, d, 0, 0) when d > 0 -> Ok Chunk.Dash
@@ -170,6 +169,7 @@ let classify_delims str =
   | (_, d, u, _) when d > 0 && u > 0 -> Error "Illegal sequence: Cannot mix '-' and '_'"
   | (_, _, _, dot) when dot > 1 -> Error "Illegal sequence: Consecutive or multiple '.' or '/'"
   | _ -> Error "Illegal sequence: Cannot mix dashes with '.' or '/'"
+
 
 let chunks_of_tokens tokens =
   let open Result.Syntax in
@@ -190,48 +190,37 @@ let chunks_of_tokens tokens =
   in
   loop [] tokens
 
+
 (* Essentially is a list of all acceptable formats *)
-(* Aka this is a compiler *)
 let prefix_of_chunks chunks digit_strings =
   let open Result.Syntax in
   
-  match chunks, digit_strings with
-  (* 1 2 3 4 5 6 *)
-  | [Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1], [c1; c2; h1; h2; s1; s2] ->
-      let* chapter    = Chapter.of_string (c1 ^ c2) in
-      let* heading    = Heading.of_string (h1 ^ h2) in
-      let* subheading = Subheading.of_string (s1 ^ s2) in
-      Ok (chapter, heading, subheading)
+  let* (c_raw, h_raw, s_raw) =
+    match chunks, digit_strings with
+    (* 1 2 3 4 5 6 *)
+    | [Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1], [c1; c2; h1; h2; s1; s2] ->
+        Ok (c1 ^ c2, h1 ^ h2, s1 ^ s2)
 
-  (* 12-34-56 *)
-  | [Chunk.C2; Chunk.Dash; Chunk.C2; Chunk.Dash; Chunk.C2], [c_str; h_str; s_str] ->
-      let* chapter    = Chapter.of_string c_str in
-      let* heading    = Heading.of_string h_str in
-      let* subheading = Subheading.of_string s_str in
-      Ok (chapter, heading, subheading)
+    (* 12-34-56 *)
+    | [Chunk.C2; Chunk.Dash; Chunk.C2; Chunk.Dash; Chunk.C2], [c_str; h_str; s_str] ->
+        Ok (c_str, h_str, s_str)
 
-  (* 1234.56 *)
-  | [Chunk.C4; Chunk.Slash_dot; Chunk.C2], [c_str; s_str] ->
-      let c_raw = String.sub c_str 0 2 in
-      let h_raw = String.sub c_str 2 2 in
-      let* chapter    = Chapter.of_string c_raw in
-      let* heading    = Heading.of_string h_raw in
-      let* subheading = Subheading.of_string s_str in
-      Ok (chapter, heading, subheading)
+    (* 1234.56 *)
+    | [Chunk.C4; Chunk.Slash_dot; Chunk.C2], [c_str; s_str] ->
+        Ok (String.sub c_str 0 2, String.sub c_str 2 2, s_str)
 
-  (* 123456 *)
-  | [Chunk.C6], [c_str] ->
-      let c_raw = String.sub c_str 0 2 in
-      let h_raw = String.sub c_str 2 2 in
-      let s_raw = String.sub c_str 4 2 in
-      let* chapter    = Chapter.of_string c_raw in
-      let* heading    = Heading.of_string h_raw in
-      let* subheading = Subheading.of_string s_raw in
-      Ok (chapter, heading, subheading)
+    (* 123456 *)
+    | [Chunk.C6], [c_str] ->
+        Ok (String.sub c_str 0 2, String.sub c_str 2 2, String.sub c_str 4 2)
 
-  | _ -> 
-      Error "Layout configuration is mathematically forbidden or incorrectly sized"
-  
+    | _ -> 
+        Error "Layout configuration is mathematically forbidden or incorrectly sized"
+  in
+
+  let* chapter    = Chapter.of_string c_raw in
+  let* heading    = Heading.of_string h_raw in
+  let* subheading = Subheading.of_string s_raw in
+  Ok (chapter, heading, subheading)  
 
 
 (***** HS CODE EXTENSION (12.34.56-789AB) PARSING ******)
@@ -262,7 +251,7 @@ let clean_of_tokens uchars =
              | Inside (_, false) -> Error "Bracket contains no alphanumeric characters"
              | _ -> Error "Mismatched or unmatched closing bracket")
         | ('-' | '/' | ':' | '_' | '.') as c ->
-            if Option.fold ~none:false ~some:(fun last -> c <> last) streak then 
+            if streak <> None && streak <> Some c then 
               Error "Heterogeneous continuous delimiters detected"
             else loop ctx (Some c) rest
         | c -> Error (Printf.sprintf "Invalid character '%c' in extension" c)
