@@ -392,9 +392,9 @@ let to_string { chapter; heading; subheading; extension } =
   let s = Subheading.to_int subheading in
   match extension with
   | None -> Printf.sprintf "%02d.%02d.%02d" c h s
-  | Some e ->
-      let e_str = Extension.to_string e in
-      Printf.sprintf "%02d.%02d.%02d.%s" c h s e_str
+  | Some ext ->
+      let e = Extension.to_string ext in
+      Printf.sprintf "%02d.%02d.%02d-%s" c h s e
 
 let pp ppf t = Format.pp_print_string ppf (to_string t)
 
