@@ -158,11 +158,11 @@ let classify_delims str =
 
   match (spaces, dashes, underscores, dots + slashes) with
   | _, 0, 0, 0 -> Ok Chunk.Space
-  | 0, 0, 0, 1 -> Ok Chunk.Slash_dot
-  | 0, d, 0, 0 when d > 0 -> Ok Chunk.Dash
-  | 0, 0, u, 0 when u > 0 -> Ok Chunk.Dash
+  | _, 0, 0, 1 -> Ok Chunk.Slash_dot
+  | _, d, 0, 0 when d > 0 -> Ok Chunk.Dash
+  | _, 0, u, 0 when u > 0 -> Ok Chunk.Dash
   | _, d, u, _ when d > 0 && u > 0 -> Error "Illegal sequence: Cannot mix '-' and '_'"
-  | _, _, _, dot when dot > 1 -> Error "Illegal sequence: Consecutive or multiple '.' or '/'"
+  | _, _, _, s when s > 1 -> Error "Illegal sequence: Consecutive or multiple '.' or '/'"
   | _ -> Error "Illegal sequence: Cannot mix dashes with '.' or '/'"
 
 let chunks_of_tokens tokens =
@@ -325,8 +325,6 @@ let extension_of_tokens uchars =
    Aka, no custom data forms would accept "23
    3452" (23\n3452) as a valid HS code.
 
-   Thus I added two guards: one for string length, one for null bytes.
-   Then I parse it to unicode tokens to consume.
 *)
 let of_string raw_s =
   (* Guards and preprocessing *)
