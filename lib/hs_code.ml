@@ -197,30 +197,72 @@ let prefix_of_chunks chunks digit_strings =
   
   let* (c_raw, h_raw, s_raw) =
     match chunks, digit_strings with
-    (* 1 2 3 4 5 6 *)
-    | [Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1; _; Chunk.C1], [c1; c2; h1; h2; s1; s2] ->
+    (** ANY VALID DELIMITERS (Dash, Slash_dot, Space) **)
+    (* [2; 2; 2] -> e.g., 12.34.56 or 12-34-56 *)
+    | [Chunk.C2; _; Chunk.C2; _; Chunk.C2], [c; h; s] ->
+        Ok (c, h, s)
+
+    (* [2; 4] -> e.g., 12.3456 *)
+    | [Chunk.C2; _; Chunk.C4], [c; hs] ->
+        Ok (c, String.sub hs 0 2, String.sub hs 2 2)
+
+    (* [4; 2] -> e.g., 1234.56 *)
+    | [Chunk.C4; _; Chunk.C2], [ch; s] ->
+        Ok (String.sub ch 0 2, String.sub ch 2 2, s)
+
+    (* [6] -> e.g., 123456 *)
+    | [Chunk.C6], [chs] ->
+        Ok (String.sub chs 0 2, String.sub chs 2 2, String.sub chs 4 2)
+
+
+    (** STRONGLY ENFORCED AS ONLY SPACES (Granular partitions) **)
+    (* [1; 1; 1; 1; 1; 1] -> 1 2 3 4 5 6 *)
+    | [Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1], [c1; c2; h1; h2; s1; s2] ->
         Ok (c1 ^ c2, h1 ^ h2, s1 ^ s2)
 
-    (* 12-34-56 *)
-    | [Chunk.C2; Chunk.Dash; Chunk.C2; Chunk.Dash; Chunk.C2], [c_str; h_str; s_str] ->
-        Ok (c_str, h_str, s_str)
+    (* [1; 1; 1; 1; 2] -> 1 2 3 4 56 *)
+    | [Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C2], [c1; c2; h1; h2; s] ->
+        Ok (c1 ^ c2, h1 ^ h2, s)
 
-    (* 1234.56 *)
-    | [Chunk.C4; Chunk.Slash_dot; Chunk.C2], [c_str; s_str] ->
-        Ok (String.sub c_str 0 2, String.sub c_str 2 2, s_str)
+    (* [1; 1; 2; 1; 1] -> 1 2 34 5 6 *)
+    | [Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C2; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1], [c1; c2; h; s1; s2] ->
+        Ok (c1 ^ c2, h, s1 ^ s2)
 
-    (* 123456 *)
-    | [Chunk.C6], [c_str] ->
-        Ok (String.sub c_str 0 2, String.sub c_str 2 2, String.sub c_str 4 2)
+    (* [1; 1; 2; 2] -> 1 2 34 56 *)
+    | [Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C2; Chunk.Space; Chunk.C2], [c1; c2; h; s] ->
+        Ok (c1 ^ c2, h, s)
 
+    (* [1; 1; 4] -> 1 2 3456 *)
+    | [Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C4], [c1; c2; hs] ->
+        Ok (c1 ^ c2, String.sub hs 0 2, String.sub hs 2 2)
+
+    (* [2; 1; 1; 1; 1] -> 12 3 4 5 6 *)
+    | [Chunk.C2; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1], [c; h1; h2; s1; s2] ->
+        Ok (c, h1 ^ h2, s1 ^ s2)
+
+    (* [2; 1; 1; 2] -> 12 3 4 56 *)
+    | [Chunk.C2; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C2], [c; h1; h2; s] ->
+        Ok (c, h1 ^ h2, s)
+
+    (* [2; 2; 1; 1] -> 12 34 5 6 *)
+    | [Chunk.C2; Chunk.Space; Chunk.C2; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1], [c; h; s1; s2] ->
+        Ok (c, h, s1 ^ s2)
+
+    (* [4; 1; 1] -> 1234 5 6 *)
+    | [Chunk.C4; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1], [ch; s1; s2] ->
+        Ok (String.sub ch 0 2, String.sub ch 2 2, s1 ^ s2)
+
+
+    (** CATCH-ALL FOR MALFORMED PATTERNS **)
     | _ -> 
         Error "Layout configuration is mathematically forbidden or incorrectly sized"
   in
 
+  (* Single domain validation step *)
   let* chapter    = Chapter.of_string c_raw in
   let* heading    = Heading.of_string h_raw in
   let* subheading = Subheading.of_string s_raw in
-  Ok (chapter, heading, subheading)  
+  Ok (chapter, heading, subheading)
 
 
 (***** HS CODE EXTENSION (12.34.56-789AB) PARSING ******)
