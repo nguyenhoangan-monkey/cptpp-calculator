@@ -165,6 +165,11 @@ let generate_akita_neru_tree api_data_thunk underlying_miku_tree =
 ```
 
 ## Notes
+Functions that has been fuzzed and semantically verified at [cptpp-fuzz](https://github.com/nguyenhoangan-monkey/cptpp-fuzz):
+- lib
+  - domain
+    - [hs_code.ml](https://github.com/nguyenhoangan-monkey/cptpp-fuzz/releases/tag/hs_code.ml)
+
 this is for trees: `tree -I "_build|_opam|*.install|dune.lock"`
 
 first I need to convert json of tariffs.
