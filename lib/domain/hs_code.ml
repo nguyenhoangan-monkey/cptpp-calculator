@@ -1,3 +1,6 @@
+(* FUNCTION HAS BEEN FUZZED AND VERIFIED AT *)
+(* https://github.com/nguyenhoangan-monkey/cptpp-fuzz/releases/tag/hs_code.ml *)
+
 (* HS CODE FUNCTORS AND TYPES *)
 module type Bounded_int_config = sig
   val min : int
