@@ -87,7 +87,7 @@ type t = { chapter : Chapter.t; heading : Heading.t; subheading : Subheading.t; 
 (* HS CODE PREFIX (12.34.56) PARSING *)
 (* chunk denote digits next to each other *)
 module Chunk = struct
-  type t = C1 | C2 | C4 | C6 | Space | Dash | Slash_dot
+  type t = C1 | C2 | C4 | C6 | Space | Dash | Slash | Dot
 end
 
 type prefix_token = Digits of string | Delims of string
@@ -115,23 +115,20 @@ let tokenizer unicode_stream =
         match stream with
         | [] -> Error "Input ended before 6 digits were collected"
         | u :: rest -> (
-            let code = Uchar.to_int u in
-            if code > 127 then Error "Multi-byte/Non-ASCII characters are not allowed"
-            else
-              match Uchar.to_char u with
-              | '0' .. '9' as d -> (
-                  match state with
-                  | `Digits | `None -> loop acc_list (d :: current_chars) `Digits (digits_needed - 1) rest
-                  | `Delims ->
-                      let new_list = flush state current_chars acc_list in
-                      loop new_list [ d ] `Digits (digits_needed - 1) rest)
-              | (' ' | '_' | '-' | '.' | '/') as c -> (
-                  match state with
-                  | `Delims | `None -> loop acc_list (c :: current_chars) `Delims digits_needed rest
-                  | `Digits ->
-                      let new_list = flush state current_chars acc_list in
-                      loop new_list [ c ] `Delims digits_needed rest)
-              | _ -> Error "Illegal character in prefix"))
+            match Uchar.to_char u with
+            | '0' .. '9' as d -> (
+                match state with
+                | `Digits | `None -> loop acc_list (d :: current_chars) `Digits (digits_needed - 1) rest
+                | `Delims ->
+                    let new_list = flush state current_chars acc_list in
+                    loop new_list [ d ] `Digits (digits_needed - 1) rest)
+            | (' ' | '_' | '-' | '.' | '/') as c -> (
+                match state with
+                | `Delims | `None -> loop acc_list (c :: current_chars) `Delims digits_needed rest
+                | `Digits ->
+                    let new_list = flush state current_chars acc_list in
+                    loop new_list [ c ] `Delims digits_needed rest)
+            | _ -> Error "Illegal character in prefix"))
   in
   loop [] [] `None 6 unicode_stream
 
@@ -158,14 +155,26 @@ let chunks_of_tokens tokens =
         (0, 0, 0, 0, 0) str
     in
 
-    match (spaces, dashes, underscores, dots + slashes) with
-    | _, 0, 0, 0 -> Ok Chunk.Space
-    | _, 0, 0, 1 -> Ok Chunk.Slash_dot
-    | _, d, 0, 0 when d > 0 -> Ok Chunk.Dash
-    | _, 0, u, 0 when u > 0 -> Ok Chunk.Dash
-    | _, d, u, _ when d > 0 && u > 0 -> Error "Illegal sequence: Cannot mix '-' and '_'"
-    | _, _, _, s when s > 1 -> Error "Illegal sequence: Consecutive or multiple '.' or '/'"
-    | _ -> Error "Illegal sequence: Cannot mix dashes with '.' or '/'"
+    (* structural validations, then check count, then pattern match *)
+    (* notice that dot and slash count is hardcoded as 1 *)
+    if dots > 1 || slashes > 1 then Error "Illegal sequence: Consecutive or multiple '.' or '/'"
+    else if dots > 0 && slashes > 0 then Error "Illegal sequence: Cannot mix '.' and '/'"
+    else if dashes > 0 && underscores > 0 then Error "Illegal sequence: Cannot mix '-' and '_'"
+    else if (dashes > 0 || underscores > 0) && (dots > 0 || slashes > 0) then
+      Error "Illegal sequence: Cannot mix dashes/underscores with '.' or '/'"
+    else if (dashes > 0 || underscores > 0) && (dots > 0 || slashes > 0) then
+      Error "Illegal sequence: Cannot mix dashes/underscores with '.' or '/'"
+    else if spaces > 6 then Error "Illegal sequence: Too many space characters (more than 6)"
+    else if dashes > 3 then Error "Illegal sequence: Too many dashes (more than 3)"
+    else if underscores > 3 then Error "Illegal sequence: Too many underscores (more than 3)"
+    else
+      match (dashes, underscores, dots, slashes) with
+      | 0, 0, 0, 0 -> Ok Chunk.Space
+      | 0, 0, 1, 0 -> Ok Chunk.Dot
+      | 0, 0, 0, 1 -> Ok Chunk.Slash
+      | _, 0, 0, 0 -> Ok Chunk.Dash
+      | 0, _, 0, 0 -> Ok Chunk.Dash
+      | _ -> Error "Unhandled sequence state"
   in
 
   let open Result.Syntax in
@@ -241,26 +250,24 @@ let clean_of_tokens uchars =
   let rec loop ctx streak = function
     | [] -> if ctx = Outside then Ok uchars else Error "Unclosed bracket at end"
     | u :: rest -> (
-        let code = Uchar.to_int u in
-        if code > 127 then Error "Non-ASCII characters not allowed"
-        else
-          match Char.chr code with
-          | ' ' -> loop ctx streak rest
-          | 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' ->
-              let next_ctx = match ctx with Inside (c, _) -> Inside (c, true) | Outside -> Outside in
-              loop next_ctx None rest
-          | ('[' | '(') as c ->
-              if ctx <> Outside then Error "Nested brackets not allowed"
-              else loop (Inside ((if c = '[' then ']' else ')'), false)) None rest
-          | (']' | ')') as c -> (
-              match ctx with
-              | Inside (exp, true) when c = exp -> loop Outside None rest
-              | Inside (_, false) -> Error "Bracket contains no alphanumeric characters"
-              | _ -> Error "Mismatched or unmatched closing bracket")
-          | ('-' | '/' | ':' | '_' | '.') as c ->
-              if streak <> None && streak <> Some c then Error "Heterogeneous continuous delimiters detected"
-              else loop ctx (Some c) rest
-          | c -> Error (Printf.sprintf "Invalid character '%c' in extension" c))
+        let c = Uchar.to_char u in
+        match c with
+        | ' ' -> loop ctx streak rest
+        | 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' ->
+            let next_ctx = match ctx with Inside (c, _) -> Inside (c, true) | Outside -> Outside in
+            loop next_ctx None rest
+        | ('[' | '(') as c ->
+            if ctx <> Outside then Error "Nested brackets not allowed"
+            else loop (Inside ((if c = '[' then ']' else ')'), false)) None rest
+        | (']' | ')') as c -> (
+            match ctx with
+            | Inside (exp, true) when c = exp -> loop Outside None rest
+            | Inside (_, false) -> Error "Bracket contains no alphanumeric characters"
+            | _ -> Error "Mismatched or unmatched closing bracket")
+        | ('-' | '/' | ':' | '_' | '.') as c ->
+            if streak <> None && streak <> Some c then Error "Heterogeneous continuous delimiters detected"
+            else loop ctx (Some c) rest
+        | c -> Error (Printf.sprintf "Invalid character '%c' in extension" c))
   in
   loop Outside None uchars
 
@@ -306,7 +313,7 @@ let of_string raw_s =
   (* Guards and preprocessing *)
   (* 1. no strings longer than >128 characters *)
   (* 2. allow \0 inside the string, but only at the very end *)
-  (* 3. Turn raw string into an atomic UTF-8 token stream *)
+  (* 3. Turn raw string into UTF-8, disallow multi-byte chars *)
   let open Result.Syntax in
   let* () =
     if String.length raw_s > 128 then Error "Input string length exceeds the maximum allowable limit of 128 characters"
@@ -328,7 +335,9 @@ let of_string raw_s =
       | `Await -> Error "Unexpected streaming block"
       | `Malformed _ -> Error "Input contains invalid UTF-8 byte sequences"
       | `End -> Ok (List.rev acc)
-      | `Uchar uchar -> decode_all (uchar :: acc)
+      | `Uchar uchar ->
+          let code = Uchar.to_int uchar in
+          if code > 127 then Error "Non-ASCII characters are not allowed" else decode_all (uchar :: acc)
     in
     decode_all []
   in
