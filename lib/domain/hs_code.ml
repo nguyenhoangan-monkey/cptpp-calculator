@@ -73,7 +73,7 @@ end = struct
 
   let of_string s =
     match String.length s with
-    | 0 -> Error "Extension cannot be empty"
+    | 0 -> Ok s
     | len when len > 16 -> Error "Extension exceeded 16 characters"
     | _ ->
         if String.for_all is_valid_char s then Ok s
@@ -82,19 +82,12 @@ end = struct
   let to_string t = t
 end
 
-type t = { chapter : Chapter.t; heading : Heading.t; subheading : Subheading.t; extension : Extension.t option }
+type t = { chapter : Chapter.t; heading : Heading.t; subheading : Subheading.t; extension : Extension.t }
 
 (* HS CODE PREFIX (12.34.56) PARSING *)
 (* chunk denote digits next to each other *)
 module Chunk = struct
   type t = C1 | C2 | C4 | C6 | Space | Dash | Slash_dot
-
-  let of_int = function
-    | 1 -> Ok C1
-    | 2 -> Ok C2
-    | 4 -> Ok C4
-    | 6 -> Ok C6
-    | n -> Error (Printf.sprintf "Invalid digit block size: %d" n)
 end
 
 type prefix_token = Digits of string | Delims of string
@@ -102,7 +95,7 @@ type prefix_token = Digits of string | Delims of string
 (* Consume exactly up to 6 digits from the input stream. It groups consecutive digits
 into strings, validates and skips delimiters, and immediately stops when it has seen
 6 digits, returning the unconsumed rest of the stream *)
-let tokens_of_unicode unicode_stream =
+let tokenizer unicode_stream =
   (* converts char list to string, *)
   (* wraps it in the correct token type, and appends to list *)
   let flush state chars acc_list =
@@ -143,103 +136,83 @@ let tokens_of_unicode unicode_stream =
   loop [] [] `None 6 unicode_stream
 
 (* Classify other strings as delimiter tokens *)
-let classify_delims str =
-  let spaces, dashes, underscores, dots, slashes =
-    String.fold_left
-      (fun (s, d, u, pt, sl) -> function
-        | ' ' -> (s + 1, d, u, pt, sl)
-        | '-' -> (s, d + 1, u, pt, sl)
-        | '_' -> (s, d, u + 1, pt, sl)
-        | '.' -> (s, d, u, pt + 1, sl)
-        | '/' -> (s, d, u, pt, sl + 1)
-        | _ -> (s, d, u, pt, sl))
-      (0, 0, 0, 0, 0) str
+let chunks_of_tokens tokens =
+  let chunk_of_int = function
+    | 1 -> Ok Chunk.C1
+    | 2 -> Ok Chunk.C2
+    | 4 -> Ok Chunk.C4
+    | 6 -> Ok Chunk.C6
+    | n -> Error (Printf.sprintf "Invalid digit block size: %d" n)
   in
 
-  match (spaces, dashes, underscores, dots + slashes) with
-  | _, 0, 0, 0 -> Ok Chunk.Space
-  | _, 0, 0, 1 -> Ok Chunk.Slash_dot
-  | _, d, 0, 0 when d > 0 -> Ok Chunk.Dash
-  | _, 0, u, 0 when u > 0 -> Ok Chunk.Dash
-  | _, d, u, _ when d > 0 && u > 0 -> Error "Illegal sequence: Cannot mix '-' and '_'"
-  | _, _, _, s when s > 1 -> Error "Illegal sequence: Consecutive or multiple '.' or '/'"
-  | _ -> Error "Illegal sequence: Cannot mix dashes with '.' or '/'"
+  let classify_delims str =
+    let spaces, dashes, underscores, dots, slashes =
+      String.fold_left
+        (fun (s, d, u, pt, sl) -> function
+          | ' ' -> (s + 1, d, u, pt, sl)
+          | '-' -> (s, d + 1, u, pt, sl)
+          | '_' -> (s, d, u + 1, pt, sl)
+          | '.' -> (s, d, u, pt + 1, sl)
+          | '/' -> (s, d, u, pt, sl + 1)
+          | _ -> (s, d, u, pt, sl))
+        (0, 0, 0, 0, 0) str
+    in
 
-let chunks_of_tokens tokens =
+    match (spaces, dashes, underscores, dots + slashes) with
+    | _, 0, 0, 0 -> Ok Chunk.Space
+    | _, 0, 0, 1 -> Ok Chunk.Slash_dot
+    | _, d, 0, 0 when d > 0 -> Ok Chunk.Dash
+    | _, 0, u, 0 when u > 0 -> Ok Chunk.Dash
+    | _, d, u, _ when d > 0 && u > 0 -> Error "Illegal sequence: Cannot mix '-' and '_'"
+    | _, _, _, s when s > 1 -> Error "Illegal sequence: Consecutive or multiple '.' or '/'"
+    | _ -> Error "Illegal sequence: Cannot mix dashes with '.' or '/'"
+  in
+
   let open Result.Syntax in
   let rec loop acc remaining_tokens =
     match remaining_tokens with
     | [] -> Ok (List.rev acc)
     | token :: rest ->
         let* next_chunk =
-          match token with
-          | Digits d ->
-              (* Map the length of the string to a Chunk (C1, C2, C4, C6) *)
-              Chunk.of_int (String.length d)
-          | Delims c ->
-              (* Apply our strict delimiter classification rules *)
-              classify_delims c
+          match token with Digits d -> chunk_of_int (String.length d) | Delims c -> classify_delims c
         in
         loop (next_chunk :: acc) rest
   in
   loop [] tokens
 
-(* Essentially is a list of all acceptable formats *)
-let prefix_of_chunks chunks digit_strings =
+let extract_prefix chunks prefix_tokens =
+  (* strip delimiters *)
+  let digit_strings = List.filter_map (function Digits s -> Some s | Delims _ -> None) prefix_tokens in
+
+  (* Essentially is a list of all acceptable formats *)
   let open Result.Syntax in
   let* c_raw, h_raw, s_raw =
+    let open Chunk in
     match (chunks, digit_strings) with
-    (* ANY VALID DELIMITERS (Dash, Slash_dot, Space) *)
-    (* [2; 2; 2] -> e.g., 12.34.56 or 12-34-56 *)
-    (* [4; 2] -> e.g., 1234.56 *)
-    (* [6] -> e.g., 123456 *)
-    | [ Chunk.C2; _; Chunk.C2; _; Chunk.C2 ], [ c; h; s ] -> Ok (c, h, s)
-    | [ Chunk.C4; _; Chunk.C2 ], [ ch; s ] -> Ok (String.sub ch 0 2, String.sub ch 2 2, s)
-    | [ Chunk.C6 ], [ chs ] -> Ok (String.sub chs 0 2, String.sub chs 2 2, String.sub chs 4 2)
-    (* STRONGLY ENFORCED AS ONLY SPACES (Granular partitions) *)
-    (* [1; 1; 1; 1; 1; 1] -> 1 2 3 4 5 6 *)
-    (* [1; 1; 1; 1; 2] -> 1 2 3 4 56 *)
-    (* [1; 1; 2; 1; 1] -> 1 2 34 5 6 *)
-    (* [1; 1; 2; 2] -> 1 2 34 56 *)
-    (* [1; 1; 4] -> 1 2 3456 *)
-    (* [2; 1; 1; 1; 1] -> 12 3 4 5 6 *)
-    (* [2; 1; 1; 2] -> 12 3 4 56 *)
-    (* [2; 2; 1; 1] -> 12 34 5 6 *)
-    (* [4; 1; 1] -> 1234 5 6 *)
-    | ( [
-          Chunk.C1;
-          Chunk.Space;
-          Chunk.C1;
-          Chunk.Space;
-          Chunk.C1;
-          Chunk.Space;
-          Chunk.C1;
-          Chunk.Space;
-          Chunk.C1;
-          Chunk.Space;
-          Chunk.C1;
-        ],
-        [ c1; c2; h1; h2; s1; s2 ] ) ->
-        Ok (c1 ^ c2, h1 ^ h2, s1 ^ s2)
-    | ( [ Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C2 ],
-        [ c1; c2; h1; h2; s ] ) ->
-        Ok (c1 ^ c2, h1 ^ h2, s)
-    | ( [ Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C2; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1 ],
-        [ c1; c2; h; s1; s2 ] ) ->
-        Ok (c1 ^ c2, h, s1 ^ s2)
-    | [ Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C2; Chunk.Space; Chunk.C2 ], [ c1; c2; h; s ] ->
-        Ok (c1 ^ c2, h, s)
-    | [ Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C4 ], [ c1; c2; hs ] ->
-        Ok (c1 ^ c2, String.sub hs 0 2, String.sub hs 2 2)
-    | ( [ Chunk.C2; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1 ],
-        [ c; h1; h2; s1; s2 ] ) ->
-        Ok (c, h1 ^ h2, s1 ^ s2)
-    | [ Chunk.C2; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C2 ], [ c; h1; h2; s ] ->
-        Ok (c, h1 ^ h2, s)
-    | [ Chunk.C2; Chunk.Space; Chunk.C2; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1 ], [ c; h; s1; s2 ] ->
-        Ok (c, h, s1 ^ s2)
-    | [ Chunk.C4; Chunk.Space; Chunk.C1; Chunk.Space; Chunk.C1 ], [ ch; s1; s2 ] ->
-        Ok (String.sub ch 0 2, String.sub ch 2 2, s1 ^ s2)
+    (* [2; 2; 2] *)
+    | [ C2; _; C2; _; C2 ], [ c; h; s ] -> Ok (c, h, s)
+    (* [4; 2] *)
+    | [ C4; _; C2 ], [ ch; s ] -> Ok (String.sub ch 0 2, String.sub ch 2 2, s)
+    (* [6] *)
+    | [ C6 ], [ chs ] -> Ok (String.sub chs 0 2, String.sub chs 2 2, String.sub chs 4 2)
+    (* [1; 1; 1; 1; 1; 1] *)
+    | [ C1; Space; C1; _; C1; Space; C1; _; C1; Space; C1 ], [ c1; c2; h1; h2; s1; s2 ] -> Ok (c1 ^ c2, h1 ^ h2, s1 ^ s2)
+    (* [1; 1; 1; 1; 2] *)
+    | [ C1; Space; C1; _; C1; Space; C1; _; C2 ], [ c1; c2; h1; h2; s ] -> Ok (c1 ^ c2, h1 ^ h2, s)
+    (* [1; 1; 2; 1; 1] *)
+    | [ C1; Space; C1; _; C2; _; C1; Space; C1 ], [ c1; c2; h; s1; s2 ] -> Ok (c1 ^ c2, h, s1 ^ s2)
+    (* [1; 1; 2; 2] *)
+    | [ C1; Space; C1; _; C2; _; C2 ], [ c1; c2; h; s ] -> Ok (c1 ^ c2, h, s)
+    (* [1; 1; 4] *)
+    | [ C1; Space; C1; _; C4 ], [ c1; c2; hs ] -> Ok (c1 ^ c2, String.sub hs 0 2, String.sub hs 2 2)
+    (* [2; 1; 1; 1; 1] *)
+    | [ C2; _; C1; Space; C1; _; C1; Space; C1 ], [ c; h1; h2; s1; s2 ] -> Ok (c, h1 ^ h2, s1 ^ s2)
+    (* [2; 1; 1; 2] *)
+    | [ C2; _; C1; Space; C1; _; C2 ], [ c; h1; h2; s ] -> Ok (c, h1 ^ h2, s)
+    (* [2; 2; 1; 1] *)
+    | [ C2; _; C2; _; C1; Space; C1 ], [ c; h; s1; s2 ] -> Ok (c, h, s1 ^ s2)
+    (* [4; 1; 1] *)
+    | [ C4; _; C1; Space; C1 ], [ ch; s1; s2 ] -> Ok (String.sub ch 0 2, String.sub ch 2 2, s1 ^ s2)
     (* CATCH-ALL FOR MALFORMED PATTERNS, verified with knapsack problem
       (*              
       [1; 1; 1; 2; 1]
@@ -253,7 +226,6 @@ let prefix_of_chunks chunks digit_strings =
     | _ -> Error "Layout configuration is mathematically forbidden or incorrectly sized"
   in
 
-  (* Single domain validation step *)
   let* chapter = Chapter.of_string c_raw in
   let* heading = Heading.of_string h_raw in
   let* subheading = Subheading.of_string s_raw in
@@ -296,22 +268,27 @@ let clean_of_tokens uchars =
 (* most compact representation, as recommended by the *)
 (* Data Element 7357 / TDED 7357 (WCO Data Model). *)
 let extension_of_tokens uchars =
-  (* acc holds the characters in reverse order, count tracks length dynamically *)
-  let rec loop acc count chars =
-    match chars with
-    | [] -> (
-        if count > 16 then Error "Flattened extension exceeds 16-character ceiling"
-        else
-          match count with 0 -> Ok None | _ -> acc |> List.rev |> List.to_seq |> String.of_seq |> fun s -> Ok (Some s))
-    | u :: rest -> (
-        let c = Char.chr (Uchar.to_int u) in
-        match c with
-        | 'a' .. 'z' -> loop (Char.uppercase_ascii c :: acc) (count + 1) rest
-        | 'A' .. 'Z' | '0' .. '9' -> loop (c :: acc) (count + 1) rest
-        | ' ' | '[' | ']' | '(' | ')' | '-' | '/' | ':' | '_' | '.' -> loop acc count rest
-        | _ -> Error (Printf.sprintf "Unexpected validation leak: illegal character '%c'" c))
+  let buf = Buffer.create 16 in
+
+  let rec loop chars =
+    if Buffer.length buf > 16 then Error "Flattened extension exceeds 16-character ceiling"
+    else
+      match chars with
+      | [] -> Ok (Buffer.contents buf)
+      | u :: rest ->
+          if Uchar.is_char u then
+            match Uchar.to_char u with
+            | 'a' .. 'z' as c ->
+                Buffer.add_char buf (Char.uppercase_ascii c);
+                loop rest
+            | ('A' .. 'Z' | '0' .. '9') as c ->
+                Buffer.add_char buf c;
+                loop rest
+            | ' ' | '[' | ']' | '(' | ')' | '-' | '/' | ':' | '_' | '.' -> loop rest
+            | c -> Error (Printf.sprintf "Unexpected validation leak: illegal character '%c'" c)
+          else Error "Unexpected validation leak: non-ASCII unicode character encountered"
   in
-  loop [] 0 uchars
+  loop uchars
 
 (* of_string, a public API that handle prefix_unicode_parser crashes,
    then we put the pile of digits into the container, then parse the extension
@@ -324,7 +301,6 @@ let extension_of_tokens uchars =
 
    Aka, no custom data forms would accept "23
    3452" (23\n3452) as a valid HS code.
-
 *)
 let of_string raw_s =
   (* Guards and preprocessing *)
@@ -357,26 +333,17 @@ let of_string raw_s =
     decode_all []
   in
 
-  (* Tokenizer *)
-  let* prefix_tokens, remaining_tokens = tokens_of_unicode input_str in
+  let* prefix_tokens, remaining_tokens = tokenizer input_str in
 
   (* Consume stream to get prefix *)
-  let* chunks = chunks_of_tokens prefix_tokens in
-  let digit_strings = List.filter_map (function Digits s -> Some s | Delims _ -> None) prefix_tokens in
-  let* chapter, heading, subheading = prefix_of_chunks chunks digit_strings in
+  let* prefix_chunks = chunks_of_tokens prefix_tokens in
+  let* chapter, heading, subheading = extract_prefix prefix_chunks prefix_tokens in
 
   (* Consume stream to get extension *)
   let* clean_ext_tokens = clean_of_tokens remaining_tokens in
   let* extension_opt = extension_of_tokens clean_ext_tokens in
-  let* extension =
-    match extension_opt with
-    | None -> Ok None
-    | Some e ->
-        let* valid_ext = Extension.of_string e in
-        Ok (Some valid_ext)
-  in
+  let* extension = Extension.of_string extension_opt in
 
-  (* Return *)
   Ok { chapter; heading; subheading; extension }
 
 (* OTHER USEFUL HS CODE HELPERS *)
@@ -387,11 +354,8 @@ let to_string { chapter; heading; subheading; extension } =
   let c = Chapter.to_int chapter in
   let h = Heading.to_int heading in
   let s = Subheading.to_int subheading in
-  match extension with
-  | None -> Printf.sprintf "%02d.%02d.%02d" c h s
-  | Some ext ->
-      let e = Extension.to_string ext in
-      Printf.sprintf "%02d.%02d.%02d-%s" c h s e
+  let e = Extension.to_string extension in
+  match e with "" -> Printf.sprintf "%02d.%02d.%02d" c h s | _ -> Printf.sprintf "%02d.%02d.%02d-%s" c h s e
 
 let pp ppf t = Format.pp_print_string ppf (to_string t)
 
@@ -399,21 +363,17 @@ let pp ppf t = Format.pp_print_string ppf (to_string t)
 let chapter t = Chapter.to_int t.chapter
 let heading t = Heading.to_int t.heading
 let subheading t = Subheading.to_int t.subheading
-let extension t = match t.extension with None -> None | Some e -> Some (Extension.to_string e)
+let extension t = Extension.to_string t.extension
 
 (* comparison *)
 let compare a b =
-  match Int.compare (Chapter.to_int a.chapter) (Chapter.to_int b.chapter) with
-  | 0 -> (
-      match Int.compare (Heading.to_int a.heading) (Heading.to_int b.heading) with
-      | 0 -> (
-          match Int.compare (Subheading.to_int a.subheading) (Subheading.to_int b.subheading) with
-          | 0 ->
-              Option.compare String.compare
-                (Option.map Extension.to_string a.extension)
-                (Option.map Extension.to_string b.extension)
-          | res -> res)
-      | res -> res)
-  | res -> res
+  let res = Int.compare (Chapter.to_int a.chapter) (Chapter.to_int b.chapter) in
+  if res <> 0 then res
+  else
+    let res = Int.compare (Heading.to_int a.heading) (Heading.to_int b.heading) in
+    if res <> 0 then res
+    else
+      let res = Int.compare (Subheading.to_int a.subheading) (Subheading.to_int b.subheading) in
+      if res <> 0 then res else String.compare (Extension.to_string a.extension) (Extension.to_string b.extension)
 
 let equal a b = compare a b = 0
