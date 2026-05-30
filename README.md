@@ -25,7 +25,7 @@ Instead of juggling a bunch of open terminal windows, you can just use these qui
 
 Seeds used: check at `test/seeds.txt`
 
-Please check output_fail.txt and output_pass.txt to see whether the parsing makes sense. I halted the test at 420 corpus count because by this time, output_fail.txt is just outputting garbage masquading as a new execution pattern.
+Please check output_fail.txt and output_pass.txt to see whether the parsing makes sense. I halted the test because by this time, output_fail.txt is just outputting garbage masquading as a new execution pattern.
 
 
 ## Informal verfication certificate
