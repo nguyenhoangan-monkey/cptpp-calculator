@@ -2,13 +2,13 @@
   paper: "a4",
   margin: (x: 1.5cm, top: 1.5cm, bottom: 1.5cm),
 )
-#set text(font: "M PLUS 1", size: 9pt)
+#set text(font: "M PLUS 1", size: 10pt)
 
 #set par(
   leading: 0.4em,
 )
 
-#show raw: set text(font: "M PLUS 1 Code", size: 9pt)
+#show raw: set text(font: "M PLUS 1 Code", size: 10pt)
 
 #let field(id, value) = [
   #raw(value) #metadata((id: id, value: value))<cptpp_data>
@@ -132,20 +132,65 @@
 
 
 #table(
-  columns: (2.5fr, 1.2fr, 1.2fr, 1.1fr),
+  columns: 1fr,
   stroke: 0.5pt,
-  align: (left + top, center + horizon, center + horizon, center + horizon),
+  [
+    #grid(
+      columns: (3fr, 1fr, 0.5fr, 0.5fr),
+      row-gutter: 0.8em,
+      column-gutter: 1.5em,
+      align: left + top,
 
-  [*6. Description of Good(s)* \ #text(size: 7pt, weight: "regular", fill: gray.darken(30%))[Sufficient to identify the shipment]],
-  [*6. HS Tariff \ Classification* \ #text(size: 7pt, weight: "regular", fill: gray.darken(30%))[(6-digit level)]],
-  [*7. Origin \ Criterion* \ #text(size: 7pt, weight: "regular", fill: gray.darken(30%))[As per rules of origin]],
-  [*6(b). Invoice No.* \ #text(size: 7pt, weight: "regular", fill: gray.darken(30%))[(If known, single shipment)]],
+      [
+        #label("Description of goods")
+      ],
+      [
+        #label("Invoice")
+      ],
+      [
+        #label("HS Code")
+      ],
+      [
+        #label("Criterion")
+      ],
 
-  [ \ \ \ \ ], [ ], [ ], [ ],
-  [ \ \ \ \ ], [ ], [ ], [ ],
-  [ \ \ \ \ ], [ ], [ ], [ ],
+      [#field("prod_desc_1", "Hatsune Miku Figurine (初音ミク) - Juguete de plástico")],
+      [#field("prod_invoice_1", "INV-2007-08-31")],
+      [#field("prod_hs_1", "9503.00")],
+      [#field("prod_criterion_1", "ACU")],
+
+      [#field("prod_desc_2", "Kagamine Rin & Len Acrylic Display Stand")],
+      [#field("prod_invoice_2", "2026/VOC-4409")],
+      [#field("prod_hs_2", "3926.40")],
+      [#field("prod_criterion_2", "PE")],
+
+      [#field("prod_desc_3", "Megurine Luka Printed Cotton T-Shirt")],
+      [#field("prod_invoice_3", "TX-883912-B")],
+      [#field("prod_hs_3", "6109.10")],
+      [#field("prod_criterion_3", "PSR")],
+
+      [#field("prod_desc_4", "Vocaloid Character Plush Toy Mat")],
+      [#field("prod_invoice_4", "94402175")],
+      [#field("prod_hs_4", "9404.90")],
+      [#field("prod_criterion_4", "WO")],
+    )
+  ],
+  [
+    #block(
+      width: 100%,
+    )[
+      #set text(size: 7.5pt)
+      Origin Criterion Legend: \
+      #sub-label("WO / A:") Wholly obtained or produced goods. \
+      #sub-label("PE / B:") Goods produced exclusively from originating materials. \
+      #sub-label("PSR / C:") Goods satisfying substantial transformation criterion. \
+      #sub-label("CTC / 1:") Change in tariff classification criterion. \
+      #sub-label("VA / 2:") Value-added criterion. \
+      #sub-label("SP / 3:") Specific manufacturing or processing operation criterion. \
+      #sub-label("DMI / E:") De Minimis or Tolerance. \
+      #sub-label("ACU / D:") Accumulation.    ]
+  ]
 )
-
 
 #table(
   stroke: 0.5pt,
@@ -165,9 +210,16 @@
       columns: (3fr, 1fr),
       row-gutter: 0.5em,
       column-gutter: 2em,
-      align: horizon,
+      align: top,
       [#sub-label("Signature:")], [#sub-label("Date:")],
-      line(length: 100%, stroke: 0.5pt),
+      [
+        // Place image or cryptographic hash here.
+        // Bottom alignment keeps it resting cleanly on the rule line.
+        #field(
+          "signature",
+          "DIGITALLY SIGNED SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        )
+      ],
 
       field("date", datetime.today().display("[year]/[month]/[day]")),
     )
