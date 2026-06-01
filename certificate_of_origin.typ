@@ -27,7 +27,6 @@
 
 #align(center)[
   #text(size: 14pt, weight: "bold")[CERTIFICATE OF ORIGIN] \
-  \
   #text(size: 8pt, weight: "bold")[Comprehensive and Progressive Trans-Pacific Partnership Agreement (CPTPP)] \
 ]
 
@@ -36,98 +35,74 @@
   stroke: 0.5pt,
 
   stack(
-    spacing: 0.25em,
+    spacing: 0.5em,
     grid(
       columns: (2fr, 1fr, 1fr, 1fr),
       row-gutter: 0.6em,
       column-gutter: 0.4em,
       align: horizon,
 
-      [#label("Certifier")],
-      [#checkbox(checked: true) Exporter],
-      [#checkbox(checked: true) Producer],
-      [#checkbox() Importer],
+      [#label("Certifier")], [#checkbox() Exporter], [#checkbox(checked: true) Producer], [#checkbox() Importer],
     ),
     grid(
-      columns: (auto, 1fr, auto, 2fr),
-      row-gutter: 0.5em,
+      columns: (auto, 0.2fr, auto, 1fr, auto, 2fr),
+      row-gutter: 0.6em,
       column-gutter: 0.4em,
       align: horizon,
 
-      [#sub-label("Name:")], grid.cell(colspan: 3)[#field("certifier_name", "Cotec Plastic Company")],
+      // --- CERTIFIER DETAILS ---
+      [#sub-label("Name:")], grid.cell(colspan: 3)[#field("certifier_name", "Nguyễn Văn A")],
+      [#sub-label("Role:")], [#field("certifier_role", "Product Manager")],
       [#sub-label("Addr:")],
-      grid.cell(colspan: 3)[#field(
+      grid.cell(colspan: 5)[#field(
         "certifier_addr",
         "LOT E4+E5, PHUC KHANH INDUSTRIAL PARK, VU PHUC WARD, HUNG YEN PROVINCE, VIETNAM 410000",
       )],
+      [#sub-label("ISO:")], field("certifier_country", "VNM"),
+      [#sub-label("Tel:")], field("certifier_tel", "+84-90-1234567"),
+      [#sub-label("Email:")], field("certifier_email", "nguyen.van.a@cotec.co"),
 
-      [#sub-label("Tel:")], field("certifier_tel", "+84-227-6250701"),
-      [#sub-label("Email:")], field("certifier_email", "enquiry@cotec.co"),
-    ),
-  ),
-  [
-    #grid(
-      columns: (auto, 1fr, auto, 2fr),
-      row-gutter: 0.5em,
-      column-gutter: 0.4em,
-      align: horizon,
-
-      grid.cell(colspan: 4)[#label("Exporter")],
-
-      [#sub-label("Name:")], grid.cell(colspan: 3)[#field("exporter_name", "Cotec Plastic Company")],
+      // --- EXPORTER ---
+      grid.cell(colspan: 6)[#line(length: 100%, stroke: 0.5pt)],
+      grid.cell(colspan: 6)[#label("Exporter")],
+      [#sub-label("Name:")], grid.cell(colspan: 5)[#field("exporter_name", "Cotec Plastic Company")],
       [#sub-label("Addr:")],
-      grid.cell(colspan: 3)[#field(
+      grid.cell(colspan: 5)[#field(
         "exporter_addr",
         "LOT E4+E5, PHUC KHANH INDUSTRIAL PARK, VU PHUC WARD, HUNG YEN PROVINCE, VIETNAM 410000",
       )],
-
+      [#sub-label("ISO:")], field("exporter_country", "VNM"),
       [#sub-label("Tel:")], field("exporter_tel", "+84-227-6250701"),
       [#sub-label("Email:")], field("exporter_email", "enquiry@cotec.co"),
-    )
-  ],
 
-  [
-    #grid(
-      columns: (auto, 1fr, auto, 2fr),
-      row-gutter: 0.5em,
-      column-gutter: 0.4em,
-      align: horizon,
-
-      grid.cell(colspan: 4)[#label("Producer")],
-
-      [#sub-label("Name:")], grid.cell(colspan: 3)[#field("producer_name", "CÔNG TY TNHH NHỰA COTEC")],
+      // --- PRODUCER ---
+      grid.cell(colspan: 6)[#line(length: 100%, stroke: 0.5pt)],
+      grid.cell(colspan: 6)[#label("Producer")],
+      [#sub-label("Name:")], grid.cell(colspan: 5)[#field("producer_name", "CÔNG TY TNHH NHỰA COTEC")],
       [#sub-label("Addr:")],
-      grid.cell(colspan: 3)[#field(
+      grid.cell(colspan: 5)[#field(
         "producer_addr",
         "LÔ E4+E5, KHU CÔNG NGHIỆP PHÚC KHÁNH, PHƯỜNG VŨ PHÚC, TỈNH HƯNG YÊN, VIỆT NAM",
       )],
-
+      [#sub-label("ISO:")], field("producer_country", "VNM"),
       [#sub-label("Tel:")], field("producer_tel", "+84-227-6250701"),
       [#sub-label("Email:")], field("producer_email", "enquiry@cotec.co"),
-    )
-  ],
 
-  [
-    #grid(
-      columns: (auto, 1fr, auto, 2fr),
-      row-gutter: 0.5em,
-      column-gutter: 0.4em,
-      align: horizon,
-
-      grid.cell(colspan: 4)[#label("Importer")],
-
+      // --- IMPORTER ---
+      grid.cell(colspan: 6)[#line(length: 100%, stroke: 0.5pt)],
+      grid.cell(colspan: 6)[#label("Importer")],
       [#sub-label("Name:")],
-      grid.cell(colspan: 3)[#field("importer_name", "Comercializadora Ultraobscuro S. de R.L. de C.V.")],
+      grid.cell(colspan: 5)[#field("importer_name", "Comercializadora Ultraobscuro S. de R.L. de C.V.")],
       [#sub-label("Addr:")],
-      grid.cell(colspan: 3)[#field(
+      grid.cell(colspan: 5)[#field(
         "importer_addr",
         "Eje Central Lázaro Cárdenas No. 9, Locales 15 y 19 (Planta Alta), Colonia Centro, Cuauhtémoc, Ciudad de México, CP 06000, Mexico",
       )],
-
+      [#sub-label("ISO:")], field("importer_country", "MEX"),
       [#sub-label("Tel:")], field("importer_tel", "+52-55-5518-1702"),
       [#sub-label("Email:")], field("importer_email", "contacto@ultraobscuro.com.mx"),
-    )
-  ]
+    ),
+  )
 )
 
 
@@ -207,10 +182,13 @@
       ],
     )
     #grid(
-      columns: (3fr, 1fr),
+      columns: (2fr, 1fr),
       row-gutter: 0.5em,
       column-gutter: 2em,
       align: top,
+      [#sub-label("Name:")], [#sub-label("Role:")],
+      [#field("name", "Nguyễn Văn A")], [#field("certifier_role", "Product Manager")],
+      grid.cell(colspan: 2)[#line(length: 100%, stroke: 0.5pt)],
       [#sub-label("Signature:")], [#sub-label("Date:")],
       [
         // Place image or cryptographic hash here.
