@@ -1,4 +1,4 @@
 (library
  (name data)
  (public_name cptpp-calculator.data)
- (libraries domain))
+ (modules country hs_world_2022))

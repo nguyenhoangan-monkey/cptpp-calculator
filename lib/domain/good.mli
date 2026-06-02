@@ -9,8 +9,8 @@ module Raw : sig
   type t = {
     hs_code : (Hs_code.t, string) maybe_raw;
     free_on_board_value : (Money.t, string) maybe_raw;
-    shipped_from : (Country.t, string) maybe_raw;
-    shipped_to : (Country.t, string) maybe_raw;
+    shipped_from : (Data.Country.t, string) maybe_raw;
+    shipped_to : (Data.Country.t, string) maybe_raw;
   }
 end
 

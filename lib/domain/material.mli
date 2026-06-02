@@ -7,7 +7,7 @@ module Raw : sig
 
   type t = {
     hs_code : (Hs_code.t, string) maybe_raw;
-    origin : (Country.t option, string) maybe_raw;
+    origin : (Data.Country.t option, string) maybe_raw;
     cost : (Money.t, string) maybe_raw;
   }
 end

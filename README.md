@@ -91,7 +91,7 @@ let make_miku destination fob_str =
     ]
 
 (* Pre-validating destination to build a specialized factory pipeline *)
-let make_miku_mexico = make_miku (Country.of_string_exn "Mexico")
+let make_miku_mexico = make_miku (Data.Country.of_string_exn "Mexico")
 ```
 
 Then we can manipulate this function. We have `Raw fob_str` to check input, so if functions don't work, `spec_validation` returns `None`:
@@ -145,8 +145,8 @@ let generate_akita_neru_tree api_data_thunk underlying_miku_tree =
   } in
 
   (* 3. Test multilingual processing and Ready type *)
-  let japan = Country.of_string_exn "日本" in
-  let mexico = Country.of_string_exn "メキシコ" in
+  let japan = Data.Country.of_string_exn "日本" in
+  let mexico = Data.Country.of_string_exn "メキシコ" in
   
   let* akita_neru_good = Good.make Good.{
     hs_code             = Raw "9503.00.00";
