@@ -1,24 +1,19 @@
 (* types *)
-type cptpp_country =
-  | Australia
-  | Brunei
-  | Canada
-  | Chile
-  | Japan
-  | Malaysia
-  | Mexico
-  | New_Zealand
-  | Peru
-  | Singapore
-  | United_Kingdom
-  | Vietnam
-
 type wco_version = WCO2017 | WCO2022 | WCO2028
 type trade_direction = Import | Export
-type hs_system = cptpp_country * wco_version * trade_direction
+type hs_system = Rules.CPTPP.t option * wco_version * trade_direction
 
 (* for ease of development, accept a compromise where the extensions are unstructured *)
 type t = { system : hs_system; base_hs : Hs_code.t }
+
+(* let make version country direction hs_code *)
+let resolve_data_source config =
+  let open Data in
+  match config with
+  | None, WCO2022, (Import | Export) -> Some Hs_world_2022.codes
+  | Some Country.Vietnam, WCO2022, (Import | Export) -> None
+  | Some Country.Japan, WCO2022, (Import | Export) -> None
+  | _ -> None
 
 (* query functions *)
 let is_valid code =
