@@ -4,9 +4,9 @@ This directory holds the scripts used to clean data and JSON data files for the 
 Run the Makefile by `make`. DO NOT ATTEMPT TO RUN `scripts/parse.py`, IT WON'T WORK due to missing permissions.
 
 ## Parsing logic
-* `cptpp -E csv_cleaner.py harmonized-system.csv -o hs.csv`
-* `cptpp -emit-ml list_parser.py hs.csv -o hs.ml`
-* `cptpp -c csv_serializer.ml hs.ml -o hs_world_2022.bin`
+* `./cptpp -E csv_cleaner.py harmonized-system.csv -o hs.csv`
+* `./cptpp -emit-ml list_parser.py hs.csv -o hs.ml`
+* `./cptpp -c csv_serializer.ml hs.ml -o hs_world_2022.bin`
 
 
 
