@@ -1,17 +1,14 @@
-<h1 align="center">
-<img src="https://raw.githubusercontent.com/nguyenhoangan-monkey/cptpp-parser/main/docs/assets/cover.jpg" width="750">
-</h1>
-
-Photo by author. Hatsune Miku © Crypton Future Media, Inc. 2007 (CC BY-NC)
-
------
-This directory holds the scripts used to clean data and JSON data files for the [cptpp-calculator](https://github.com/nguyenhoangan-monkey/cptpp-calculator). The /data folder is copied to the cptpp-calculator when doing recursive checkout or when the software is released.
+This directory holds the scripts used to clean data and JSON data files for the calculator. The /data folder is copied to the cptpp-calc when doing recursive checkout or when the software is released.
 
 ## How to run
 Run the Makefile by `make`. DO NOT ATTEMPT TO RUN `scripts/parse.py`, IT WON'T WORK due to missing permissions.
 
 ## Parsing logic
-progress
+* `cptpp -E csv_cleaner.py harmonized-system.csv -o hs.csv`
+* `cptpp -emit-ml list_parser.py hs.csv -o hs.ml`
+* `cptpp -c csv_serializer.ml hs.ml -o hs_world_2022.bin`
+
+
 
 ## Data sources
 **IMPORTANT: This section shows what kind of license is used. It has legal value and thus require due diligence.**

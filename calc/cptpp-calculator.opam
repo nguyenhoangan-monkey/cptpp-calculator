@@ -6,9 +6,9 @@ description:
 maintainer: ["Nguyen Hoang An <nguyenhoangan1235@gmail.com>"]
 authors: ["Nguyen Hoang An"]
 license: "BSD-3-Clause"
-homepage: "https://github.com/nguyenhoangan-monkey/cptpp-calculator"
+homepage: "https://github.com/nguyenhoangan-monkey/cptpp-project"
 bug-reports:
-  "https://github.com/nguyenhoangan-monkey/cptpp-calculator/issues"
+  "https://github.com/nguyenhoangan-monkey/cptpp-project/issues"
 depends: [
   "dune" {>= "3.23"}
   "ocaml" {>= "5.4.0"}

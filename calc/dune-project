@@ -1,6 +1,6 @@
 (lang dune 3.23)
 
-(name cptpp-calculator)
+(name cptpp-calc)
 
 (generate_opam_files true)
 
@@ -10,13 +10,12 @@
 
 (license "BSD-3-Clause")
 
-(homepage "https://github.com/nguyenhoangan-monkey/cptpp-calculator")
+(homepage "https://github.com/nguyenhoangan-monkey/cptpp-project")
 
-(bug_reports
- "https://github.com/nguyenhoangan-monkey/cptpp-calculator/issues")
+(bug_reports "https://github.com/nguyenhoangan-monkey/cptpp-project/issues")
 
 (package
- (name cptpp-calculator)
+ (name cptpp-calc)
  (synopsis "CPTPP rules of origin and tariffs calculator")
  (description
   "A compliance and regional value content rules engine for CPTPP tariffs evaluation.")

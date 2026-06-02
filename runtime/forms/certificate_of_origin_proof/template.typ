@@ -106,7 +106,7 @@
   Specifically:
 
   - Requirement: Chapter 95 Product-Specific Rules (PSR) mandate a minimum 45.00% Regional Value Content (RVC) using the Build-Down method.
-  - Result: The cptpp-calculator engine verified that the Bill of Materials (BOM) achieved an RVC of 75.00%, exceeding the threshold.
+  - Result: The cptpp-calc engine verified that the Bill of Materials (BOM) achieved an RVC of 75.00%, exceeding the threshold.
 ]
 
 #v(1em)

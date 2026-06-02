@@ -1,5 +1,5 @@
 (*
-  THIS IS AUTO GENERATED FROM CPTPP-PARSER
+  THIS IS AUTO GENERATED FROM CPTPP
   data source: https://raw.githubusercontent.com/mledoze/countries/master/countries.json
 *)
 

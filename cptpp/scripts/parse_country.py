@@ -101,7 +101,7 @@ def generate_ocaml_variants(raw_data: List[Dict[str, Any]], output_path: str) ->
             temp_name = tf.name
             
             tf.write("(*\n")
-            tf.write("  THIS IS AUTO GENERATED FROM CPTPP-PARSER\n")
+            tf.write("  THIS IS AUTO GENERATED FROM CPTPP\n")
             tf.write("  data source: https://raw.githubusercontent.com/mledoze/countries/master/countries.json\n")
             tf.write("*)\n\n")
 

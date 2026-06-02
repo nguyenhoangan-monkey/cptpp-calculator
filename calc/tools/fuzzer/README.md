@@ -1,14 +1,6 @@
-<h1 align="center">
-<img src="https://raw.githubusercontent.com/nguyenhoangan-monkey/cptpp-fuzz/main/docs/assets/cover.jpg" width="750">
-</h1>
-
-Photo by [Mahardika Maulana](https://www.flickr.com/photos/96081001@N07/15137625925) (CC BY). Hatsune Miku © Crypton Future Media, Inc. 2007 (CC BY-NC)
-
-----
-
 This is where I post signed binaries (tagged git commit with my signature) and an (in)formal verification certification (printout of AFL output, my seeds, my accepted output and rejected output)
 
-**For this tag, the function is `lib/domain/hs_code.ml` and the interface `lib/domain/hs_code.mli` at [cptpp-calculator.](https://github.com/nguyenhoangan-monkey/cptpp-calculator/tree/main/lib/domain)**
+**For this tag, the function is `lib/domain/hs_code.ml` and the interface `lib/domain/hs_code.mli` at cptpp-calc.
 
 ## How to verify `lib/domain/hs_code.ml`
 
