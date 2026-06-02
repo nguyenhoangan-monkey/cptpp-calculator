@@ -10,12 +10,12 @@ def main():
 
     print("1/2: Processing Harmonized System codes...")
     parse_hs.world_2022_to_ocaml(
-        "raw_data/harmonized_system/hs_world_2022/harmonized-system.csv",
-        "parsed/hs_world_2022.ml"
+        "data/harmonized_system/hs_world_2022/harmonized-system.csv",
+        "ir/hs_world_2022.ml"
     )
     
     print("2/2: Generating OCaml country files...")
-    parse_country.generate_ocaml_variants(parse_country.fetch_country_data(), "parsed/country.ml")
+    parse_country.generate_ocaml_variants(parse_country.fetch_country_data(), "ir/country.ml")
 
     print("All datasets parsed successfully.")
 
