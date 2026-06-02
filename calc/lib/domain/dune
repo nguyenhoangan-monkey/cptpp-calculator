@@ -1,4 +1,4 @@
 (library
  (name domain)
- (public_name cptpp-calculator.domain)
+ (public_name cptpp-calc.domain)
  (libraries zarith uutf data))
