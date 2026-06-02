@@ -72,23 +72,7 @@ def world_2022_to_ocaml(input_path: str, output_path: str) -> None:
                 if i % 10 == 9:
                     tf.write("\n")
             tf.write("\n|]\n\n")
-            
-            tf.write("let is_valid (code : Domain.Hs_code.t) =\n")
-            tf.write("  let c = Domain.Hs_code.chapter code in\n")
-            tf.write("  let h = Domain.Hs_code.heading code in\n")
-            tf.write("  let s = Domain.Hs_code.subheading code in\n")
-            tf.write("  let target = (c * 10000) + (h * 100) + s in\n\n")
-            tf.write("  let rec binary_search low high =\n")
-            tf.write("    if low > high then false\n")
-            tf.write("    else\n")
-            tf.write("      let mid = low + ((high - low) / 2) in\n")
-            tf.write("      let value = Array.unsafe_get codes mid in\n")
-            tf.write("      if value = target then true\n")
-            tf.write("      else if value > target then binary_search low (mid - 1)\n")
-            tf.write("      else binary_search (mid + 1) high\n")
-            tf.write("  in\n")
-            tf.write("  binary_search 0 (Array.length codes - 1)\n")
-            
+                        
         try:
             os.replace(temp_name, out_path)
         except Exception as e:
