@@ -2,32 +2,95 @@
 import os
 import sys
 import argparse
+from abc import ABC, abstractmethod
 
+# Fix path resolution cleanly without sys.path hacks if possible.
+# If scripts is a sibling directory, ensure the parent is in the path.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(BASE_DIR, "scripts"))
+sys.path.append(BASE_DIR)
 
 try:
-    import scripts.parse_hs as parse_hs
-    import scripts.parse_country as parse_country
+    # Clean imports assuming 'scripts' is a package directory containing an __init__.py
+    from scripts import parse_hs
+    from scripts import parse_country
 except ImportError as e:
     print(f"Driver Error: Failed to import internal parsers: {e}", file=sys.stderr)
     sys.exit(1)
 
-def run_frontend(infile, outfile):
-    print(f"cptpp [frontend]: Lowering {infile} -> {outfile}...")
+# =====================================================================
+# SYSTEM REGISTRY (The Extensibility Layer)
+# =====================================================================
+
+class BaseParser(ABC):
+    """Abstract base class ensuring all parsers share an identical interface."""
     
-    if "harmonized" in infile or infile.endswith(('.csv', '.xlsx')):
+    @abstractmethod
+    def run(self, infile: str, outfile: str) -> None:
+        pass
+
+
+class HSParser(BaseParser):
+    def run(self, infile: str, outfile: str) -> None:
+        print(f"cptpp [frontend]: Running Harmonized System (HS) parser...")
         parse_hs.world_2022_to_ocaml(infile, outfile)
-    elif "country" in infile or "zone" in infile:
-        parse_country.generate_ocaml_variants(parse_country.fetch_country_data(), outfile)
-    else:
-        print(f"cptpp [frontend]: Warning: Unknown schema pattern. Defaulting to HS parser.", file=sys.stderr)
-        parse_hs.world_2022_to_ocaml(infile, outfile)
+
+
+class CountryParser(BaseParser):
+    def run(self, infile: str, outfile: str) -> None:
+        print(f"cptpp [frontend]: Running Country/Zone parser...")
+        # Abstracting the internal differences of parse_country here
+        data = parse_country.fetch_country_data()
+        parse_country.generate_ocaml_variants(data, outfile)
+
+
+# To add a new parser in the future, you just write the class above 
+# and add one line to this dictionary:
+PARSER_REGISTRY = {
+    "hs": HSParser(),
+    "country": CountryParser()
+}
+
+# Strict mapping of file extensions to target schemas to avoid bad guesses
+EXTENSION_DEFAULTS = {
+    ".csv": "hs",
+    ".xlsx": "hs",
+    # If json implies country data, map it explicitly:
+    ".json": "country" 
+}
+
+# =====================================================================
+# CORE LOGIC
+# =====================================================================
+
+def resolve_schema(infile: str, manual_schema: str = None) -> str:
+    """Determines which schema to use, prioritizing explicit user input."""
+    if manual_schema:
+        if manual_schema not in PARSER_REGISTRY:
+            print(f"cptpp: error: Unsupported schema '{manual_schema}'. Available: {list(PARSER_REGISTRY.keys())}", file=sys.stderr)
+            sys.exit(1)
+        return manual_schema
+
+    # Fallback to strict extension matching
+    _, ext = os.path.splitext(infile.lower())
+    if ext in EXTENSION_DEFAULTS:
+        return EXTENSION_DEFAULTS[ext]
+    
+    # Final fallback or safe exit
+    print(f"cptpp: error: Could not auto-detect schema for file '{infile}'. Please specify using --schema.", file=sys.stderr)
+    sys.exit(1)
+
+def run_frontend(infile: str, outfile: str, schema_type: str):
+    print(f"cptpp [frontend]: Lowering {infile} -> {outfile} using schema '{schema_type}'...")
+    
+    # Strategy Pattern implementation: Dynamic execution without if/else
+    parser = PARSER_REGISTRY[schema_type]
+    parser.run(infile, outfile)
 
 def main():
     parser = argparse.ArgumentParser(description="CPTPP Toolchain Driver (Frontend)")
     parser.add_argument("input_file", help="Path to raw input file (.csv, .xlsx, .json)")
     parser.add_argument("-o", "--output", required=True, help="Path to output OCaml IR (.ml)")
+    parser.add_argument("-s", "--schema", choices=PARSER_REGISTRY.keys(), help="Explicitly set the input schema type")
     parser.add_argument("-emit-ml", action="store_true", help="Emit OCaml IR structure (Currently mandatory)")
 
     args = parser.parse_args()
@@ -40,7 +103,10 @@ def main():
         print("cptpp: error: Backend binary generation (.bin) is not implemented yet. Use -emit-ml.", file=sys.stderr)
         sys.exit(1)
 
-    run_frontend(args.input_file, args.output)
+    # Resolve exactly what tool we are using before pulling any levers
+    schema_to_use = resolve_schema(args.input_file, args.schema)
+    
+    run_frontend(args.input_file, args.output, schema_to_use)
     print("cptpp: Frontend phase finished successfully.")
 
 if __name__ == "__main__":
