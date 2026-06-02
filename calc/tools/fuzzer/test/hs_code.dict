@@ -1,0 +1,46 @@
+# ==========================================
+# AFL++ Dictionary for HS Code State Machine
+# ==========================================
+
+# --- Valid Numeric Boundaries ---
+"00"
+"01"
+"99"
+
+# --- Valid Layout Delimiters ---
+"."
+"-"
+"_"
+"/"
+" "
+
+# --- Extension Bracket Tokens ---
+"["
+"]"
+"("
+")"
+"[]"
+"()"
+"[["
+"(("
+"[)"
+"(]"
+
+# --- Delimiter Edge Cases & Illegal Pairs ---
+"-_"
+"_-"
+".."
+"//"
+".-"
+"-."
+"_:"
+":_"
+
+# --- Mixed Casing (Triggers Uppercasing Engine) ---
+"abc"
+"xyz"
+
+# --- Security Guards & Structure Breaks ---
+"\x00"
+"A\x00B"
+"\xc3\x82"

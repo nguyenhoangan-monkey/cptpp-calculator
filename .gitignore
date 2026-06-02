@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -258,3 +259,17 @@ _opam/
 # macOS system files
 .DS_Store
 **/.DS_Store
+=======
+# Dune / OCaml build artifacts
+_build/
+.merlin
+*.install
+
+# AFL Fuzzing artifacts
+output/
+
+# Editor / OS specific files
+.DS_Store
+*.swp
+*~
+>>>>>>> temp-fuzz-remote/main

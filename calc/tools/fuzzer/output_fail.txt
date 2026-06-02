@@ -1,0 +1,2456 @@
+[FAIL] File: output/cpu2/queue/.state/deterministic_done/id:000001,time:0,execs:0,orig:seed_10.txt
+  Input : ""
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000001,time:0,execs:0,orig:seed_10.txt
+  Input : "00.00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000003,time:0,execs:0,orig:seed_12.txt
+  Input : "12..3456"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000004,time:0,execs:0,orig:seed_13.txt
+  Input : "12345"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000005,time:0,execs:0,orig:seed_14.txt
+  Input : "12.34.56[(A)"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/cpu2/queue/id:000006,time:0,execs:0,orig:seed_15.txt
+  Input : "123456[]"
+  Reason: Bracket contains no alphanumeric characters
+
+[FAIL] File: output/cpu2/queue/id:000008,time:0,execs:0,orig:seed_17.txt
+  Input : "123456-./"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/cpu2/queue/id:000009,time:0,execs:0,orig:seed_18.txt
+  Input : "123456[12345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000010,time:0,execs:0,orig:seed_19.txt
+  Input : "123456\207\128"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000012,time:0,execs:0,orig:seed_20.txt
+  Input : "123456\000\000"
+  Reason: Security Exception: Embedded null byte detected at position 6
+
+[FAIL] File: output/cpu2/queue/id:000014,time:0,execs:0,orig:seed_4.txt
+  Input : "12-3456"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000020,src:000001,time:37,execs:143,op:(null),pos:0,+cov
+  Input : "a"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000021,src:000001,time:103,execs:152,op:quick,pos:0
+  Input : "/0.00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000022,src:000001,time:140,execs:160,op:quick,pos:1,+cov
+  Input : "0\026.00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000023,src:000001,time:178,execs:168,op:quick,pos:2,+cov
+  Input : "00\17900.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000024,src:000001,time:218,execs:177,op:quick,pos:4
+  Input : "00.0Q.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000025,src:000001,time:249,execs:185,op:quick,pos:5
+  Input : "00.00N00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000026,src:000001,time:283,execs:196,op:flip1,pos:0,+cov
+  Input : "\1760.00.00"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000027,src:000001,time:321,execs:206,op:flip1,pos:0,+cov
+  Input : " 0.00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000029,src:000001,time:393,execs:225,op:flip1,pos:1,+cov
+  Input : "0\176.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000030,src:000001,time:433,execs:233,op:flip1,pos:1
+  Input : "0p.00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000031,src:000001,time:465,execs:242,op:flip1,pos:1
+  Input : "0 .00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000032,src:000001,time:506,execs:255,op:flip1,pos:2
+  Input : "00n00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000033,src:000001,time:540,execs:268,op:flip1,pos:2,+cov
+  Input : "00/00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000034,src:000001,time:578,execs:276,op:flip1,pos:4,+cov
+  Input : "00.0\176.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000035,src:000001,time:620,execs:291,op:flip1,pos:5
+  Input : "00.00\17400"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000036,src:000001,time:659,execs:306,op:flip2,pos:0,+cov
+  Input : "\2400.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000037,src:000001,time:700,execs:321,op:flip2,pos:1,+cov
+  Input : "0\240.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000038,src:000001,time:737,execs:330,op:flip2,pos:1
+  Input : "0\000.0"
+  Reason: Security Exception: Embedded null byte detected at position 1
+
+[FAIL] File: output/cpu2/queue/id:000039,src:000001,time:777,execs:343,op:flip2,pos:2,+cov
+  Input : "00\23800.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000040,src:000001,time:816,execs:353,op:flip2,pos:2,+cov
+  Input : "00600.00"
+  Reason: Invalid digit block size: 5
+
+[FAIL] File: output/cpu2/queue/id:000041,src:000001,time:857,execs:363,op:flip2,pos:2
+  Input : "00-00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000042,src:000001,time:894,execs:371,op:flip2,pos:2
+  Input : "00/\1760.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000043,src:000001,time:929,execs:387,op:flip2,pos:5
+  Input : "00.00\23800"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000044,src:000001,time:966,execs:404,op:flip4,pos:0,+cov
+  Input : "\0120.00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000045,src:000001,time:1005,execs:416,op:flip4,pos:0,+cov
+  Input : "1\208.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000046,src:000001,time:1062,execs:454,op:flip4,pos:5,+cov
+  Input : "00.00-\2400"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000047,src:000001,time:1099,execs:463,op:flip8,pos:0,+cov
+  Input : "\2070.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000048,src:000001,time:1175,execs:539,op:arith8,pos:0,val:-35,+cov
+  Input : "\r0.00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000049,src:000001,time:1253,execs:620,op:arith8,pos:2,val:-14
+  Input : "00 00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000050,src:000001,time:1314,execs:664,op:arith8,pos:2,val:-35,+cov
+  Input : "00\01100.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000051,src:000001,time:1416,execs:784,op:int8,pos:0,val:-1,+cov
+  Input : "\2550.00.00"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000052,src:000001,time:1460,execs:802,op:int8,pos:2,val:+0
+  Input : "00\0000"
+  Reason: Security Exception: Embedded null byte detected at position 2
+
+[FAIL] File: output/cpu2/queue/id:000053,src:000001,time:1517,execs:846,op:int16,pos:0,val:+1000,+cov
+  Input : "\232\003.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000054,src:000001,time:1574,execs:891,op:int16,pos:2,val:+1
+  Input : "00\001\0000.00"
+  Reason: Security Exception: Embedded null byte detected at position 3
+
+[FAIL] File: output/cpu2/queue/id:000055,src:000001,time:1755,execs:1133,op:int32,pos:4,val:be:-32768,+cov
+  Input : "00.0\255\255\128\000"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000056,src:000001,time:1813,execs:1177,op:ext_UO,pos:0,+cov
+  Input : "_0.00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000057,src:000001,time:1856,execs:1192,op:ext_UO,pos:0
+  Input : "-_.00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000058,src:000001,time:1898,execs:1203,op:ext_UO,pos:0
+  Input : "...00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000059,src:000001,time:1947,execs:1239,op:ext_UO,pos:1
+  Input : "0_:00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000060,src:000001,time:2001,execs:1277,op:ext_UO,pos:2
+  Input : "00_:0.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000061,src:000001,time:2081,execs:1359,op:ext_UI,pos:0,+cov
+  Input : "/00.00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000062,src:000001,time:2124,execs:1371,op:ext_UI,pos:0
+  Input : ".00.00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000063,src:000001,time:2162,execs:1389,op:ext_UI,pos:0,+cov
+  Input : "-_00.00.00"
+  Reason: Illegal sequence: Cannot mix '-' and '_'
+
+[FAIL] File: output/cpu2/queue/id:000064,src:000001,time:2201,execs:1399,op:ext_UI,pos:0,+cov
+  Input : "_-00.00.00"
+  Reason: Illegal sequence: Cannot mix '-' and '_'
+
+[FAIL] File: output/cpu2/queue/id:000065,src:000001,time:2239,execs:1408,op:ext_UI,pos:0,+cov
+  Input : "//00.00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000066,src:000001,time:2276,execs:1416,op:ext_UI,pos:0,+cov
+  Input : ".-00.00.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000068,src:000001,time:2357,execs:1439,op:ext_UI,pos:1,+cov
+  Input : "0/0.00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000069,src:000001,time:2398,execs:1455,op:ext_UI,pos:1,+cov
+  Input : "0 0.00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000070,src:000001,time:2438,execs:1469,op:ext_UI,pos:1
+  Input : "0-_0.00.00"
+  Reason: Illegal sequence: Cannot mix '-' and '_'
+
+[FAIL] File: output/cpu2/queue/id:000071,src:000001,time:2483,execs:1491,op:ext_UI,pos:2,+cov
+  Input : "00/.00.00"
+  Reason: Illegal sequence: Cannot mix '.' and '/'
+
+[FAIL] File: output/cpu2/queue/id:000072,src:000001,time:2524,execs:1506,op:ext_UI,pos:2,+cov
+  Input : "00_.00.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000073,src:000001,time:2564,execs:1514,op:ext_UI,pos:2,+cov
+  Input : "00 .00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000074,src:000001,time:2605,execs:1528,op:ext_UI,pos:2
+  Input : "00-_.00.00"
+  Reason: Illegal sequence: Cannot mix '-' and '_'
+
+[FAIL] File: output/cpu2/queue/id:000075,src:000001,time:2638,execs:1539,op:ext_UI,pos:2
+  Input : "00...00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000076,src:000001,time:2670,execs:1547,op:ext_UI,pos:2
+  Input : "00//.00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000077,src:000001,time:2775,execs:1670,op:havoc,rep:2,+cov
+  Input : "00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000078,src:000001,time:2831,execs:1709,op:havoc,rep:1
+  Input : "00.000.00"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/cpu2/queue/id:000079,src:000001,time:2870,execs:1725,op:havoc,rep:3
+  Input : "00.00....../..............(.....00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000080,src:000001,time:2905,execs:1737,op:havoc,rep:4
+  Input : "000"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000081,src:000001,time:2976,execs:1786,op:havoc,rep:2,+cov
+  Input : "00.00.0.000"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000082,src:000001,time:3066,execs:1875,op:havoc,rep:2
+  Input : "00.-.-00.00."
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000083,src:000001,time:3178,execs:2004,op:havoc,rep:4
+  Input : " 3000 "
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000084,src:000001,time:3222,execs:2015,op:havoc,rep:1,+cov
+  Input : "00.0.00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000085,src:000001,time:3263,execs:2029,op:havoc,rep:3,+cov
+  Input : "0000.0.0000.0A\000"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000086,src:000001,time:3333,execs:2085,op:havoc,rep:3,+cov
+  Input : "00 2  2 34 5"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000087,src:000001,time:3413,execs:2156,op:havoc,rep:2,+cov
+  Input : "0 00.00.00.NSI000"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000088,src:000001,time:3452,execs:2165,op:havoc,rep:2,+cov
+  Input : "\254\254\254\254\254\254\254\254\254\254\254\254\254\254\254\254\254\254\254\254.00.0000.00."
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000089,src:000001,time:3504,execs:2197,op:havoc,rep:4,+cov
+  Input : "0999-99//0.0]]]]"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/cpu2/queue/id:000090,src:000001,time:3545,execs:2210,op:havoc,rep:2
+  Input : "00-00.0-0"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000091,src:000001,time:3591,execs:2227,op:havoc,rep:4
+  Input : "/0..00-_.q"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000092,src:000001,time:3659,execs:2292,op:havoc,rep:2,+cov
+  Input : "00.00       00"
+  Reason: Illegal sequence: Too many space characters (more than 6)
+
+[FAIL] File: output/cpu2/queue/id:000093,src:000001,time:3715,execs:2330,op:havoc,rep:4,+cov
+  Input : "2\165"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000094,src:000001,time:3779,execs:2381,op:havoc,rep:3
+  Input : "--------===="
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000095,src:000001,time:3834,execs:2424,op:havoc,rep:3
+  Input : "00.00.....\023_"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000096,src:000001,time:3891,execs:2474,op:havoc,rep:3,+cov
+  Input : "090023\0215"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000097,src:000001,time:3939,execs:2499,op:havoc,rep:2
+  Input : "0 340 .00.00"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/cpu2/queue/id:000099,src:000001,time:4050,execs:2579,op:havoc,rep:2,+cov
+  Input : "234560&.00.0"
+  Reason: Invalid character '&' in extension
+
+[FAIL] File: output/cpu2/queue/id:000100,src:000001,time:4142,execs:2677,op:havoc,rep:4
+  Input : "123456[A1](B2\0176"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000101,src:000001,time:4290,execs:2862,op:havoc,rep:1
+  Input : "00............00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000102,src:000001,time:4501,execs:3153,op:havoc,rep:3
+  Input : "00.00.....................0 .0.10"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000103,src:000001,time:4599,execs:3269,op:havoc,rep:4
+  Input : "0=.................\"....\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r...00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000104,src:000001,time:4734,execs:3440,op:havoc,rep:4
+  Input : "00.0./\r\r\r\r\r\r\r\r0..000"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000105,src:000001,time:4874,execs:3616,op:havoc,rep:4
+  Input : "0.. 0.  00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000106,src:000001,time:4943,execs:3684,op:havoc,rep:1,+cov
+  Input : "00.\n\n\n\n\n\n00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000107,src:000001,time:5036,execs:3776,op:havoc,rep:3
+  Input : "__.0"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000108,src:000001,time:5079,execs:3789,op:havoc,rep:4
+  Input : "0000.0000.0A\000"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000109,src:000001,time:5135,execs:3837,op:havoc,rep:3
+  Input : "00. 0.  000.0.00"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/cpu2/queue/id:000111,src:000001,time:5238,execs:3909,op:havoc,rep:3
+  Input : "P0.\n\n000.\0310"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000114,src:000001,time:5502,execs:4185,op:havoc,rep:4
+  Input : "0/\r\r\r\\\r."
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000115,src:000001,time:5622,execs:4323,op:havoc,rep:2,+cov
+  Input : "01 2 34 5 00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000116,src:000001,time:5750,execs:4472,op:havoc,rep:3
+  Input : "0............../................0000.0"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000117,src:000001,time:5824,execs:4549,op:havoc,rep:3,+cov
+  Input : "077774774<700.4567N"
+  Reason: Invalid character '<' in extension
+
+[FAIL] File: output/cpu2/queue/id:000118,src:000001,time:5901,execs:4618,op:havoc,rep:4
+  Input : "00\n00. 00.01"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000119,src:000001,time:5949,execs:4653,op:havoc,rep:2
+  Input : "00.....7............00.0"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000120,src:000001,time:6175,execs:4967,op:havoc,rep:2,+cov
+  Input : "\208"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000121,src:000001,time:6249,execs:5032,op:havoc,rep:2,+cov
+  Input : "123456[A"
+  Reason: Unclosed bracket at end
+
+[FAIL] File: output/cpu2/queue/id:000122,src:000001,time:6450,execs:5294,op:havoc,rep:3,+cov
+  Input : "0234567N00.0)"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/cpu2/queue/id:000123,src:000001,time:6523,execs:5353,op:havoc,rep:4,+cov
+  Input : "\000"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000124,src:000001,time:6560,execs:5361,op:havoc,rep:3
+  Input : "\r\r0K0.000000000000"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000125,src:000001,time:6664,execs:5488,op:havoc,rep:3
+  Input : "00/0/000"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/cpu2/queue/id:000126,src:000001,time:6890,execs:5789,op:havoc,rep:2
+  Input : "  000.0>"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000127,src:000001,time:7029,execs:5961,op:havoc,rep:3
+  Input : "\012\012\012\1280.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000128,src:000001,time:7076,execs:5994,op:havoc,rep:3
+  Input : "0....90023\0215.00\01800"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000129,src:000001,time:7119,execs:6019,op:havoc,rep:3
+  Input : "00.\n\n\n\n\n\n\n\n\n\235\t.0\n\n\n\n\n\n\n\n\n\n\n\n00.0"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000130,src:000001,time:7165,execs:6045,op:havoc,rep:2
+  Input : "00\r\r\r\\.0\176.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000131,src:000001,time:7215,execs:6081,op:havoc,rep:2
+  Input : "00.......................................................00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000133,src:000001,time:7558,execs:6535,op:havoc,rep:2
+  Input : "0234560&.00."
+  Reason: Invalid character '&' in extension
+
+[FAIL] File: output/cpu2/queue/id:000136,src:000001,time:7884,execs:6911,op:havoc,rep:3
+  Input : "0.  000.0000000007.0"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/cpu2/queue/id:000137,src:000001,time:7940,execs:6959,op:havoc,rep:2
+  Input : "00-_0.0-_0.000.00.00"
+  Reason: Illegal sequence: Cannot mix '-' and '_'
+
+[FAIL] File: output/cpu2/queue/id:000138,src:000001,time:8107,execs:7182,op:havoc,rep:1,+cov
+  Input : "\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\239\23900.00."
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000139,src:000001,time:8167,execs:7229,op:havoc,rep:2
+  Input : "0\n\n\n\235\t.0[(A\n0.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000141,src:000001,time:8896,execs:8282,op:havoc,rep:1
+  Input : "00.0 2  200."
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000142,src:000001,time:9057,execs:8495,op:havoc,rep:3,+cov
+  Input : "\207\207"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000143,src:000001,time:9103,execs:8516,op:havoc,rep:4,+cov
+  Input : "0000000000000000000.\236\236\1280"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000144,src:000001,time:9499,execs:9094,op:havoc,rep:4
+  Input : "\012\012\128\2550\20900"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000145,src:000001,time:9759,execs:9466,op:havoc,rep:4
+  Input : "0123456-./2.@0.00"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/cpu2/queue/id:000146,src:000001,time:9906,execs:9659,op:havoc,rep:2
+  Input : "0    000.00."
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/cpu2/queue/id:000147,src:000001,time:10026,execs:9813,op:havoc,rep:4,+cov
+  Input : "\128"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000148,src:000001,time:10211,execs:10053,op:havoc,rep:3
+  Input : "00_00._00.-00-00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000149,src:000001,time:10475,execs:10436,op:havoc,rep:4,+cov
+  Input : "023456[A1)0"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/cpu2/queue/id:000150,src:000001,time:10644,execs:10651,op:havoc,rep:3
+  Input : "00.00   00.00     0"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000151,src:000001,time:10989,execs:11153,op:havoc,rep:3
+  Input : "_______:00:00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000153,src:000001,time:11322,execs:11582,op:havoc,rep:3,+cov
+  Input : "\248"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000155,src:000001,time:11624,execs:11960,op:havoc,rep:2
+  Input : "00                       .00.9900"
+  Reason: Illegal sequence: Too many space characters (more than 6)
+
+[FAIL] File: output/cpu2/queue/id:000156,src:000001,time:12109,execs:12684,op:havoc,rep:3,+cov
+  Input : "00    2 0   2 0.00.0"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000157,src:000001,time:12401,execs:13097,op:havoc,rep:4
+  Input : "0.0.0-.0000000.0-.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000158,src:000001,time:12501,execs:13210,op:havoc,rep:4
+  Input : "   .0-0       .00.99   .00.99 0.00.0"
+  Reason: Illegal sequence: Too many space characters (more than 6)
+
+[FAIL] File: output/cpu2/queue/id:000159,src:000001,time:12754,execs:13567,op:havoc,rep:3,+cov
+  Input : "\239\239"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000160,src:000001,time:13158,execs:14147,op:havoc,rep:4,+cov
+  Input : "\239"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000161,src:000001,time:13352,execs:14404,op:havoc,rep:2
+  Input : "___:.0:0"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000162,src:000001,time:13394,execs:14428,op:havoc,rep:2
+  Input : "00.0\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012000..00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000165,src:000001,time:13618,execs:14643,op:havoc,rep:3
+  Input : "00-_________________0[]."
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000166,src:000001,time:13673,execs:14689,op:havoc,rep:3
+  Input : ".0000._.._.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000167,src:000001,time:14147,execs:15389,op:havoc,rep:4
+  Input : "00. __________________00.00     p0.0"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000168,src:000001,time:14557,execs:15990,op:havoc,rep:4
+  Input : "00.00.\r\r\r\r00\r\r\r\r\r\r\023\r\r\r\r\r\r\r\r\r\r\r\r\023\r\r\r\r\r\r\r\r01234\r\r0"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000169,src:000001,time:14704,execs:16170,op:havoc,rep:4
+  Input : "\0180$00\01100.0000\01100.000"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000170,src:000001,time:15055,execs:16612,op:havoc,rep:2
+  Input : "\012\012[)\012\012\012\012"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000171,src:000001,time:15258,execs:16859,op:havoc,rep:2
+  Input : "_________"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000172,src:000001,time:15311,execs:16901,op:havoc,rep:2
+  Input : "00.0\012\012\012\012\012\012\012\012\234\012\012\012"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000173,src:000001,time:15386,execs:16966,op:havoc,rep:4
+  Input : "034500 ]0"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/cpu2/queue/id:000174,src:000001,time:15585,execs:17215,op:havoc,rep:2,+cov
+  Input : "\255"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000175,src:000001,time:15657,execs:17277,op:havoc,rep:1
+  Input : "00_______.00.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000176,src:000001,time:15774,execs:17423,op:havoc,rep:3
+  Input : "0/00.00//////////////////00.00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000177,src:000001,time:16059,execs:17811,op:havoc,rep:2
+  Input : "0///0.00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000179,src:000001,time:16311,execs:18120,op:havoc,rep:2,+cov
+  Input : "00.00-----    0000"
+  Reason: Illegal sequence: Too many dashes (more than 3)
+
+[FAIL] File: output/cpu2/queue/id:000180,src:000001,time:16472,execs:18314,op:havoc,rep:1,+cov
+  Input : "00.0 0.0-0  .99 00.0"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000182,src:000001,time:17071,execs:19020,op:havoc,rep:3
+  Input : "1234.50((0.00.00"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/cpu2/queue/id:000183,src:000001,time:17426,execs:19514,op:havoc,rep:1
+  Input : "00.00\011\011\011\011\011\011\011\011\011\011\011.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000184,src:000001,time:17523,execs:19614,op:havoc,rep:4,+cov
+  Input : "\255\254\255\0280.00"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000185,src:000001,time:17914,execs:20174,op:havoc,rep:1
+  Input : "00.00\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000187,src:000001,time:18217,execs:20546,op:havoc,rep:4
+  Input : "00..0\011\011\011\0114.56[(.I..."
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000188,src:000001,time:19100,execs:21878,op:havoc,rep:2
+  Input : "00.00.00.0\011\011\011)"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000191,src:000001,time:20755,execs:24160,op:havoc,rep:2
+  Input : "023456[A1](B0.00.0PPPPPPPPPPPPPPPPPPPPPPPPP0"
+  Reason: Unclosed bracket at end
+
+[FAIL] File: output/cpu2/queue/id:000192,src:000001,time:21361,execs:25099,op:havoc,rep:4
+  Input : "00.0.-.--00.0.-.]0.0"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000193,src:000001,time:21495,execs:25262,op:havoc,rep:3,+cov
+  Input : "0____________0.00.00"
+  Reason: Illegal sequence: Too many underscores (more than 3)
+
+[FAIL] File: output/cpu2/queue/id:000194,src:000001,time:21957,execs:25901,op:havoc,rep:1,+cov
+  Input : "0034 5 6"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000195,src:000001,time:22391,execs:26536,op:havoc,rep:3,+cov
+  Input : "\241"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000197,src:000001,time:22631,execs:26822,op:havoc,rep:4
+  Input : "/// 000.00.0K00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000198,src:000001,time:22697,execs:26888,op:havoc,rep:2,+cov
+  Input : "0 0.0.00.000"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000200,src:000001,time:23478,execs:27934,op:havoc,rep:3
+  Input : "00_______0___________N__0[].00.00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000201,src:000001,time:23774,execs:28329,op:havoc,rep:3
+  Input : "00.00.\027\027\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\027\027\027\027\027\027\027\027\027\0270"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000202,src:000001,time:23985,execs:28616,op:havoc,rep:4,+cov
+  Input : "0-/0.0.000"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000203,src:000001,time:24243,execs:28900,op:havoc,rep:4
+  Input : "00./////0000000S.Q0"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000206,src:000001,time:25288,execs:30299,op:havoc,rep:2,+cov
+  Input : "\003\232\148\1480.00"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000207,src:000001,time:25369,execs:30382,op:havoc,rep:1
+  Input : "00.00.0____0"
+  Reason: Illegal sequence: Too many underscores (more than 3)
+
+[FAIL] File: output/cpu2/queue/id:000208,src:000001,time:26030,execs:31348,op:havoc,rep:4,+cov
+  Input : "0 0.0000(.0.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000209,src:000001,time:26201,execs:31557,op:havoc,rep:2,+cov
+  Input : "0\207"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000210,src:000001,time:27662,execs:33769,op:havoc,rep:1,+cov
+  Input : "0 2  2 34 50.00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000211,src:000001,time:28246,execs:34653,op:havoc,rep:2
+  Input : "0//////////////00.0.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000213,src:000001,time:29989,execs:37209,op:havoc,rep:4,+cov
+  Input : "00.0-.\r\n\r\\.0\176.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000214,src:000001,time:30693,execs:38292,op:havoc,rep:4
+  Input : "0_01_0.0/600"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000215,src:000001,time:31398,execs:39312,op:havoc,rep:2
+  Input : "00.-___00.00"
+  Reason: Illegal sequence: Cannot mix '-' and '_'
+
+[FAIL] File: output/cpu2/queue/id:000216,src:000001,time:32012,execs:40208,op:havoc,rep:4
+  Input : "090023...\r......\r\r\r\r\r\r\r.\r\r\r\r\r\r\r\r\r\0210"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000218,src:000001,time:35965,execs:46457,op:havoc,rep:2,+cov
+  Input : "\254\255\0290.000"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000219,src:000001,time:38494,execs:50555,op:havoc,rep:1
+  Input : "00.00---.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000220,src:000001,time:38640,execs:50749,op:havoc,rep:3
+  Input : "0100.20.0YYYYYYYYYYYYYYYYYYYYYY0"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000221,src:000001,time:39104,execs:51465,op:havoc,rep:4,+cov
+  Input : "1 0.00.0.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000223,src:000001,time:40166,execs:53110,op:havoc,rep:3,+cov
+  Input : "00.0?.0\224\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\1520"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000224,sync:main,src:000090,+cov
+  Input : "0\240\191\191\191\191\191\187"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000225,sync:main,src:000097,+cov
+  Input : "\028,0.0.0\240\191K\191\191\191\191\191\191"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000226,sync:main,src:000098
+  Input : "---------00000.0).<0"
+  Reason: Illegal sequence: Too many dashes (more than 3)
+
+[FAIL] File: output/cpu2/queue/id:000227,sync:main,src:000136,+cov
+  Input : "0\242\255\155\170\170\1700"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000228,sync:main,src:000159
+  Input : "00.00.00\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n-----000\n\n\n\n\n"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/cpu2/queue/id:000229,sync:main,src:000163,+cov
+  Input : "0\011\244\234\140\141\141\141"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000230,sync:main,src:000169
+  Input : "9999999999D999999:99999999900.1012345.00"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000231,sync:main,src:000176
+  Input : "0000.2\012\012\012\012\012\012\012\012\012\012\012\012\0120000000000000\012\012\012\0120\01800.2\012\012\012\012.\012\012\012\012\012\012\011\012\012\012\012\0120\01800.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000232,sync:main,src:000177,+cov
+  Input : "\254\255\255\12700\128\000"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000233,sync:main,src:000178
+  Input : "1000000S00-----------------000000000000.0\023.0"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000235,sync:main,src:000195
+  Input : "00__0___0_.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000236,sync:main,src:000196
+  Input : "00.0--7------------------0.0-------0"
+  Reason: Illegal sequence: Too many dashes (more than 3)
+
+[FAIL] File: output/cpu2/queue/id:000237,sync:main,src:000197,+cov
+  Input : "\254"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000239,sync:main,src:000204
+  Input : "                                0[]"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000240,sync:main,src:000208
+  Input : "5678900p.00.001234560(005\011\011\011"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000241,sync:main,src:000209
+  Input : "\011\011\011(\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011 \011\011 "
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000242,sync:main,src:000210
+  Input : "_0___0_0___0_._\026"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000243,sync:main,src:000211,+cov
+  Input : "10.00 2 34 5J^JJJJJJJJJJ0.00.0 "
+  Reason: Invalid character '^' in extension
+
+[FAIL] File: output/cpu2/queue/id:000244,sync:main,src:000213
+  Input : "00.0__0___0_00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000245,sync:main,src:000216,+cov
+  Input : "0667890/:_"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/cpu2/queue/id:000247,sync:main,src:000218
+  Input : "1 2 444654445...\0286"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000248,sync:main,src:000219,+cov
+  Input : "0\237\t\1370.\t\137\t\239\t\t\t\255\181\170\170\1700.0.00.0000.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000249,sync:main,src:000220
+  Input : "099999999999999999999999....00Q"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000251,src:000221,time:42150,execs:54625,op:havoc,rep:4
+  Input : "1 0.003456-./2.@:."
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/cpu2/queue/id:000252,src:000210,time:42695,execs:55367,op:havoc,rep:2,+cov
+  Input : "0 2  2  2 34 50.(0"
+  Reason: Unclosed bracket at end
+
+[FAIL] File: output/cpu2/queue/id:000254,src:000210,time:42843,execs:55508,op:havoc,rep:4
+  Input : "0 2  20    2 0   2 0.00.00 3\022 50\01400."
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000255,src:000210,time:42901,execs:55560,op:havoc,rep:2,+cov
+  Input : "0 2  2 3.0.0"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000256,src:000210,time:43110,execs:55848,op:havoc,rep:2
+  Input : "0 2  2 2 34\12750.000"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000262,src:000210,time:44201,execs:57347,op:havoc,rep:1
+  Input : "0 2  2 34                            50."
+  Reason: Illegal sequence: Too many space characters (more than 6)
+
+[FAIL] File: output/cpu2/queue/id:000263,src:000210,time:44754,execs:58208,op:havoc,rep:2
+  Input : "0 2___________________________________:0"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000264,src:000210,time:46154,execs:60403,op:havoc,rep:3,+cov
+  Input : "0 2  23456[A[)\012\012\012\0121](B22 34 5*.00.00"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/cpu2/queue/id:000266,src:000210,time:48727,execs:64487,op:havoc,rep:2
+  Input : "0 2  223456[A1] 34 0___0_.50.00.00"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/cpu2/queue/id:000267,src:000210,time:49390,execs:65523,op:havoc,rep:4,+cov
+  Input : "0 2  2 3.0\224\255\152\1524 "
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000269,src:000210,time:50863,execs:67807,op:havoc,rep:3
+  Input : "0  2 34 50.00 2  2 34 50.................................$0."
+  Reason: Invalid character '$' in extension
+
+[FAIL] File: output/cpu2/queue/id:000270,src:000184,time:51488,execs:68451,op:havoc,rep:1,+cov
+  Input : "\255\254\255\2270.00"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000271,src:000009,time:51711,execs:68599,op:havoc,rep:2
+  Input : "123456[12345678D01()4567"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/cpu2/queue/id:000272,src:000009,time:51773,execs:68651,op:havoc,rep:2
+  Input : "123451[1234WWWWW5678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000273,src:000009,time:51828,execs:68696,op:havoc,rep:2
+  Input : "123456[12345678cc_cccccccccccccccc901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000274,src:000009,time:51868,execs:68718,op:havoc,rep:2
+  Input : "123456[123456789-123TTTTTTTTTTTTTTT4567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000275,src:000009,time:51930,execs:68776,op:havoc,rep:2
+  Input : "123456[123456789012345123456786012345967]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000277,src:000009,time:52052,execs:68883,op:havoc,rep:2
+  Input : "34567890123___________0.00_____0.004567]"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/cpu2/queue/id:000278,src:000009,time:52225,execs:69117,op:havoc,rep:2
+  Input : "123456[G23456789012]34567]"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/cpu2/queue/id:000279,src:000009,time:52382,execs:69329,op:havoc,rep:2
+  Input : "123456[12345678981234567]123456[12345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000281,src:000009,time:52866,execs:70035,op:havoc,rep:2
+  Input : "123456[123456789_____________________-12"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/cpu2/queue/id:000282,src:000009,time:52905,execs:70055,op:havoc,rep:2
+  Input : "123456[L23456789_2 34 __0000     _00   54567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000283,src:000009,time:52960,execs:70101,op:havoc,rep:1
+  Input : "123456[12hhhhhhhhhhhhhhhhhhh345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000284,src:000009,time:53253,execs:70532,op:havoc,rep:2
+  Input : "123456[1                    3456((90"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/cpu2/queue/id:000285,src:000009,time:53733,execs:71273,op:havoc,rep:1
+  Input : "123456[12345678____________:1234567]"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/cpu2/queue/id:000286,src:000009,time:54236,execs:72052,op:havoc,rep:1
+  Input : "12 2  2 2 34\12750.4567"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000287,src:000009,time:54716,execs:72782,op:havoc,rep:2
+  Input : "123456[1234567890123456mmmmmmmmmmmmmm123890mmmmmmmmmmmmmmmmmm7]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000288,src:000009,time:55202,execs:73528,op:havoc,rep:1
+  Input : "123456______________N__0____N__[12345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000289,src:000009,time:55402,execs:73809,op:havoc,rep:2
+  Input : "123456sssssssssssssssss[12345778901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000290,src:000009,time:57600,execs:77322,op:havoc,rep:2
+  Input : "123456[12345                .00.978901634567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000291,src:000224,time:60352,execs:81663,op:havoc,rep:3,+cov
+  Input : "0\240\255\191\175\191\191\210"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000292,src:000237,time:61031,execs:82278,op:havoc,rep:2,+cov
+  Input : "\254\255"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000293,src:000014,time:61220,execs:82384,op:havoc,rep:5
+  Input : "11_0___0_0-4"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000294,src:000213,time:61385,execs:82569,op:havoc,rep:2
+  Input : "00.0-.\r\n\r\\.0-.\r\n\r\\.0\176.00\r\n\r\\.0\176."
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000295,src:000291,time:61659,execs:82804,op:havoc,rep:2,+cov
+  Input : "0\240!\191\175\191\190\210"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000296,src:000125,time:65652,execs:87161,op:havoc,rep:2
+  Input : "00/0/00/0/0"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000297,src:000270,time:66577,execs:88124,op:havoc,rep:1,+cov
+  Input : "\255\254"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000298,src:000248,time:67111,execs:88655,op:havoc,rep:3,+cov
+  Input : "))))))0\237\243\1370.\t\t\t\255\181\170\170\1700.0.00./000."
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000299,src:000159,time:67814,execs:89308,op:havoc,rep:5,+cov
+  Input : "\239\187"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000300,src:000299,time:68529,execs:90005,op:havoc,rep:2,+cov
+  Input : "\239\1870-\240.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000301,src:000267,time:69283,execs:90923,op:havoc,rep:4,+cov
+  Input : "0C2  2 3.0\224\180\180\180\180\1800 \180\180\180\180\176.00.\180\180\180\255\152"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000303,src:000227,time:71791,execs:94046,op:havoc,rep:2,+cov
+  Input : "0\242\181\155\170\170\1702"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000304,src:000092,time:74000,execs:97061,op:havoc,rep:1,+cov
+  Input : "00.00  _     00"
+  Reason: Illegal sequence: Too many space characters (more than 6)
+
+[FAIL] File: output/cpu2/queue/id:000305,src:000211,time:74664,execs:97835,op:havoc,rep:2
+  Input : "0///.//////////////////////////////00.0.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000306,src:000256,time:75153,execs:98526,op:havoc,rep:1
+  Input : "0 2  2                                2 34\1275"
+  Reason: Illegal sequence: Too many space characters (more than 6)
+
+[FAIL] File: output/cpu2/queue/id:000307,src:000296,time:75854,execs:99456,op:havoc,rep:2
+  Input : "00/0/0/0/00/0/0/080"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000308,src:000090,time:76292,execs:100060,op:havoc,rep:1
+  Input : "00-00-0-0"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/cpu2/queue/id:000309,src:000218,time:79280,execs:103774,op:havoc,rep:14,+cov
+  Input : "0000000[L2345\000\000\016\0000000700000H0000L700000H00123456-./2.@000L700000H00123456-./2.@0.0060.0060.00[L2345\000\000\016\000000000006.03450000006/006."
+  Reason: Input string length exceeds the maximum allowable limit of 128 characters
+
+[FAIL] File: output/cpu2/queue/id:000310,src:000066,time:79754,execs:104205,op:havoc,rep:2
+  Input : ".--------------------------------0-.0.00.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000311,src:000248,time:80819,execs:105643,op:havoc,rep:8,+cov
+  Input : "0\237\129\1370.\t\137\t\239\249\b\t\255\181\170@\1690.0.0\255\1270p00.\0010"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000312,src:000281,time:81482,execs:106115,op:havoc,rep:1
+  Input : "123456[12345123456789_____________6789_____________________-"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/cpu2/queue/id:000313,src:000281,time:81602,execs:106201,op:havoc,rep:2
+  Input : "123456[123456789____________3456789_________________________________________-12"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/cpu2/queue/id:000314,src:000271,time:83235,execs:106715,op:havoc,rep:10
+  Input : "123456[12[*45678D4555555555555555000.\0310555%555555356[12345678D01(0 34 _2 34 __000                           000.00_00001()4567"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/cpu2/queue/id:000316,src:000204,time:87236,execs:109727,op:havoc,rep:2
+  Input : "6776703400:0346703400:03400:"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000319,src:000297,time:90717,execs:113818,op:havoc,rep:2,+cov
+  Input : "\255\254\016"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000320,src:000279,time:91246,execs:114080,op:havoc,rep:2
+  Input : "123456[18345678981234567]123456[7]12[12345678901234467]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000321,src:000229,time:95512,execs:118128,op:havoc,rep:2,+cov
+  Input : "0\011\2440\145\141\141\141"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000322,src:000321,time:95799,execs:118246,op:havoc,rep:1,+cov
+  Input : "0\011\244\141\145\141\1410"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000323,src:000268,time:96470,execs:118681,op:havoc,rep:5
+  Input : "02 34 56..........0 0.0.00.00 0.00. 2  2 34 5..0000000000000000000.............0 0.0.00.00 0.0.00.0.......0....."
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000325,src:000297,time:100255,execs:122213,op:havoc,rep:1,+cov
+  Input : "\254\255\254"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000326,src:000323,time:101707,execs:123421,op:havoc,rep:4
+  Input : "23456[A1](........0 0.0.00.00 0.00. 2  2 34 5..00000000002  2 34 5..0000000000000.............0 0.0.00.00 0.4.00.0.......0/....."
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000327,src:000323,time:101780,execs:123469,op:havoc,rep:3
+  Input : "02 34 56..........0 0.0.00.00 0.00. 2........  2 34 5..00000000000.............0 0.0.00.00 0.  p.00.0.......0..."
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000329,src:000242,time:108082,execs:130655,op:havoc,rep:2
+  Input : "_0___0_0___0_.553\"6[12345678D01(0 _\026"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000330,src:000313,time:109256,execs:131993,op:havoc,rep:11
+  Input : "123456[1678______m______3456689_D_____B_________4566___a_____3______-\1272"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/cpu2/queue/id:000331,src:000254,time:119261,execs:143843,op:havoc,rep:1
+  Input : "0 2  20    2 0                                2 0.00.00 0\01400"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000332,src:000072,time:122510,execs:147859,op:havoc,rep:2
+  Input : "00_________________________________.40.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000333,src:000270,time:123667,execs:149285,op:havoc,rep:1,+cov
+  Input : "\255\254\255\2190.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000334,src:000333,time:123888,execs:149394,op:quick,pos:5,+cov
+  Input : "\255\254\255\2190\22900"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000335,src:000333,time:123945,execs:149424,op:havoc,rep:4,+cov
+  Input : "\255\2540\2200/0\255"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000336,src:000334,time:124232,execs:149646,op:havoc,rep:1,+cov
+  Input : "\255\254\255\2190\22200"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000337,src:000334,time:124284,execs:149674,op:havoc,rep:5,+cov
+  Input : "\254\255\2190\229\229\229-0\255\254\255\2190\229-"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000338,src:000260,time:132182,execs:158822,op:havoc,rep:3
+  Input : "0703400:400:S:44 50/00.000703400:0703400:S:S:44 50/00.00"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000339,src:000260,time:132288,execs:158937,op:havoc,rep:4
+  Input : "0703400:0:44 5044 50J400:0:44 50J0"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000340,src:000260,time:132483,execs:159189,op:havoc,rep:15
+  Input : "70703400:0:44 3400:0:::::::::::::::399.....3333(3::3C3044 3400:0:::::::::3::"
+  Reason: Unclosed bracket at end
+
+[FAIL] File: output/cpu2/queue/id:000342,src:000260,time:133282,execs:160247,op:havoc,rep:4
+  Input : "0703400:0:44.07034000703400:0:44.070400:0:44.400:0:44.07"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000344,src:000260,time:134218,execs:161570,op:havoc,rep:5
+  Input : "0703400:0::::*:4 OI/00.0"
+  Reason: Invalid character '*' in extension
+
+[FAIL] File: output/cpu2/queue/id:000345,src:000260,time:134879,execs:162538,op:havoc,rep:7
+  Input : "0703400:H:::::\011\011\011\011\011\011\011 \011\011_____:1234,/00.00"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/cpu2/queue/id:000347,src:000260,time:137867,execs:166886,op:havoc,rep:2
+  Input : "0703400::44 50/00.000:703400::44 50/00.000:44 50/00. 50/00.0"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000348,src:000324,time:142536,execs:173624,op:havoc,rep:1
+  Input : "12345456[A1](B2)6[AE]12345456[A1](B2)6[AE](B2)(B2)"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000349,src:000324,time:142572,execs:173637,op:havoc,rep:2
+  Input : "12345456[A1](B2)6[AE]((("
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/cpu2/queue/id:000350,src:000324,time:142615,execs:173658,op:havoc,rep:1
+  Input : "12345456[A1]45456[A1](B2)6[AE](B2)6[AE](B2)"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000351,src:000294,time:146750,execs:179345,op:havoc,rep:1
+  Input : "00.0-.\r\n-.\r\n\r\\.0\\.0-.\r\n\r\\\176.0\\.0\176"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000352,src:000226,time:147922,execs:180918,op:havoc,rep:2
+  Input : "---------------------------------00000.0"
+  Reason: Illegal sequence: Too many dashes (more than 3)
+
+[FAIL] File: output/cpu2/queue/id:000356,src:000232,time:160874,execs:196763,op:havoc,rep:2,+cov
+  Input : "\254\255\223m00\128\000"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000357,src:000337,time:174031,execs:212870,op:havoc,rep:1,+cov
+  Input : "\254\255\2190"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000358,src:000270,time:175565,execs:214582,op:havoc,rep:8
+  Input : "-.\r\n\r\\.0-.F.\r\n\r\\.0-.\r\n\r\\\r\n\r\\--.00."
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000359,src:000288,time:192190,execs:235408,op:havoc,rep:3
+  Input : "123456______________N0 0.00.6______________0____N__[123456789012345M7]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000360,src:000333,time:204885,execs:252345,op:havoc,rep:1,+cov
+  Input : "\255\254\255\219"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/cpu2/queue/id:000362,src:000013,time:404818,execs:506254,op:havoc,rep:14,+cov
+  Input : "\239\191\190\1280560.\232\003\252\n\011\011\011\011\011\011\011\011\011\011\011\011\n\24749956"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000363,src:000358,time:575422,execs:735035,op:havoc,rep:1
+  Input : "-.\r\n\r\\-.\r\n\r\\F.\r\n\r\\.0-.\r\n\r\\\r\n\r.0-.F.\r\n\r\\.0-.\r\n\r\\\r\n\r\\--.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000364,src:000149,time:629260,execs:808727,op:havoc,rep:8
+  Input : "00 .00.........................................................................................................................\000"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/cpu2/queue/id:000365,src:000364,time:630513,execs:810150,op:havoc,rep:3
+  Input : "00 .00........................................................................................................................-\001"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000366,src:000363,time:637783,execs:818222,op:havoc,rep:2
+  Input : "-.-.\r\\\r\n\r\n\r\\F.\r\n\r\\.0-.\r\n\r\\-.-.\r\\\r\n\r\n\r\\F.\r\n\r\\\r\n\r\\\r\n\r..\r\n\r.\r\n\r\\\r\n\r00\r\n\r.0-.F.\r\n\r\\.0-.\r\n\r\\\r\n\r\\-"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/cpu2/queue/id:000367,src:000003,time:663285,execs:850674,op:havoc,rep:2
+  Input : "12..........................................................................................................................3456"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/cpu2/queue/id:000368,src:000141,time:911130,execs:1151084,op:havoc,rep:9,+cov
+  Input : "00.00_.50.\0220.[A1] 34 0___0_.50.\0220.\194\133"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/cpu2/queue/id:000369,src:000350,time:916891,execs:1157622,op:havoc,rep:1
+  Input : "12345456[A1]455456[A1]45456[A1](B2)6[AE](B2)6[AE](B2)456[A1](B2)6[AE](B2)6[AE](B2)"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/cpu2/queue/id:000370,src:000071,time:918530,execs:1159657,op:havoc,rep:10
+  Input : "\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/.state/deterministic_done/id:000001,time:0,execs:0,orig:seed_10.txt
+  Input : ""
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/.state/deterministic_done/id:000009,time:0,execs:0,orig:seed_18.txt
+  Input : ""
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000001,time:0,execs:0,orig:seed_10.txt
+  Input : "00.00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000003,time:0,execs:0,orig:seed_12.txt
+  Input : "12..3456"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000004,time:0,execs:0,orig:seed_13.txt
+  Input : "12345"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000005,time:0,execs:0,orig:seed_14.txt
+  Input : "12.34.56[(A)]"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/main/queue/id:000006,time:0,execs:0,orig:seed_15.txt
+  Input : "123456[]"
+  Reason: Bracket contains no alphanumeric characters
+
+[FAIL] File: output/main/queue/id:000008,time:0,execs:0,orig:seed_17.txt
+  Input : "123456-./"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/main/queue/id:000009,time:0,execs:0,orig:seed_18.txt
+  Input : "123456[12345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000010,time:0,execs:0,orig:seed_19.txt
+  Input : "123456\207\128"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000012,time:0,execs:0,orig:seed_20.txt
+  Input : "123456\000\000"
+  Reason: Security Exception: Embedded null byte detected at position 6
+
+[FAIL] File: output/main/queue/id:000014,time:0,execs:0,orig:seed_4.txt
+  Input : "12-3456"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000020,src:000001,time:21,execs:142,op:(null),pos:0,+cov
+  Input : "a"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000021,src:000001,time:101,execs:151,op:quick,pos:0
+  Input : "<0.00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000022,src:000001,time:132,execs:159,op:quick,pos:1,+cov
+  Input : "0\236.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000023,src:000001,time:169,execs:167,op:quick,pos:2
+  Input : "00g00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000024,src:000001,time:200,execs:175,op:quick,pos:3
+  Input : "00.>0.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000025,src:000001,time:232,execs:183,op:quick,pos:4,+cov
+  Input : "00.0\199.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000026,src:000001,time:269,execs:191,op:quick,pos:5
+  Input : "00.00\19400"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000027,src:000001,time:303,execs:199,op:quick,pos:6,+cov
+  Input : "00.00.\"0"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000028,src:000001,time:343,execs:209,op:flip1,pos:0,+cov
+  Input : "\1760.00.00"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000029,src:000001,time:381,execs:219,op:flip1,pos:0,+cov
+  Input : " 0.00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000031,src:000001,time:453,execs:238,op:flip1,pos:1,+cov
+  Input : "0\176.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000032,src:000001,time:490,execs:246,op:flip1,pos:1
+  Input : "0p.00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000033,src:000001,time:525,execs:255,op:flip1,pos:1
+  Input : "0 .00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000034,src:000001,time:566,execs:267,op:flip1,pos:2,+cov
+  Input : "00\17400.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000035,src:000001,time:607,execs:281,op:flip1,pos:2,+cov
+  Input : "00/00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000036,src:000001,time:645,execs:289,op:flip1,pos:3,+cov
+  Input : "00.\1760.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000037,src:000001,time:686,execs:304,op:flip1,pos:4
+  Input : "00.0\176.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000038,src:000001,time:726,execs:312,op:flip1,pos:4
+  Input : "00.0p.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000039,src:000001,time:773,execs:342,op:flip2,pos:0,+cov
+  Input : "\2400.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000040,src:000001,time:815,execs:359,op:flip2,pos:1
+  Input : "0\000.00.00"
+  Reason: Security Exception: Embedded null byte detected at position 1
+
+[FAIL] File: output/main/queue/id:000041,src:000001,time:857,execs:375,op:flip2,pos:2,+cov
+  Input : "00600.00"
+  Reason: Invalid digit block size: 5
+
+[FAIL] File: output/main/queue/id:000042,src:000001,time:895,execs:385,op:flip2,pos:2
+  Input : "00-00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000043,src:000001,time:937,execs:396,op:flip2,pos:3
+  Input : "00.\0000.00"
+  Reason: Security Exception: Embedded null byte detected at position 3
+
+[FAIL] File: output/main/queue/id:000044,src:000001,time:987,execs:425,op:flip2,pos:6,+cov
+  Input : "00.00.\2400"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000045,src:000001,time:1029,execs:442,op:flip4,pos:0,+cov
+  Input : "\0120.00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000046,src:000001,time:1065,execs:450,op:flip4,pos:0
+  Input : ".0.00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000047,src:000001,time:1127,execs:510,op:flip8,pos:0,+cov
+  Input : "\2070.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000048,src:000001,time:1210,execs:591,op:arith8,pos:0,val:-35,+cov
+  Input : "\r0.00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000049,src:000001,time:1290,execs:672,op:arith8,pos:2,val:-14
+  Input : "00 00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000050,src:000001,time:1348,execs:716,op:arith8,pos:2,val:-35,+cov
+  Input : "00\01100.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000051,src:000001,time:1521,execs:948,op:int8,pos:0,val:-1,+cov
+  Input : "\2550.00.00"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000052,src:000001,time:1564,execs:966,op:int8,pos:2,val:+0
+  Input : "00\00000.00"
+  Reason: Security Exception: Embedded null byte detected at position 2
+
+[FAIL] File: output/main/queue/id:000053,src:000001,time:1626,execs:1020,op:int16,pos:0,val:+1000,+cov
+  Input : "\232\003.00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000054,src:000001,time:1753,execs:1177,op:int16,pos:6,val:+1,+cov
+  Input : "00.00.\001\000"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000055,src:000001,time:1945,execs:1446,op:ext_UO,pos:0,+cov
+  Input : "_0.00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000056,src:000001,time:1986,execs:1461,op:ext_UO,pos:0
+  Input : "-_.00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000057,src:000001,time:2023,execs:1472,op:ext_UO,pos:0
+  Input : "...00.00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000058,src:000001,time:2077,execs:1508,op:ext_UO,pos:1
+  Input : "0_:00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000059,src:000001,time:2204,execs:1668,op:ext_UO,pos:6
+  Input : "00.00.-_"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000060,src:000001,time:2251,execs:1687,op:ext_UI,pos:0,+cov
+  Input : "/00.00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000061,src:000001,time:2290,execs:1699,op:ext_UI,pos:0
+  Input : ".00.00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000062,src:000001,time:2333,execs:1717,op:ext_UI,pos:0,+cov
+  Input : "-_00.00.00"
+  Reason: Illegal sequence: Cannot mix '-' and '_'
+
+[FAIL] File: output/main/queue/id:000063,src:000001,time:2371,execs:1727,op:ext_UI,pos:0,+cov
+  Input : "_-00.00.00"
+  Reason: Illegal sequence: Cannot mix '-' and '_'
+
+[FAIL] File: output/main/queue/id:000064,src:000001,time:2409,execs:1736,op:ext_UI,pos:0,+cov
+  Input : "//00.00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000065,src:000001,time:2449,execs:1744,op:ext_UI,pos:0,+cov
+  Input : ".-00.00.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/main/queue/id:000067,src:000001,time:2528,execs:1767,op:ext_UI,pos:1,+cov
+  Input : "0/0.00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000068,src:000001,time:2570,execs:1783,op:ext_UI,pos:1,+cov
+  Input : "0 0.00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000069,src:000001,time:2611,execs:1797,op:ext_UI,pos:1
+  Input : "0-_0.00.00"
+  Reason: Illegal sequence: Cannot mix '-' and '_'
+
+[FAIL] File: output/main/queue/id:000070,src:000001,time:2654,execs:1819,op:ext_UI,pos:2,+cov
+  Input : "00/.00.00"
+  Reason: Illegal sequence: Cannot mix '.' and '/'
+
+[FAIL] File: output/main/queue/id:000071,src:000001,time:2695,execs:1834,op:ext_UI,pos:2,+cov
+  Input : "00_.00.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/main/queue/id:000072,src:000001,time:2733,execs:1842,op:ext_UI,pos:2,+cov
+  Input : "00 .00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000073,src:000001,time:2774,execs:1856,op:ext_UI,pos:2
+  Input : "00-_.00.00"
+  Reason: Illegal sequence: Cannot mix '-' and '_'
+
+[FAIL] File: output/main/queue/id:000074,src:000001,time:2807,execs:1867,op:ext_UI,pos:2
+  Input : "00...00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000075,src:000001,time:2840,execs:1875,op:ext_UI,pos:2
+  Input : "00//.00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000076,src:000001,time:2901,execs:1923,op:ext_UI,pos:4,+cov
+  Input : "00.0/0.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000077,src:000001,time:2945,execs:1939,op:ext_UI,pos:4,+cov
+  Input : "00.0 0.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000078,src:000001,time:3058,execs:2063,op:havoc,rep:6,+cov
+  Input : "0\011"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000079,src:000001,time:3107,execs:2084,op:havoc,rep:2
+  Input : "00.000.00\014.00"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/main/queue/id:000080,src:000001,time:3156,execs:2115,op:havoc,rep:4
+  Input : "00.0.  .000. 0"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000081,src:000001,time:3205,execs:2142,op:havoc,rep:3,+cov
+  Input : "0000.0.00.00.00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000082,src:000001,time:3253,execs:2165,op:havoc,rep:6
+  Input : "0:_"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000083,src:000001,time:3297,execs:2184,op:havoc,rep:5,+cov
+  Input : "\128"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000084,src:000001,time:3364,execs:2230,op:havoc,rep:7
+  Input : "./0....0009600"
+  Reason: Illegal sequence: Cannot mix '.' and '/'
+
+[FAIL] File: output/main/queue/id:000085,src:000001,time:3421,execs:2274,op:havoc,rep:6,+cov
+  Input : "\234"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000086,src:000001,time:3488,execs:2330,op:havoc,rep:6
+  Input : "              "
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000087,src:000001,time:3529,execs:2351,op:havoc,rep:7,+cov
+  Input : "\242"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000088,src:000001,time:3594,execs:2400,op:havoc,rep:3,+cov
+  Input : "10 .00.0.00N00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000089,src:000001,time:3671,execs:2469,op:havoc,rep:2
+  Input : "0_0.................00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000090,src:000001,time:3764,execs:2577,op:havoc,rep:4,+cov
+  Input : "0\240\191\191\191\191\191\187\127\255\191\191\191\191\191"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000091,src:000001,time:3811,execs:2596,op:havoc,rep:7
+  Input : "_0.00._0.00/000.100000.0.M0000"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/main/queue/id:000092,src:000001,time:3851,execs:2617,op:havoc,rep:5,+cov
+  Input : "\000"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000093,src:000001,time:3925,execs:2685,op:havoc,rep:7,+cov
+  Input : "d\255"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000094,src:000001,time:3993,execs:2745,op:havoc,rep:6,+cov
+  Input : "6000000!0\0150000!0"
+  Reason: Invalid character '!' in extension
+
+[FAIL] File: output/main/queue/id:000095,src:000001,time:4042,execs:2766,op:havoc,rep:6,+cov
+  Input : "04 5 00.0."
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000096,src:000001,time:4094,execs:2798,op:havoc,rep:5
+  Input : "0/0012/456"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000097,src:000001,time:4143,execs:2833,op:havoc,rep:8,+cov
+  Input : "\028,0.0.0\240\191K\191\191\191\191\191\191\19100"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000098,src:000001,time:4184,execs:2847,op:havoc,rep:7,+cov
+  Input : "-------------00000.0).<0"
+  Reason: Illegal sequence: Too many dashes (more than 3)
+
+[FAIL] File: output/main/queue/id:000099,src:000001,time:4261,execs:2914,op:havoc,rep:6
+  Input : "0*.-0\r.0(].-0\r.0(00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000101,src:000001,time:4449,execs:3108,op:havoc,rep:8,+cov
+  Input : "\208"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000102,src:000001,time:4503,execs:3142,op:havoc,rep:5
+  Input : "\011\011\011\011\011\011-_\011\011\011\011\011\011\011\011\011\011\011\011\011\01101.\255\127.O0"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000103,src:000001,time:4541,execs:3160,op:havoc,rep:8
+  Input : "\011\011\011\142\142\142\142\142\142\142"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000104,src:000001,time:4622,execs:3246,op:havoc,rep:3
+  Input : "_\011\011\233\n\011\011\011"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000105,src:000001,time:4679,execs:3281,op:havoc,rep:8,+cov
+  Input : "00B\018\n\011\0160"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000106,src:000001,time:4767,execs:3369,op:havoc,rep:6
+  Input : "005\011\011\011\011\001"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000107,src:000001,time:4880,execs:3500,op:havoc,rep:4,+cov
+  Input : "0123450..\0166.00"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/main/queue/id:000108,src:000001,time:5039,execs:3699,op:havoc,rep:6
+  Input : "00..00.......................................00.L0.00....0"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000109,src:000001,time:5083,execs:3723,op:havoc,rep:5
+  Input : "  4   00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000110,src:000001,time:5136,execs:3755,op:havoc,rep:3
+  Input : "9-99-99000.0\01600"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/main/queue/id:000112,src:000001,time:5335,execs:3983,op:havoc,rep:4
+  Input : "0   00.00000   00.00"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/main/queue/id:000113,src:000001,time:5434,execs:4099,op:havoc,rep:6,+cov
+  Input : "\003\232"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000114,src:000001,time:5476,execs:4113,op:havoc,rep:2,+cov
+  Input : "00.00.  4   00\016"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000115,src:000001,time:5675,execs:4376,op:havoc,rep:7
+  Input : "0J.%0/05\011\011\011\011\0010.00/\011\011\011\011\0010"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000116,src:000001,time:5787,execs:4505,op:havoc,rep:6
+  Input : "0.0.   .000"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000118,src:000001,time:5937,execs:4655,op:havoc,rep:6
+  Input : "-------99-----0010-----0 005.00"
+  Reason: Illegal sequence: Too many dashes (more than 3)
+
+[FAIL] File: output/main/queue/id:000119,src:000001,time:6101,execs:4873,op:havoc,rep:6
+  Input : "1222222222222222222222222222222-ab0"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000120,src:000001,time:6359,execs:5230,op:havoc,rep:3,+cov
+  Input : "\255"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000121,src:000001,time:6511,execs:5421,op:havoc,rep:4,+cov
+  Input : "78901234567]006+1.00"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/main/queue/id:000122,src:000001,time:6554,execs:5433,op:havoc,rep:5,+cov
+  Input : "123456[ "
+  Reason: Unclosed bracket at end
+
+[FAIL] File: output/main/queue/id:000124,src:000001,time:6664,execs:5513,op:havoc,rep:2
+  Input : "00.00.0.............0.00.0............0.0"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000125,src:000001,time:6785,execs:5659,op:havoc,rep:6,+cov
+  Input : "0 0.0.0-02-33446[4%"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000126,src:000001,time:6890,execs:5768,op:havoc,rep:1
+  Input : "00.00...............................00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000127,src:000001,time:7035,execs:5949,op:havoc,rep:3
+  Input : "\n\n\n\n\n\n\n\n.00.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000128,src:000001,time:7194,execs:6157,op:havoc,rep:8,+cov
+  Input : "             0.000 .000.=000.#0G"
+  Reason: Illegal sequence: Too many space characters (more than 6)
+
+[FAIL] File: output/main/queue/id:000129,src:000001,time:7235,execs:6170,op:havoc,rep:4
+  Input : "0\n\n\n\n\n\n0"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000130,src:000001,time:7431,execs:6423,op:havoc,rep:7,+cov
+  Input : "00.\232\003\184\207000"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000131,src:000001,time:7507,execs:6494,op:havoc,rep:7,+cov
+  Input : "00.0 0.0.0 0.000."
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000132,src:000001,time:7661,execs:6683,op:havoc,rep:4
+  Input : "0.00.00...........................................00.0"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000133,src:000001,time:7780,execs:6828,op:havoc,rep:1
+  Input : "123456[A"
+  Reason: Unclosed bracket at end
+
+[FAIL] File: output/main/queue/id:000134,src:000001,time:7819,execs:6839,op:havoc,rep:2
+  Input : "00---.00.-----.00.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/main/queue/id:000135,src:000001,time:7909,execs:6939,op:havoc,rep:3
+  Input : "R0\012\012\012\012\012\012\012\012\01200.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000136,src:000001,time:8002,execs:7040,op:havoc,rep:7,+cov
+  Input : "0\242\255\155\170\170\1700.\255\127000"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000137,src:000001,time:8052,execs:7067,op:havoc,rep:4,+cov
+  Input : "00.00.0/-99-9900000.0/-99-990."
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/main/queue/id:000138,src:000001,time:8128,execs:7138,op:havoc,rep:1
+  Input : "00.00.000\n\n"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000139,src:000001,time:8173,execs:7167,op:havoc,rep:4,+cov
+  Input : "0000 5 0.\0270."
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000140,src:000001,time:8244,execs:7223,op:havoc,rep:6
+  Input : "\0120.00\0120.00."
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000141,src:000001,time:8308,execs:7282,op:havoc,rep:8
+  Input : "00\015700\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000142,src:000001,time:8365,execs:7330,op:havoc,rep:8
+  Input : "___"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000143,src:000001,time:8784,execs:7933,op:havoc,rep:8,+cov
+  Input : "\254t"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000144,src:000001,time:8928,execs:8106,op:havoc,rep:6
+  Input : "123456[1230..0H.(34.500\n\n\n\n.00.0"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/main/queue/id:000145,src:000001,time:9106,execs:8343,op:havoc,rep:4
+  Input : "\n\n\n.00.0"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000146,src:000001,time:9224,execs:8481,op:havoc,rep:3
+  Input : "06000000!00.00.00.00000000000"
+  Reason: Invalid character '!' in extension
+
+[FAIL] File: output/main/queue/id:000147,src:000001,time:9308,execs:8565,op:havoc,rep:2
+  Input : "0....34560"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000148,src:000001,time:9349,execs:8588,op:havoc,rep:5
+  Input : "\012\012\012\012\012\012\247\011\012\0120"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000149,src:000001,time:9485,execs:8754,op:havoc,rep:8
+  Input : "0100123456789012222222222222222222222222220.0.00.0.0R.00"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000151,src:000001,time:9650,execs:8921,op:havoc,rep:8
+  Input : "123456[0"
+  Reason: Unclosed bracket at end
+
+[FAIL] File: output/main/queue/id:000152,src:000001,time:9848,execs:9178,op:havoc,rep:6,+cov
+  Input : "\207 "
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000153,src:000001,time:9903,execs:9210,op:havoc,rep:4
+  Input : "00.0\r\r(\r\r\r\r\r\r\r\r\r00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000154,src:000001,time:9946,execs:9234,op:havoc,rep:6
+  Input : "0000..00000000000000000000000002\012\012\012"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000155,src:000001,time:9988,execs:9258,op:havoc,rep:8
+  Input : "0_.000_.0010"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/main/queue/id:000156,src:000001,time:10041,execs:9301,op:havoc,rep:1
+  Input : "0........00.00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000157,src:000001,time:10076,execs:9313,op:havoc,rep:8,+cov
+  Input : "9999999999999999999999999D999999:99999999999999999.00.00"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000158,src:000001,time:10249,execs:9532,op:havoc,rep:6
+  Input : "0.0\r\r(\r\r"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000159,src:000001,time:10340,execs:9628,op:havoc,rep:3
+  Input : "00.00.0000\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\015700\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n-------------000\n\n\n\n\n\n\n\n"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000162,src:000001,time:10732,execs:10109,op:havoc,rep:3
+  Input : "022222222222222220.2222-ab0.2222222222222222222220.2222-ab000.00"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000163,src:000001,time:10862,execs:10267,op:havoc,rep:6,+cov
+  Input : "0\011\244\234\140\141\141\141"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000164,src:000001,time:11424,execs:11096,op:havoc,rep:2,+cov
+  Input : "\2390.(00.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000165,src:000001,time:11527,execs:11207,op:havoc,rep:6
+  Input : "220.2\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\012\021\2050-a"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000166,src:000001,time:11651,execs:11357,op:havoc,rep:4,+cov
+  Input : "999999)99"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/main/queue/id:000167,src:000001,time:11699,execs:11382,op:havoc,rep:6,+cov
+  Input : "0-_\234\140\141\1410.00.8"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000168,src:000001,time:12074,execs:11914,op:havoc,rep:2
+  Input : "0_____00"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000169,src:000001,time:12271,execs:12180,op:havoc,rep:3,+cov
+  Input : "9999999999D999999:99999999900.1012345.00"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000170,src:000001,time:12469,execs:12438,op:havoc,rep:6
+  Input : "00                      0.000 .000.=      .00.00\026.\0200.0<"
+  Reason: Illegal sequence: Too many space characters (more than 6)
+
+[FAIL] File: output/main/queue/id:000171,src:000001,time:12647,execs:12676,op:havoc,rep:6
+  Input : "     0.0000 .000.=0"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000172,src:000001,time:12931,execs:13081,op:havoc,rep:7
+  Input : "\r\r.000$.00.00.0\r./"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000173,src:000001,time:13221,execs:13495,op:havoc,rep:2
+  Input : "00000000000000.00. \000"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000174,src:000001,time:13609,execs:14067,op:havoc,rep:1
+  Input : "00.____0000.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/main/queue/id:000176,src:000001,time:14367,execs:15160,op:havoc,rep:6
+  Input : "0000.2\012\012\012\012\012\012\012\012\012\012\012\012\0120000000000000\012\012\012\0120\01800.2\012\012\012\012.\012\012\012\012\012\012\011\012\012\012\012\0120\01800.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000177,src:000001,time:14654,execs:15569,op:havoc,rep:8,+cov
+  Input : "\254\255\255\12700\128\000"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000178,src:000001,time:15287,execs:16405,op:havoc,rep:8
+  Input : "1000000S000000-----------------0000000000000000.0\023.04"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/main/queue/id:000179,src:000001,time:15479,execs:16653,op:havoc,rep:2
+  Input : "1 2 34 00&00.00"
+  Reason: Invalid character '&' in extension
+
+[FAIL] File: output/main/queue/id:000180,src:000001,time:15724,execs:16976,op:havoc,rep:6
+  Input : "___0000__0000"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000181,src:000001,time:16058,execs:17438,op:havoc,rep:5,+cov
+  Input : "5\r(\r\r\n\244\011"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000182,src:000001,time:16269,execs:17712,op:havoc,rep:3,+cov
+  Input : "0667890;"
+  Reason: Invalid character ';' in extension
+
+[FAIL] File: output/main/queue/id:000184,src:000001,time:16447,execs:17894,op:havoc,rep:5,+cov
+  Input : "00____0.00.00.00"
+  Reason: Illegal sequence: Too many underscores (more than 3)
+
+[FAIL] File: output/main/queue/id:000186,src:000001,time:16860,execs:18343,op:havoc,rep:2
+  Input : "00.0___0.00.000.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000187,src:000001,time:17131,execs:18684,op:havoc,rep:6
+  Input : "_0.0 0.0000 00\0140"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/main/queue/id:000189,src:000001,time:17557,execs:19230,op:havoc,rep:4
+  Input : "00.0___________________0.00.D"
+  Reason: Illegal sequence: Too many underscores (more than 3)
+
+[FAIL] File: output/main/queue/id:000190,src:000001,time:17598,execs:19251,op:havoc,rep:8
+  Input : "0..........................--------------------7-----------------------------7------------------------[-E"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000191,src:000001,time:18193,execs:20120,op:havoc,rep:5
+  Input : "________"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000192,src:000001,time:18361,execs:20337,op:havoc,rep:5
+  Input : "0__/____0.0070.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/main/queue/id:000193,src:000001,time:19285,execs:21663,op:havoc,rep:7
+  Input : "\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r00.0\1768.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000194,src:000001,time:19367,execs:21726,op:havoc,rep:2
+  Input : "00.00.5---0000000"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000195,src:000001,time:19950,execs:22466,op:havoc,rep:3
+  Input : "00__0___0_.00"
+  Reason: Illegal sequence: Cannot mix dashes/underscores with '.' or '/'
+
+[FAIL] File: output/main/queue/id:000196,src:000001,time:20022,execs:22535,op:havoc,rep:2
+  Input : "00.0--7------------------0.0-------0"
+  Reason: Illegal sequence: Too many dashes (more than 3)
+
+[FAIL] File: output/main/queue/id:000197,src:000001,time:20057,execs:22548,op:havoc,rep:4,+cov
+  Input : "\254"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000198,src:000001,time:20581,execs:23354,op:havoc,rep:1
+  Input : "00.////00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000200,src:000001,time:21285,execs:24406,op:havoc,rep:7
+  Input : "0/0//700.0/700.0"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000201,src:000001,time:21351,execs:24465,op:havoc,rep:6,+cov
+  Input : "\255\254.()0999999999D999999:90\000"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000202,src:000001,time:22641,execs:26414,op:havoc,rep:5,+cov
+  Input : "0 0000.0     6    . 0 "
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000203,src:000001,time:22918,execs:26800,op:havoc,rep:7
+  Input : "0____________012/4500."
+  Reason: Illegal sequence: Too many underscores (more than 3)
+
+[FAIL] File: output/main/queue/id:000204,src:000001,time:24126,execs:28517,op:havoc,rep:7
+  Input : "                                        0[]"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000205,src:000001,time:25317,execs:30200,op:havoc,rep:5
+  Input : "0999999D99Q999:99999999999999"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000206,src:000001,time:26208,execs:31522,op:havoc,rep:3
+  Input : "9999999(90"
+  Reason: Unclosed bracket at end
+
+[FAIL] File: output/main/queue/id:000207,src:000001,time:26730,execs:32306,op:havoc,rep:3,+cov
+  Input : "023456[ 0)(0.00"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/main/queue/id:000208,src:000001,time:27842,execs:33951,op:havoc,rep:8
+  Input : "5678900p.00.001234560(005\011\011\011-8"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/main/queue/id:000209,src:000001,time:29089,execs:35773,op:havoc,rep:5
+  Input : "\011\011\011(\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011 \011\011 "
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000210,src:000001,time:29220,execs:35947,op:havoc,rep:8
+  Input : "_0___0_0___0_._\026"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000211,src:000001,time:29428,execs:36235,op:havoc,rep:5,+cov
+  Input : "10.00 2 34 5J^JJJJJJJJJJ0.00.0 "
+  Reason: Invalid character '^' in extension
+
+[FAIL] File: output/main/queue/id:000212,src:000001,time:31637,execs:39622,op:havoc,rep:5
+  Input : "4444444444445...\0166."
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/main/queue/id:000213,src:000001,time:31827,execs:39867,op:havoc,rep:1
+  Input : "00.0__0___0_00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000216,src:000001,time:33749,execs:42694,op:havoc,rep:6,+cov
+  Input : "0667890/:_"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/main/queue/id:000218,src:000001,time:35735,execs:45840,op:havoc,rep:7
+  Input : "1 2 444654445...\0286"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/main/queue/id:000219,src:000001,time:36264,execs:46667,op:havoc,rep:7,+cov
+  Input : "0\237\t\137\t\239\t\t\t\255\181\170\170\1700.0.\t\137\t\239\t\t\t\255\181\170\170\1700.0.00.0000.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000220,src:000001,time:36761,execs:47427,op:havoc,rep:4
+  Input : "099999999999999999999999....00Q"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000224,src:000001,time:40544,execs:53421,op:havoc,rep:5
+  Input : "0222222222J((((((-000000000(((((0.00.00"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/main/queue/id:000226,sync:cpu2,src:000156,+cov
+  Input : "00    2 0   2 0.00.00"
+  Reason: Chapter value 00 is out of bounds (must be between 01 and 99)
+
+[FAIL] File: output/main/queue/id:000227,sync:cpu2,src:000160,+cov
+  Input : "\239"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000229,sync:cpu2,src:000168
+  Input : "00.00.\r\r\r\r00.00.\r\r\r\r\r\r\023\r\r\r\r\r\r\r\r\r\r\r\r\023\r\r\r\r\r\r\r\r01234\r\r00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000230,sync:cpu2,src:000176
+  Input : "0/00.00//////////////////00.00.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000232,sync:cpu2,src:000191
+  Input : "023456[A1](B0.00.0PPPPPPPPPPPPPPPPPPPPPPPPP0"
+  Reason: Unclosed bracket at end
+
+[FAIL] File: output/main/queue/id:000234,sync:cpu2,src:000203
+  Input : "00.//////000000000000000000S.Q0"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000235,sync:cpu2,src:000210,+cov
+  Input : "0 2  2 34 50.00.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000236,sync:cpu2,src:000211
+  Input : "0//////////////00.0.00"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000238,sync:cpu2,src:000218,+cov
+  Input : "\254\255\0290.000"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000239,sync:cpu2,src:000220
+  Input : "0100.20.0YYYYYYYYYYYYYYYYYYYYYY0"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000240,sync:cpu2,src:000221,+cov
+  Input : "1 0.00.0.00"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000242,sync:cpu2,src:000223,+cov
+  Input : "00.0?.0\224\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\1520"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000243,src:000005,time:42093,execs:54831,op:havoc,rep:1,+cov
+  Input : "12.34.56[6[(A)](A)]"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/main/queue/id:000244,src:000009,time:42471,execs:55201,op:quick,pos:20
+  Input : "123456[1234567890123\029567]"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/main/queue/id:000245,src:000009,time:42608,execs:55380,op:ext_UO,pos:20
+  Input : "123456[1234567890123]567]"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/main/queue/id:000246,src:000009,time:42688,execs:55469,op:havoc,rep:1
+  Input : "123456[123456789012345671234567890123456]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000247,src:000009,time:43104,execs:56104,op:havoc,rep:2
+  Input : "123456[7890123123rrrrr45678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000248,src:000009,time:43183,execs:56193,op:havoc,rep:2
+  Input : "123456[GGGGGGGGGGGGGFG67]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000249,src:000009,time:43262,execs:56263,op:havoc,rep:2
+  Input : "123450.0___________________0.00.D6[123456789012X4567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000250,src:000009,time:43297,execs:56278,op:havoc,rep:2
+  Input : "123456[1P34oooooooooooooooooooooooooo5678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000251,src:000009,time:43462,execs:56503,op:havoc,rep:2
+  Input : "123456[12345678901334567_________0]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000252,src:000009,time:43496,execs:56514,op:havoc,rep:2
+  Input : "12345600.0/0.0[120.0__0___0_00345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000253,src:000009,time:43571,execs:56594,op:havoc,rep:1
+  Input : "123456[12                    345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000254,src:000009,time:43652,execs:56681,op:havoc,rep:1
+  Input : "123456-----------7---------------[12345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000255,src:000009,time:44236,execs:57588,op:havoc,rep:1
+  Input : "1223456[12345678901234567]3456[12345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000256,src:000009,time:44347,execs:57721,op:havoc,rep:1
+  Input : "123456[iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii12345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000257,src:000009,time:44410,execs:57780,op:havoc,rep:1
+  Input : "123456[12345678901......00.00.234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000260,src:000009,time:48959,execs:64988,op:havoc,rep:1
+  Input : "123456[123_0___0_0___0_._45678901234567]"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/main/queue/id:000261,src:000009,time:49356,execs:65585,op:havoc,rep:2
+  Input : "123456[127]567896[12345678901234567]5678901234567]"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/main/queue/id:000262,src:000009,time:52834,execs:71198,op:havoc,rep:1
+  Input : "123456                                [12345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000263,src:000009,time:56227,execs:76665,op:havoc,rep:2
+  Input : "123456[1:::::::::::23456789N1234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000264,src:000009,time:57576,execs:78804,op:havoc,rep:1
+  Input : "1 2 3123456[12345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000265,src:000009,time:60034,execs:82719,op:havoc,rep:2
+  Input : "123456[123456789012345___________________0.00.D65________________7]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000266,src:000009,time:66426,execs:93035,op:havoc,rep:2
+  Input : "123456[1234567890123::::::::::::::::::::::::::::3567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000268,src:000009,time:67943,execs:95421,op:havoc,rep:2
+  Input : "1_1_________________________0.034567]"
+  Reason: Illegal sequence: Too many underscores (more than 3)
+
+[FAIL] File: output/main/queue/id:000269,src:000009,time:69061,execs:97197,op:havoc,rep:2
+  Input : "-0__0___0_00345678934567]"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/main/queue/id:000270,src:000009,time:69464,execs:97817,op:havoc,rep:1
+  Input : "1234123456[A1](B2)56[12345678901234567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000272,src:000009,time:74915,execs:106557,op:havoc,rep:2
+  Input : "10__0___0_4_0_4567895678901234567]"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000273,src:000016,time:75698,execs:107517,op:havoc,rep:2
+  Input : "1 2 34 1 2 34 5@6"
+  Reason: Invalid character '@' in extension
+
+[FAIL] File: output/main/queue/id:000277,src:000016,time:76942,execs:109330,op:havoc,rep:1
+  Input : "1                                 2 34 5 6"
+  Reason: Illegal sequence: Too many space characters (more than 6)
+
+[FAIL] File: output/main/queue/id:000278,src:000016,time:77154,execs:109623,op:havoc,rep:3
+  Input : "1 2 3 5  24 5$ 26"
+  Reason: Invalid character '$' in extension
+
+[FAIL] File: output/main/queue/id:000279,src:000016,time:78335,execs:111208,op:havoc,rep:3
+  Input : "11 2 3 5  24 5\005 26      5 6"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/main/queue/id:000281,src:000016,time:86748,execs:118756,op:havoc,rep:4
+  Input : "__________1 2 _______1 2 ________________1 2 3_______________1 2 34\0235 6"
+  Reason: Illegal sequence: Too many underscores (more than 3)
+
+[FAIL] File: output/main/queue/id:000282,src:000064,time:88884,execs:121124,op:havoc,rep:4
+  Input : "/////////////////////////////////1235567/00.00.0D"
+  Reason: Illegal sequence: Consecutive or multiple '.' or '/'
+
+[FAIL] File: output/main/queue/id:000284,src:000076,time:89635,execs:121968,op:havoc,rep:3
+  Input : "0/0/0/000/0/0/00"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/main/queue/id:000285,src:000098,time:90717,execs:123006,op:havoc,rep:3
+  Input : "------------------------------------3-----00000G0).<0"
+  Reason: Illegal sequence: Too many dashes (more than 3)
+
+[FAIL] File: output/main/queue/id:000286,src:000179,time:93368,execs:125057,op:havoc,rep:3
+  Input : "1 2 3 2 34 0.000_-4 0.000_-0"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/main/queue/id:000287,src:000181,time:93534,execs:125214,op:havoc,rep:4
+  Input : "99(\r9(\r\r\n\r\n[) \011"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000288,src:000219,time:95041,execs:126759,op:havoc,rep:8,+cov
+  Input : "0\237\237\137\t\239\t\t\t\255\181\170\170AAAAAAAAA34AAAAAAAAAAAAAA\1700.0.\t\137\t\239\t\t2J222\t\255\181]\170\1700.0.00.0002.00789012AA"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000289,src:000219,time:95092,execs:126768,op:havoc,rep:6,+cov
+  Input : "0\237\137\137\137\137\137\137\137\163\137\137\137\137\255\255\138\137\137\137\137\137\137\137\t\255\181\170\170\1700.0.00.0000\01400"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000292,src:000267,time:96958,execs:128322,op:havoc,rep:3
+  Input : "123454W67890:::::6[1234567890::::::0000.0.00.00.00:]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000293,src:000267,time:97028,execs:128347,op:havoc,rep:1
+  Input : "123456[1234567890::::[):]"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/main/queue/id:000294,src:000267,time:97112,execs:128388,op:havoc,rep:3
+  Input : "123456[1334::789056:.-::]"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/main/queue/id:000295,src:000267,time:97177,execs:128425,op:havoc,rep:3
+  Input : "123456[1234567890::4::::]56[1234567890:::::9:]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000296,src:000267,time:97227,execs:128445,op:havoc,rep:4
+  Input : "123455555555555555555555555555555555555555556[1234567891::://::]"
+  Reason: Heterogeneous continuous delimiters detected
+
+[FAIL] File: output/main/queue/id:000299,src:000267,time:101367,execs:133013,op:havoc,rep:2,+cov
+  Input : "1 3 4 5     0.00023456[[1234567890:::::::]"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000300,src:000267,time:105201,execs:137696,op:havoc,rep:2
+  Input : "123456[12345890:::::::][123467890:::::::][1234567890:::::::]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000301,src:000288,time:108581,execs:141681,op:havoc,rep:14,+cov
+  Input : "0\237\237\137\t\239\t\t\t\000\016\170\170AAAAAAAaA3%AAAAKAAAAIAAA8900\128.00.001234560(005\011\011\011-A\1700.0.\t\137\t\239\t\t2J222\t\255\1700.0.00.0002:00783456\181]\170\1700.0.00.000J222\t\255\1700.0.00.0002:A"
+  Reason: Input string length exceeds the maximum allowable limit of 128 characters
+
+[FAIL] File: output/main/queue/id:000302,src:000018,time:110001,execs:143330,op:havoc,rep:2
+  Input : "123456[A0](B))"
+  Reason: Mismatched or unmatched closing bracket
+
+[FAIL] File: output/main/queue/id:000304,src:000090,time:112898,execs:146891,op:havoc,rep:1,+cov
+  Input : "0\2405\191\191\191\191\187\127\255\191\191\191\191\191"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000305,src:000090,time:112965,execs:146930,op:havoc,rep:2,+cov
+  Input : "0\240\205\191\180\191\191\187\127\255\191\191\191\191\191"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000306,src:000090,time:113046,execs:146996,op:havoc,rep:1,+cov
+  Input : "0\242\191\191\191\191\191\187\127\255\191\191\191\191\191"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000307,src:000082,time:116816,execs:151552,op:havoc,rep:2,+cov
+  Input : "\254\255\255"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000308,src:000307,time:117238,execs:151906,op:havoc,rep:1,+cov
+  Input : "\254\255"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000309,src:000307,time:117342,execs:151994,op:havoc,rep:4,+cov
+  Input : "\255\254 "
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000310,src:000309,time:117916,execs:152465,op:havoc,rep:1,+cov
+  Input : "\255\254 \255\254 "
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000311,src:000309,time:117983,execs:152500,op:havoc,rep:1,+cov
+  Input : "\255\254\000"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000312,src:000309,time:118077,execs:152580,op:havoc,rep:2,+cov
+  Input : "\255\254( "
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000313,src:000309,time:119105,execs:153922,op:havoc,rep:1,+cov
+  Input : "\255\254\216\216\216\216\216\216\216\216\216\216\216\216\216 "
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000314,src:000310,time:120629,execs:155763,op:havoc,rep:2,+cov
+  Input : "\255\254\019\220\254 "
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000315,src:000313,time:121418,execs:156633,op:havoc,rep:2,+cov
+  Input : "\255\254\216\216\216\232\216\216\232\216\216\216\216\216\216\216"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000316,src:000313,time:121476,execs:156668,op:havoc,rep:3,+cov
+  Input : "\255\254\216\216\216\223\216\216\216\216\216\216\216\216\217 "
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000317,src:000316,time:122501,execs:157922,op:havoc,rep:1,+cov
+  Input : "\255\254\216\217 "
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000318,src:000014,time:123450,execs:159008,op:havoc,rep:2
+  Input : "1-34-34-3456"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000319,src:000128,time:127280,execs:163843,op:havoc,rep:1,+cov
+  Input : "           - 0.000 .000.=000.#0G"
+  Reason: Illegal sequence: Too many space characters (more than 6)
+
+[FAIL] File: output/main/queue/id:000320,src:000303,time:128303,execs:164879,op:havoc,rep:2
+  Input : "123456[A1]123456[A1]B(2)6[A1]456[A1]1234(B2)"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000321,src:000303,time:128369,execs:164927,op:havoc,rep:1
+  Input : "123456[A1]B(2)6[A1]123456[A1]B(2)(B2)"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000322,src:000303,time:128499,execs:165065,op:havoc,rep:1
+  Input : "123456123456[A1]B(2)6[A1](B2)[A1]B(2)6[A1](B2)"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000323,src:000163,time:137126,execs:176356,op:havoc,rep:2,+cov
+  Input : "0\011\244\007\140\141 \141"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000324,src:000163,time:142276,execs:183276,op:havoc,rep:3,+cov
+  Input : "0\011\244\139\139\139\171\139\139\139\139\139\139\139\139\139\139\139\139\139\139\139\139\139\139\139\139\139\139\139\139\234\140\141\141\141"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000325,src:000003,time:142684,execs:183647,op:havoc,rep:5
+  Input : "0/0/0/0/000[[%0000[[%0/0"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000326,src:000250,time:150341,execs:194271,op:havoc,rep:2
+  Input : "123456[1P34ooooooooooooooooooooooo567890123ooooooooooooooooooooooooo567890123_____________________0.04567]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000327,src:000254,time:150704,execs:194734,op:havoc,rep:2
+  Input : "123456-----------7-----------7---------------[1234------[123456789012345\0017]"
+  Reason: Nested brackets not allowed
+
+[FAIL] File: output/main/queue/id:000328,src:000259,time:151226,execs:195368,op:havoc,rep:4
+  Input : "123        0.000 .090.000 .09(\r9(\r\r\n\r\n[) 00._0_45(\r9(\r\r\n\r\n[) 00._0_4567]"
+  Reason: Invalid digit block size: 3
+
+[FAIL] File: output/main/queue/id:000329,src:000265,time:151568,execs:195812,op:havoc,rep:2
+  Input : "123456[123456________5___________________0.00.D65________________________0.00.D65_______7]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000331,src:000329,time:155163,execs:200733,op:havoc,rep:4
+  Input : "123456[123456________0.00.00____________u0.00.D65____e______00.00____________u0.00.D65_____________0.00.D65_______7]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000332,src:000329,time:155274,execs:200849,op:havoc,rep:5
+  Input : "123456[123456___I____5___________________L__________________V________0.00.D65___h____________________0.00.D65_______7]"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000336,src:000268,time:175942,execs:227081,op:havoc,rep:1
+  Input : "1_1______________________________________0.034567]"
+  Reason: Illegal sequence: Too many underscores (more than 3)
+
+[FAIL] File: output/main/queue/id:000337,src:000328,time:179007,execs:230829,op:havoc,rep:1
+  Input : "123 @      0.000 .090.000 .09(\r9(\r\r\n\rAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n[) 00._0_45(\r9(\r\r\n\r\n[) 00._0_4567]"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000338,src:000328,time:179266,execs:231152,op:havoc,rep:3
+  Input : "123       \r\n\r\n[) 00._0_45(\r9(\r\r\n\r\n 0.000 .090.000 .09(\r9(\r\r\n\r\n[) 00._0_4_0_45(\r9(\r\r\n\r\n 0.000 .090.5(\r9(\r\r\n\r\n[) 00._0_3567]"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000339,src:000242,time:189355,execs:244082,op:havoc,rep:5,+cov
+  Input : "00.0?.0\224\174\152.0\224\152\152\152\152\152\152\1520000.0.00.00.00.00\152\152\152\152                           \152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\1520\152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\161\152\152\152\152\152\152\152\152\1520"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000340,src:000339,time:189972,execs:244762,op:havoc,rep:4,+cov
+  Input : "00.0?.0\224\203\152.0\224\152\152\152\152\152\144\1520000.0.00.00.00.00\152\152\152\152         \254\255\255\12700\128     \152\152\152\161\152\152\152\152     \152\152\152\152\152\152\152\152\152\152\152\152\152\152\152\1520\152\152\152\152\152\152\152\152\152\152\152\152        \152\152\152\152\1520"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000341,src:000317,time:242350,execs:312614,op:havoc,rep:1,+cov
+  Input : "\254\255\216\217 "
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000342,src:000317,time:242479,execs:312747,op:havoc,rep:2,+cov
+  Input : "\254\255\216\217-02-334 "
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000343,src:000342,time:243369,execs:313785,op:havoc,rep:23,+cov
+  Input : "\254\255\220\159-(-(()2BIAN0-2\136\136"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000345,src:000318,time:502554,execs:647054,op:havoc,rep:4
+  Input : "1-3-34-3-3-34-34-354-356"
+  Reason: Layout configuration is mathematically forbidden or incorrectly sized
+
+[FAIL] File: output/main/queue/id:000346,src:000068,time:505178,execs:650677,op:havoc,rep:22
+  Input : "126789N::::::::345656789N::::::::C::::2:N:::::::::23456789N::::::::C::::2::\016"
+  Reason: Invalid character '' in extension
+
+[FAIL] File: output/main/queue/id:000347,src:000233,time:591131,execs:773247,op:havoc,rep:5
+  Input : "06.00.006.006.00400601.6.00.006.006.00.00601.00.00.0000.006.006.00400601.6.00.0/00.00"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000348,sync:cpu2,src:000299,+cov
+  Input : "\239\187"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000349,sync:cpu2,src:000300,+cov
+  Input : "\239\1870-\240.00"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000351,sync:cpu2,src:000362,+cov
+  Input : "\239\191\190\1280560.\232\003\252\n\011\011\011\011\011\011\011\011\011\011\011\011\n\24749956"
+  Reason: Non-ASCII characters are not allowed
+
+[FAIL] File: output/main/queue/id:000352,sync:cpu2,src:000364
+  Input : "00 .00.........................................................................................................................\000"
+  Reason: Input ended before 6 digits were collected
+
+[FAIL] File: output/main/queue/id:000353,sync:cpu2,src:000365
+  Input : "00 .00........................................................................................................................-\001"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000354,sync:cpu2,src:000366
+  Input : "-.-.\r\\\r\n\r\n\r\\F.\r\n\r\\.0-.\r\n\r\\-.-.\r\\\r\n\r\n\r\\F.\r\n\r\\.0-.\r\n\r\\\r\n\r.0-.F.\r\n\r\\.0-.\r\n\r\\\r\n\r\\--.00\r\n\r.0-.F.\r\n\r\\.0-.\r\n\r\\\r\n\r\\--.00"
+  Reason: Illegal character in prefix
+
+[FAIL] File: output/main/queue/id:000355,src:000348,time:682690,execs:891151,op:havoc,rep:3,+cov
+  Input : "\239\187\191\222\197\191"
+  Reason: Input contains invalid UTF-8 byte sequences
+
+[FAIL] File: output/main/queue/id:000356,src:000320,time:691491,execs:902018,op:havoc,rep:1
+  Input : "12345456[A1]123456[A1]B(2)6[A1]456[A1]1234(B2)6[A1]123456[A1]B(2)6[A1]456[A1]1234(B2)"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000357,src:000356,time:693319,execs:904123,op:havoc,rep:1
+  Input : "1234545[A1]123456[A1]B(2)6[A1]456[A1]126[A1]123456[A1]B(2)6[A1]456[A1]1234(B2)6[A1]123456[A1]B(2)6[A1]456[A1]1234(B2)"
+  Reason: Flattened extension exceeds 16-character ceiling
+
+[FAIL] File: output/main/queue/id:000358,src:000321,time:937964,execs:1200706,op:havoc,rep:7
+  Input : "123456[A1]B(2)6[41]13446[A1]B(2)656[A1]B(2)(B2)[41]103456[A1]B(2)(B2)03456[A1]1B(2)(B2)"
+  Reason: Flattened extension exceeds 16-character ceiling
+
