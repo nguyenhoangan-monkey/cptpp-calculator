@@ -1,9 +1,19 @@
-.PHONY: parse clean
+TARGETS = parse clean
 
-# Default target runs the python module pipeline
+.PHONY: all help $(TARGETS)
+
+all:
+	make parse
+
+help:
+	@echo "Available make commands:"
+	@echo "------------------------"
+	@for target in $(TARGETS); do \
+		echo "  make $$target"; \
+	done
+
 parse:
 	python3 -m scripts.parse
 
-# Optional cleanup target to remove python cache files if needed
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
