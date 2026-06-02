@@ -1,3 +1,20 @@
 (lang dune 3.0)
 
 (name cptpp-parser)
+
+; Tells dune to automatically generate the .opam file
+
+(generate_opam_files true)
+
+(package
+ (name cptpp-parser)
+ (synopsis "A brief description of your project")
+ (depends
+  (ocaml
+   (>= 5.4.1))
+  (dune
+   (>= 3.0))
+  (bin_prot
+   (>= v0.17.0))
+  (ppx_bin_prot
+   (>= v0.17.0))))
