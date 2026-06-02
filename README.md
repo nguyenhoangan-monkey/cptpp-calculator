@@ -14,4 +14,14 @@ Simple dashboard to manipulate with the OCaml CPTPP compliance engine and create
 
 NOTE: Some countries did not go to full self-certification for the exporter yet. If you are from Brunei, Vietnam and Malaysia, please consult the local authorities to get a certificate of origin, unless you have been officially granted 'Approved Exporter' status.
 
-
+```
+Origin Criterion Legend:
+WO: Wholly obtained or produced goods.
+PE: Goods produced exclusively from originating materials.
+PSR: Goods satisfying substantial transformation criterion.
+CTC: Change in tariff classification criterion.
+VA: Value-added criterion.
+SP: Specific manufacturing or processing operation criterion.
+DMI: De Minimis or Tolerance.
+ACU: Accumulation.
+```

@@ -7,7 +7,7 @@
 #set par(
   leading: 0.4em,
 )
-#set block(spacing: 0pt)
+
 
 #show raw: set text(font: "M PLUS 1 Code", size: 10pt)
 
@@ -19,106 +19,170 @@
 #let sub-label(body) = text(size: 8pt)[#body]
 
 #align(center)[
-  #text(size: 14pt, weight: "bold")[CERTIFICATE OF ORIGIN] \
-  #text(size: 8pt, weight: "bold")[Comprehensive and Progressive Trans-Pacific Partnership Agreement (CPTPP)] \
+  #text(size: 14pt, weight: "bold")[QUALIFICATION OF ORIGINATING STATUS] \
+  #text(size: 8pt, weight: "bold")[Summary of evidence for originating status in accordance to CPTPP Chapter 3] \
 ]
 
-#v(1em)
-
-#table(
-  columns: (auto, 1fr),
-
-  align: top,
-  stroke: 0pt,
-  inset: 3pt,
-
-  // --- EXPORTER ---
-  table.cell(colspan: 2)[#label("Exporter")],
-  sub-label("Name:"), field("exporter_name", "Cotec Plastic Company"),
-  sub-label("Addr:"),
-  field("exporter_addr", "LOT E4+E5, PHUC KHANH INDUSTRIAL PARK, VU PHUC WARD, HUNG YEN PROVINCE, VIETNAM"),
-  sub-label("Tel:"), field("exporter_tel", "+84-227-6250701"),
-  sub-label("Email:"), field("exporter_email", "enquiry@cotec.co"),
-
-  table.hline(stroke: 0.25pt),
-
-  // --- PRODUCER ---
-  table.cell(colspan: 2)[#label("Producer")],
-  sub-label("Name:"), field("producer_name", "CÔNG TY TNHH NHỰA COTEC"),
-  sub-label("Addr:"),
-  field("producer_addr", "LÔ E4+E5, KHU CÔNG NGHIỆP PHÚC KHÁNH, PHƯỜNG VŨ PHÚC, TỈNH HƯNG YÊN, VIỆT NAM"),
-  sub-label("Tel:"), field("producer_tel", "+84-227-6250701"),
-  sub-label("Email:"), field("producer_email", "enquiry@cotec.co"),
-
-  table.hline(stroke: 0.25pt),
-
-  // --- IMPORTER ---
-  table.cell(colspan: 2)[#label("Importer")],
-  sub-label("Name:"), field("importer_name", "Comercializadora Ultraobscuro S. de R.L. de C.V."),
-  sub-label("Addr:"),
-  field(
-    "importer_addr",
-    "Eje Central Lázaro Cárdenas No. 9, Locales 15 y 19 (Planta Alta), Colonia Centro, Cuauhtémoc, Ciudad de México, CP 06000, Mexico",
-  ),
-  sub-label("Tel:"), field("importer_tel", "+52-55-5518-1702"),
-  sub-label("Email:"), field("importer_email", "contacto@ultraobscuro.com.mx"),
-)
-
-#v(1em)
-
 #table(
   columns: (auto, 1fr),
   align: top,
   stroke: 0pt,
   inset: 3pt,
 
-  // --- BLANKET PERIOD ---
+  // --- Invoice ---
+  table.cell(colspan: 2)[#label("Invoice")],
+  sub-label("Date:"), field("date", "1 June 2026"),
   sub-label("Invoice number:"), field("invoice", "2026/VOC-4409"),
   sub-label("Blanket period:"), field("blanket_period", "N/A"),
 )
 
 #table(
-  columns: (0.2fr, 3fr, 0.5fr, 0.5fr),
+  columns: (auto, 1fr),
 
   align: left + top,
   stroke: 0.25pt,
   inset: 3pt,
 
-  label("No."), label("Description of goods"), label("HS Code"), label("Criterion"),
-
-  field("id_1", "1."),
-  field("prod_desc_1", "Hatsune Miku Figurine (初音ミク) - Juguete de plástico"),
-  field("prod_hs_1", "9503.00"),
-  field("prod_criterion_1", "ACU"),
-
-  field("id_2", "2."),
-  field("prod_desc_2", "Kagamine Rin & Len Acrylic Display Stand, Custom Made for Miku Expo 2026 Asia"),
-  field("prod_hs_2", "3926.40"),
-  field("prod_criterion_2", "PE"),
-
-  field("id_3", "3."),
-  field("prod_desc_3", "Megurine Luka Printed Cotton T-Shirt"),
-  field("prod_hs_3", "6109.10"),
-  field("prod_criterion_3", "PSR"),
-
-  field("id_4", "4."),
-  field("prod_desc_4", "Vocaloid Character Plush Toy Mat"),
-  field("prod_hs_4", "9404.90"),
-  field("prod_criterion_4", "WO"),
+  sub-label("No."), field("id_1", "1"),
+  sub-label("Description"), field("prod_desc_1", "Hatsune Miku Figurine (初音ミク) - Juguete de plástico"),
+  sub-label("HS Code"), field("prod_hs_1", "9503.00"),
+  sub-label("Criterion"), field("prod_criterion_1", "ACU - Accumulation"),
 )
 
-#block(width: 100%, inset: 8pt, radius: 0pt)[
-  #set text(size: 8pt)
-  Origin Criterion Legend: \
-  #sub-label("WO:") Wholly obtained or produced goods. \
-  #sub-label("PE:") Goods produced exclusively from originating materials. \
-  #sub-label("PSR:") Goods satisfying substantial transformation criterion. \
-  #sub-label("CTC:") Change in tariff classification criterion. \
-  #sub-label("VA:") Value-added criterion. \
-  #sub-label("SP:") Specific manufacturing or processing operation criterion. \
-  #sub-label("DMI:") De Minimis or Tolerance. \
-  #sub-label("ACU:") Accumulation.
+#v(1em)
+
+#label("Data")
+#table(
+  columns: (auto, 1fr),
+
+  align: left + top,
+  stroke: 0pt,
+  inset: 3pt,
+
+  sub-label("Part number"), field("", "miku-v4x-001"),
+  sub-label("Effective date"), field("", "1 January 2026"),
+  sub-label("Expiration date"), field("", "1 December 2026"),
+  sub-label("Part description"), field("", "Hatsune Miku Figurine (初音ミク) - Juguete de plástico"),
+  sub-label("Shipping from"), field("", "Vietnam"),
+  sub-label("Shipping to"), field("", "Mexico"),
+  sub-label("Inventory value"), field("", "20.00"),
+  sub-label("Free on board value"), field("", "20.00"),
+  sub-label("Analysis date"), field("", "1 June 2026"),
+  sub-label("Status"), field("", "**PASSED**"),
+)
+
+#v(1em)
+
+#label("Bill of materials")
+#block()[
+  #set text(font: "M PLUS 1 Code", size: 10pt)
+  #table(
+    columns: (1fr, auto, auto, auto),
+    inset: 3pt,
+    align: (left, left, left, right),
+    stroke: 0pt,
+
+    table.header([*Component description*], [*HS code*], [*Origin*], [*Value*]),
+    [Hatsune Miku Figurine (初音ミク)], [9503.00.00], [Vietnam], [\$20.00],
+    [  ├─ PVC Plastic Pellets], [3904.10], [China], [\$5.00],
+    [  ├─ Acrylic Paint Sub-component], [3208.20], [Japan], [\$2.50],
+    [  └─ Cardboard Packaging Box], [4819.10], [Vietnam], [\$1.50],
+  )
+
+  #align(right)[
+    Value of non-originating materials: \$5.00 \
+    Total regional value content (build-down): #text(fill: green.darken(20%))[75.00%]
+  ]
 ]
+
+
+#v(1em)
+
+#label("Qualifying basis")
+#block()[
+  #set text(font: "M PLUS 1 Code", size: 10pt)
+  Under the CPTPP accumulation provision, the finished good qualifies as originating because production or materials from other CPTPP member countries were successfully aggregated to meet the rules of origin.
+
+  Specifically:
+
+  - Requirement: Chapter 95 Product-Specific Rules (PSR) mandate a minimum 45.00% Regional Value Content (RVC) using the Build-Down method.
+  - Result: The cptpp-calculator engine verified that the Bill of Materials (BOM) achieved an RVC of 75.00%, exceeding the threshold.
+]
+
+#v(1em)
+
+#label("Reference to CPTPP text")
+#block(
+  inset: 8pt,
+  stroke: 0.25pt + black,
+)[
+  #set text(font: "M PLUS 1 Code", size: 10pt)
+  *Tariff Heading 95.03 (Toys, games and sports requisites)* \
+  A change to subheading 9503.00 from any other chapter; or No change in tariff classification is required, provided there is a regional value content of not less than:
+  (a) 45 percent under the build-down method; or
+  (b) 55 percent under the build-up method.
+]
+
+
+#pagebreak()
+
+#align(center)[
+  #text(size: 14pt, weight: "bold")[EXPLANATION OF ORIGIN] \
+  #text(size: 8pt, weight: "bold")[Manual justification for originating status in accordance to CPTPP Chapter 3] \
+]
+
+#table(
+  columns: (auto, 1fr),
+  align: top,
+  stroke: 0pt,
+  inset: 3pt,
+
+  // --- Invoice ---
+  table.cell(colspan: 2)[#label("Invoice")],
+  sub-label("Date:"), field("date", "1 June 2026"),
+  sub-label("Invoice number:"), field("invoice", "2026/VOC-4409"),
+  sub-label("Blanket period:"), field("blanket_period", "N/A"),
+)
+
+#table(
+  columns: (auto, 1fr),
+
+  align: left + top,
+  stroke: 0.25pt,
+  inset: 3pt,
+
+  label("No."), field("id_2", "2"),
+  label("Description"),
+  field("prod_desc_2", "Kagamine Rin & Len Acrylic Display Stand, Custom Made for Miku Expo 2026 Asia"),
+
+  label("HS Code"), field("prod_hs_2", "3926.40"),
+  label("Criterion"), field("prod_criterion_2", "PE - Goods produced exclusively from originating materials"),
+)
+
+#v(1em)
+
+#label("Data") \
+`This specific production run covers the manufacture of custom acrylic display stands produced at our regional facility for the Miku Expo 2026 Asia event. The calculations utilize active inventory values and fixed manufacturing overhead logs recorded on June 1, 2026, to verify compliance for a single, direct export shipment moving from our hub in Vietnam to the importer's delivery address in Mexico.`
+
+#v(1em)
+
+#label("Bill of materials") \
+`All PMMA sheets, inks, and chemicals come from qualified CPTPP suppliers. Every input holds a valid declaration, leaving non-originating value at zero. Attached to this PDF is the Bill of materials.`
+
+#v(1em)
+
+#label("Qualifying basis") \
+`The product qualifies under the PE criterion. With non-originating materials at 0.00%, the Regional Value Content score is a perfect 100%.`
+
+#v(1em)
+
+#label("Reference to CPTPP text") \
+`In accordance with Chapter 3, Article 3.2, Paragraph 1(b) of the CPTPP Agreement, a good shall be treated as an originating good if it is produced entirely in the territory of one or more of the Parties, exclusively from originating materials. Since our manufacturing process relies solely on qualified inputs from regional signatories, the final display stands successfully satisfy the core preference requirements without needing a tariff classification jump.`
+
+#v(1em)
+
+#label("Other remarks") \
+`All associated commercial invoices, supplier certificates of origin, and raw material batch receipts are securely cataloged and archived in our compliance database. These records will be held for the legally required retention period and remain readily accessible for electronic audit verification or physical inspection by customs authorities upon request.`
 
 #v(1fr)
 
@@ -142,10 +206,6 @@
   sub-label("Tel:"), field("certifier_tel", "+84-90-1234567"),
   sub-label("Email:"), field("certifier_email", "nguyen.van.a@cotec.co"),
 )
-#block(width: 100%, inset: 8pt, radius: 0pt)[
-  #set text(size: 8pt)
-  *I certify that the goods described in this document qualify as originating and the information contained in this document is true and accurate. I assume responsibility for proving such representations and agree to maintain and present upon request or to make available during a verification visit, documentation necessary to support this certification.*
-]
 #table(
   columns: (auto, 1fr),
   align: top,

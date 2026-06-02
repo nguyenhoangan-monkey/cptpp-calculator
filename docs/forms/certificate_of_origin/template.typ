@@ -78,7 +78,7 @@
 )
 
 #table(
-  columns: (0.2fr, 3fr, 0.5fr, 0.3fr),
+  columns: (0.2fr, 3fr, 0.6fr, 0.4fr),
 
   align: left + top,
   stroke: 0.25pt,
@@ -86,22 +86,22 @@
 
   label("No."), label("Description of goods"), label("HS Code"), label("Criterion"),
 
-  field("id_1", "1."),
+  field("id_1", "1"),
   field("prod_desc_1", "Hatsune Miku Figurine (初音ミク) - Juguete de plástico"),
   field("prod_hs_1", "9503.00"),
   field("prod_criterion_1", "ACU"),
 
-  field("id_2", "2."),
+  field("id_2", "2"),
   field("prod_desc_2", "Kagamine Rin & Len Acrylic Display Stand, Custom Made for Miku Expo 2026 Asia"),
   field("prod_hs_2", "3926.40"),
   field("prod_criterion_2", "PE"),
 
-  field("id_3", "3."),
+  field("id_3", "3"),
   field("prod_desc_3", "Megurine Luka Printed Cotton T-Shirt"),
   field("prod_hs_3", "6109.10"),
   field("prod_criterion_3", "PSR"),
 
-  field("id_4", "4."),
+  field("id_4", "4"),
   field("prod_desc_4", "Vocaloid Character Plush Toy Mat"),
   field("prod_hs_4", "9404.90"),
   field("prod_criterion_4", "WO"),
@@ -154,5 +154,7 @@
   sub-label("Signature:"),
   field("signature", "DIGITALLY SIGNED SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"),
 
-  sub-label("Date:"), field("date", datetime.today().display("[day] [month repr:long] [year]")),
+  sub-label("Date:"), field("date", "1 June 2026"),
+),
+// sub-label("Date:"), field("date", datetime.today().display("[day] [month repr:long] [year]")),
 )
