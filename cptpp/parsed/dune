@@ -1,0 +1,9 @@
+(executable
+ (name hs_world_2022)
+ (public_name hs_world_2022)
+ (modules country hs_world_2022)
+ (flags :standard -w -32)
+ (package cptpp-parser)
+ (libraries bin_prot)
+ (preprocess
+  (pps ppx_bin_prot)))
