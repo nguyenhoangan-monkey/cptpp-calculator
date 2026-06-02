@@ -174,6 +174,10 @@ before commit:
 * `opam install . --deps-only --with-test` - install everything
 * `dune build` - actually building
 
+TODO:
+- allow HS code conflatation
+- HS conflicts
+
 
 also I need to split country.ml to country.ml (the interface, not heavy) and country_data.ml (has all of the crazy json-like pattern matching and names). preferably I can put country_Data in /data instead of /lib/domain
 
