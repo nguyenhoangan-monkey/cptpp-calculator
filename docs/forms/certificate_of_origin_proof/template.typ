@@ -151,12 +151,12 @@
   stroke: 0.25pt,
   inset: 3pt,
 
-  label("No."), field("id_2", "2"),
-  label("Description"),
+  sub-label("No."), field("id_2", "2"),
+  sub-label("Description"),
   field("prod_desc_2", "Kagamine Rin & Len Acrylic Display Stand, Custom Made for Miku Expo 2026 Asia"),
 
-  label("HS Code"), field("prod_hs_2", "3926.40"),
-  label("Criterion"), field("prod_criterion_2", "PE - Goods produced exclusively from originating materials"),
+  sub-label("HS code"), field("prod_hs_2", "3926.40"),
+  sub-label("Criterion"), field("prod_criterion_2", "PE - Goods produced exclusively from originating materials"),
 )
 
 #v(1em)
