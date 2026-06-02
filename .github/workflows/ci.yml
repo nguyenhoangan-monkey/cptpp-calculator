@@ -3,8 +3,12 @@ name: Commit check
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'calc/**'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'calc/**'
   workflow_dispatch:
 
 permissions:
@@ -26,7 +30,7 @@ jobs:
           ocaml-compiler: "5.4.1"
 
       - name: install dependencies
-        run: opam install . --deps-only --with-test
+        run: opam install ./calc --deps-only --with-test
 
       - name: run standard test suite (alcotest + qcheck)
-        run: opam exec -- dune runtest
+        run: opam exec -- dune runtest --root calc
