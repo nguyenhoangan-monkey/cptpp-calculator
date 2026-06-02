@@ -1,0 +1,6 @@
+(executable
+ (name hs_world_2022)
+ (modules country hs_world_2022)
+ (libraries bin_prot)
+ (preprocess
+  (pps ppx_bin_prot)))
