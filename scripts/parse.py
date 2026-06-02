@@ -15,7 +15,7 @@ def main():
     )
     
     print("2/2: Generating OCaml country files...")
-    parse_country.generate_ocaml_variants("data/country.ml")
+    parse_country.generate_ocaml_variants(parse_country.fetch_country_data(), "data/country.ml")
 
     print("All datasets parsed successfully.")
 

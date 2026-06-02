@@ -13,7 +13,7 @@ def fetch_country_data() -> List[Dict[str, Any]]:
     response = urllib.request.urlopen(url)
     return json.loads(response.read().decode())
 
-def generate_ocaml_variants(output_path: str) -> None:
+def generate_ocaml_variants(raw_data: List[Dict[str, Any]], output_path: str) -> None:
     def process_country_mappings(data: List[Dict[str, Any]]) -> Tuple[Set[str], Dict[str, str], Dict[str, str], Dict[str, Set[str]], List[str]]:
         def clean_variant_name(name: str) -> str:
             name = unicodedata.normalize('NFD', name)
@@ -166,7 +166,6 @@ let of_iso_string s =
             raise e
 
     # Execute pipeline stages sequential loop
-    raw_data = fetch_country_data()
     variants, to_iso, to_name, country_strs, iso_tbl = process_country_mappings(raw_data)
     write_atomic_ocaml_file(variants, to_iso, to_name, country_strs, iso_tbl, output_path)
     print("Country generation complete.")
