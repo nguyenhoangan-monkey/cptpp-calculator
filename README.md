@@ -8,6 +8,13 @@ Photo by [Carl Campbell](https://www.flickr.com/photos/carlbcampbell/40771198003
 
 Simple dashboard to manipulate with the OCaml CPTPP compliance engine and create exportable documents.
 
+TODO:
+- Enable .xlsx and .csv upload, then feed to OCaml to generate internal types
+- Allow manual entry from the dashboard
+- The idea is that the user must format it locally before uploading. if it reject, it gives an useful notification why. also provide the user the template to format the data to similar to Thompson Reuters ONESOURCE
+
+
+
 ## Certificate of origin for exporters
 
  There is no standardized form for CPTPP certificate of origin. Thus, exporters may use the "certificate of origin generator" from cptpp-dashboard and add your signature directly, since the fields are made to match with CPTPP Annex 3-B. In addition, there is a toggle to add the additional forms and fields **recommended** by some countries. The form is heavily based from Japan Customs [C5292](https://www.customs.go.jp/roo/procedure/C5292-3e.docx) and [C-5293](https://www.customs.go.jp/kaisei/youshiki/form_C/C5293.docx) forms.
