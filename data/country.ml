@@ -1271,28 +1271,23 @@ let of_iso_string_base str =
   | _ -> None
 
 
-
 let of_string_exn s =
   match of_string_base s with
   | Some country -> country
   | None -> invalid_arg (Printf.sprintf "Country.of_string_exn: invalid string format '%s'" s)
-
 
 let of_iso_string_exn s =
   match of_iso_string_base s with
   | Some country -> country
   | None -> invalid_arg (Printf.sprintf "Country.of_iso_string_exn: invalid ISO string format '%s'" s)
 
-
 let of_string s =
   match of_string_base s with
   | Some country -> Ok country
   | None -> Error (Printf.sprintf "Invalid country string: '%s'" s)
 
-
 let of_iso_string s =
   match of_iso_string_base s with
   | Some country -> Ok country
   | None -> Error (Printf.sprintf "Invalid ISO country string: '%s'" s)
-
 
