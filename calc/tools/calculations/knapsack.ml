@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 (* dune exec ./knapsack.exe *)
 let groups = [ 1; 2; 4; 6 ]
 

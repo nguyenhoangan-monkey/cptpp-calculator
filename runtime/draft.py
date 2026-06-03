@@ -1,3 +1,8 @@
+"""
+ SPDX-License-Identifier: GPL-3.0-only
+ Copyright (C) 2026 Nguyễn Hoàng An
+"""
+
 import pdfplumber
 
 with pdfplumber.open("certificate_of_origin.pdf") as pdf:

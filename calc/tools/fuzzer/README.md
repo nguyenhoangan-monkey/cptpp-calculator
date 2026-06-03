@@ -1,3 +1,8 @@
+<!--
+ SPDX-License-Identifier: GPL-3.0-only
+ Copyright (C) 2026 Nguyễn Hoàng An
+-->
+
 This is where I post signed binaries (tagged git commit with my signature) and an (in)formal verification certification (printout of AFL output, my seeds, my accepted output and rejected output)
 
 **For this tag, the function is `lib/domain/hs_code.ml` and the interface `lib/domain/hs_code.mli` at cptpp-calc.

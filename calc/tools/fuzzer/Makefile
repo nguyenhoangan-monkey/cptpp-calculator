@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 Nguyễn Hoàng An
+
 # Variables
 SWITCH_NAME = 5.4.1+afl
 DUNE = opam exec --switch=$(SWITCH_NAME) -- dune

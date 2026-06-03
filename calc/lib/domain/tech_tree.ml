@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 (* input is the union of Material and Good *)
 type input = Material of Material.t | Good of Good.t
 

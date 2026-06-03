@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 (* Goods are anything that is meant to go to international trade *)
 (* It does not imply origin. It must have a value, arrival and departure location *)
 

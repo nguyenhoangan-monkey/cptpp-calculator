@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 open Printf
 
 let input_file = "test/seeds.txt"

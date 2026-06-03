@@ -1,3 +1,8 @@
+<!--
+ SPDX-License-Identifier: GPL-3.0-only
+ Copyright (C) 2026 Nguyễn Hoàng An
+-->
+
 This directory holds the scripts used to clean data and JSON data files for the calculator. The /data folder is copied to the cptpp-calc when doing recursive checkout or when the software is released.
 
 ## How to run

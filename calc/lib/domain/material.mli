@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 (** Materials might not be raw resources, they simply just mean the product is not shipped. **)
 
 type t

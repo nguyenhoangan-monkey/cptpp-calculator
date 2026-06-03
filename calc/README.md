@@ -1,3 +1,8 @@
+<!--
+ SPDX-License-Identifier: GPL-3.0-only
+ Copyright (C) 2026 Nguyễn Hoàng An
+-->
+
 This is `cptpp-calc`, a rules of origin and tariffs calculator.
 
 ## Installation

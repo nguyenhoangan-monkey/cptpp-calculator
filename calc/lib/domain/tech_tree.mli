@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 (** Represent an accumulation chain or, as a single node, additional metadata. It should be expected that these nodes
     and leafs can be both goods and materials, and the value can be expanded as metadata. **)
 

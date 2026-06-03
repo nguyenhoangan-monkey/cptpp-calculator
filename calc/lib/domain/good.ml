@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 type t = {
   hs_code : Hs_code.t;
   free_on_board_value : Money.t;  (** free-on-board value, USD, non-negative *)

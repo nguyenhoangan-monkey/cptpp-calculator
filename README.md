@@ -1,3 +1,8 @@
+<!--
+ SPDX-License-Identifier: GPL-3.0-only
+ Copyright (C) 2026 Nguyễn Hoàng An
+-->
+
 <h1 align="center">
 <img src="https://raw.githubusercontent.com/nguyenhoangan-monkey/cptpp-project/main/banner.jpg" width="750">
 </h1>

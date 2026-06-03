@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 (* Material that is not meant to leave borders as-is *)
 (* We might not know its origin country, so that's why it's `Country.t option`. *)
 

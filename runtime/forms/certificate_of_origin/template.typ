@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Nguyễn Hoàng An
+
 #set page(
   paper: "a4",
   margin: (x: 1.5cm, top: 1.5cm, bottom: 1.5cm),

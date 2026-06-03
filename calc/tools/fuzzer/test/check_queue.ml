@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 let read_file filename =
   let ic = open_in_bin filename in
   let len = in_channel_length ic in

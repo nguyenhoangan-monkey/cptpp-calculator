@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 (* HS CODE FUNCTORS AND TYPES *)
 module type Bounded_int_config = sig
   val min : int

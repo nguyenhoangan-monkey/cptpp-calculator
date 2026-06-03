@@ -1,3 +1,8 @@
+<!--
+ SPDX-License-Identifier: GPL-3.0-only
+ Copyright (C) 2026 Nguyễn Hoàng An
+-->
+
 ## Notes
 this is for trees: `tree -I "_build|_opam|*.install|dune.lock"`
 

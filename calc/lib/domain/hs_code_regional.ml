@@ -1,3 +1,8 @@
+(**
+ * SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Nguyễn Hoàng An
+ *)
+
 type wco_version = WCO2017 | WCO2022 | WCO2028
 type trade_direction = Import | Export
 

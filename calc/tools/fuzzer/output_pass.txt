@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Nguyễn Hoàng An
+
 [PASS] File: output/cpu2/queue/id:000000,time:0,execs:0,orig:seed_1.txt
   Input : "12.34.56"
   Parsed: 12.34.56

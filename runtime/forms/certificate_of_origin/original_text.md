@@ -1,3 +1,8 @@
+<!--
+ SPDX-License-Identifier: GPL-3.0-only
+ Copyright (C) 2026 Nguyễn Hoàng An
+-->
+
 # ANNEX 3-B: MINIMUM DATA REQUIREMENTS
 
 A certification of origin that is the basis for a claim for preferential tariff treatment under this Agreement shall include the following elements:

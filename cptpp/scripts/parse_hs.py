@@ -1,3 +1,8 @@
+"""
+ SPDX-License-Identifier: GPL-3.0-only
+ Copyright (C) 2026 Nguyễn Hoàng An
+"""
+
 import csv
 from pathlib import Path
 import tempfile

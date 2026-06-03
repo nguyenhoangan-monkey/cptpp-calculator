@@ -1,3 +1,8 @@
+<!--
+ SPDX-License-Identifier: GPL-3.0-only
+ Copyright (C) 2026 Nguyễn Hoàng An
+-->
+
 Simple dashboard to manipulate with the OCaml CPTPP compliance engine and create exportable documents.
 
 TODO:

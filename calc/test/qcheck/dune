@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Nguyễn Hoàng An
+
 (tests
  (names prop_domain prop_engine prop_parser)
  (libraries domain engine qcheck alcotest qcheck-alcotest) ; qcheck-alcotest, not alcotest-qcheck
