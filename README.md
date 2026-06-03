@@ -41,6 +41,9 @@ If I have to say, the closest thing to this is the specialized CPTPP of these so
   } 
 }}%%
 graph TD
+    Step_1[make sync] -->|compiling IR compiler| Step_2([make sync])
+    Step_2 -->|compiling IR compiler| Step_3([make sync /data-bucket])
+
     Source[Tariff schedules, HS codes, exemptions, etc.] --> XLSX_Ingress
     Source --> CSV_Ingress
     Source --> JSON_Ingress
@@ -50,12 +53,10 @@ graph TD
     CSV_Ingress[.csv]
     JSON_Ingress[.json]
 
-    XLSX_Ingress --> Step_1([./cptpp -E py_script input -o output.csv])
-    CSV_Ingress  --> Step_1
-    JSON_Ingress --> Step_1
+    XLSX_Ingress --> Step_3
+    CSV_Ingress  --> Step_3
+    JSON_Ingress --> Step_3
     
-    Step_1 -->|compiling IR compiler| Step_2([make ir])
-    Step_2 -->|working IR compiler| Step_3([make sync])
     Step_3 -->|serialized ocaml objects .bin| Step_4([mv output.bin calc/lib/data/])
 
     User ~~~ Payload ~~~ Override
