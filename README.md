@@ -76,4 +76,10 @@ graph TD
 
     Step_5 --> Step_6C([/generator/website])
     Step_6C -->|API response to user| Web_Product(((Interactive<br>website)))
+
+    Step_5 --> Step_6D(microservice hooks)
+    style Step_6D stroke-dasharray: 5 5
+    Step_6D -->|marshal to XML| Pipeline((Feed back to<br>SAP, ONESOURCE))
+    style Pipeline stroke-dasharray: 5 5
+
 ```
