@@ -47,7 +47,7 @@ graph TD
     Source[Tariff schedules, HS codes, exemptions, etc.] -->|.xlsx, .csv, .json| Step_3([/data_bucket])
     
     Step_3 -->|passed to compiler| Step_4([./cptpp -r data_bucket -o cptpp.bin])
-    Step_4 -->|serialized ocaml objects .bin| Step_5[calc/lib/engine/]
+    Step_4 -->|serialized ocaml objects .bin| Step_5([calc/lib/engine/])
 
     Forminput[Form input] -->|Raw| Inter_Step1
     User[Bill of material from user] -->|.xlsx, .csv, .json| Processing([calc/lib/parser/])
