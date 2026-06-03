@@ -1,11 +1,13 @@
-.PHONY: all build clean sync test
+.PHONY: all build clean sync test setup
 
 all: build
 
-build:
+setup:
 	dune build @install --auto-promote
 	opam install . --deps-only --with-test
-	dune build
+
+build:
+	dune build -p cptpp-calc
 
 clean:
 	dune clean

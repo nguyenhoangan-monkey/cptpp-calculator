@@ -386,35 +386,3 @@ let compare a b =
       if res <> 0 then res else String.compare (Extension.to_string a.extension) (Extension.to_string b.extension)
 
 let equal a b = compare a b = 0
-
-(* ⚠️ NOTIFICATION: UNFUZZED CODE BEYOND THIS POINT *)
-
-(* module National = struct
-  type wco_version = WCO2017 | WCO2022 | WCO2028
-  type trade_direction = Import | Export
-  type hs_system = Rules.CPTPP.t option * wco_version * trade_direction
-  type variant = { system : hs_system; base_hs : t }
-
-  let resolve_data_source config codes_array =
-    match config with
-    | None, WCO2022, (Import | Export) -> Some codes_array
-    | Some _, WCO2022, (Import | Export) -> None
-    | _ -> None
-
-  let is_valid code codes_array =
-    let c = chapter code in
-    let h = heading code in
-    let s = subheading code in
-    let target = (c * 10000) + (h * 100) + s in
-
-    let rec binary_search low high =
-      if low > high then false
-      else
-        let mid = low + ((high - low) / 2) in
-        let value = Array.unsafe_get codes_array mid in
-        if value = target then true
-        else if value > target then binary_search low (mid - 1)
-        else binary_search (mid + 1) high
-    in
-    binary_search 0 (Array.length codes_array - 1)
-end *)
