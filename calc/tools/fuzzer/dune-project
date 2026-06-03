@@ -23,4 +23,5 @@
    (>= "5.4.0"))
   (dune
    (>= "3.23"))
-  afl-persistent))
+  afl-persistent
+  uutf))

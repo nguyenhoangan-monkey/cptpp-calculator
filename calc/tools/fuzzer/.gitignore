@@ -1,0 +1,5 @@
+# Ignore local Dune build directory
+_build/
+
+# Ignore AFL++ state output directory
+output/

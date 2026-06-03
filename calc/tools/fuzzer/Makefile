@@ -17,14 +17,14 @@ help:
 	@echo "Available make commands:"
 	@echo "------------------------"
 	@echo "  make help  - Shows all available commands"
+	@echo "  make init  - Creates the '$(SWITCH_NAME)' switch and resolves package dependencies"
+	@echo "  make setup - Runs the environment setup (require sudo)"
+	@echo "  make seed  - Generate seed from /test/seeds.txt"
 	@echo "  make build - Compiles the fuzzer"
 	@echo "  make fuzz  - Compiles and starts the fuzzer on 2 background cores"
 	@echo "  make dump  - Collects all the queue cases into an output.txt file"
 	@echo "  make kill  - Stops the background fuzzers but keeps your data safe"
 	@echo "  make clean - Stops everything, wipes the results, and cleans up the repo"
-	@echo "  make init  - Creates the '$(SWITCH_NAME)' switch and resolves package dependencies"
-	@echo "  make setup - Runs the environment setup (require sudo)"
-	@echo "  make seed  - Generate seed from /test/seeds.txt"
 %:
 	@echo "Error: Unknown command '$@'\n"
 	@$(MAKE) -s help

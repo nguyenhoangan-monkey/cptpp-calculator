@@ -1,3 +1,0 @@
-(library
- (name hs_code)
- (libraries uutf))

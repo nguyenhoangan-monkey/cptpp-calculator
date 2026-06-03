@@ -16,7 +16,7 @@ val extension : t -> string
 val equal : t -> t -> bool
 val compare : t -> t -> int
 
-(* hs variants *)
+(* hs variants
 type wco_version = WCO2017 | WCO2022 | WCO2028
 type trade_direction = Import | Export
-type variant
+type variant *)

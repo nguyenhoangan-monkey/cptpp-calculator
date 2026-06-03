@@ -1,8 +1,13 @@
 (executable
  (name fuzz)
- (libraries hs_code afl-persistent)
+ (package cptpp-fuzz)
  (public_name cptpp-fuzz)
- (package cptpp-fuzz))
+ (libraries afl-persistent uutf)
+ (modes exe))
+
+(copy_files ../../../lib/domain/hs_code.ml)
+
+(copy_files ../../../lib/domain/hs_code.mli)
 
 (executable
  (name check_queue)
