@@ -54,21 +54,21 @@ graph TD
     CSV_Ingress  --> Step_1
     JSON_Ingress --> Step_1
     
-    Step_1 -->|cleaned .csv files| Step_2([./cptpp -emit-ml py_script input.csv -o output.ml])
-    Step_2 -->|ocaml .ml IR| Step_3([./cptpp -c ocaml_exe input.ml -o output.bin])
-    Step_3 -->|serialized ocaml objects .bin| Step_4([/calc/lib/data/])
+    Step_1 -->|compiling IR compiler| Step_2([make ir])
+    Step_2 -->|working IR compiler| Step_3([make sync])
+    Step_3 -->|serialized ocaml objects .bin| Step_4([mv output.bin calc/lib/data/])
 
     User ~~~ Payload ~~~ Override
-    User[Bill of material from user] -->|parse .xlsx, .csv, .json| Processing([/calc/lib/parser/])
-    Processing -->|Raw| Inter_Step1([.of_string in /calc/lib/domain/])
+    User[Bill of material from user] -->|parse .xlsx, .csv, .json| Processing([calc/lib/parser/])
+    Processing -->|Raw| Inter_Step1([.of_string in calc/lib/domain/])
     Forminput[Form input] -->|Raw| Inter_Step1
     Payload[API, microservices] -->|Maybe| Inter_Step1
     Override[Saved session data,<br>unsafe override] -->|Ready| Inter_Step1
 
-    Inter_Step1 -->|ocaml primitives| Inter_Step2([Tech_tree.make, Good.make, etc. in /calc/lib/domain/])
+    Inter_Step1 -->|ocaml primitives| Inter_Step2([Tech_tree.make, Good.make, etc. in calc/lib/domain/])
     Inter_Step2 -->|relational, trade primitives| Domain([eager evaluation of fetched types])
 
-    Step_4 -->|copy tariffs, HS codes, etc. to /calc| Step_5[/calc/lib/engine/]
+    Step_4 -->|copy tariffs, HS codes, etc. to calc| Step_5[calc/lib/engine/]
     Domain -->|explicit data relation| Step_5
     
     Step_5 --> Step_6A([further calculations])

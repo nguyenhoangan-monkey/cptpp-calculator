@@ -16,7 +16,7 @@ To get the Ocaml IR (.ml) for one of the files, run `./cptpp --emit-ml file-name
 
 
 ## Logic
-Here, /cptpp is tasked with converting a vast array of tariffs and data to an intermediate form (ocaml objects) where /calc (compiling from Ocaml to source code) can understand and manipulate. The most direct comparison is with LLVM's clang converting from C code to LLVM IR (Driver -> Lex -> Parse -> Sema -> AST -> CodeGen). In /cptpp, it is done the same:
+Here, `/cptpp/lib` is tasked with converting a vast array of tariffs and data to an intermediate form (ocaml objects) where /calc (compiling from Ocaml to source code) can understand and manipulate. The most direct comparison is with LLVM's clang converting from C code to LLVM IR (Driver -> Lex -> Parse -> Sema -> AST -> CodeGen). In /cptpp, it is done the same:
 
 1. `driver`: The orchestrator. When you type your commands to compile your .xlsx to Ocaml, you would pass through here. It would handle the different command line arguments and map out the compilation pipeline.
 2. `lexer`: Preprocessing. (Basically using Python libraries to parse each of these data in a Python-readable format). Crucially it communicates with `parser` to coordinate the stream of 'tokens' to not overwhelm the machine.
