@@ -1,5 +1,5 @@
-(* dune exec _build/default/test/knapsack.exe *)
-let groups = [1; 2; 4; 6]
+(* dune exec ./knapsack.exe *)
+let groups = [ 1; 2; 4; 6 ]
 
 (* Helper function to print a list of integers *)
 let print_combination list =
@@ -14,9 +14,7 @@ let rec find_arrangements target current_path =
     print_combination (List.rev current_path)
   else if target > 0 then
     (* Try adding each group size to our current path *)
-    List.iter (fun item -> 
-      find_arrangements (target - item) (item :: current_path)
-    ) groups
+    List.iter (fun item -> find_arrangements (target - item) (item :: current_path)) groups
 
 (* Run the function with a target of 6 and an empty starting path *)
 let () = find_arrangements 6 []

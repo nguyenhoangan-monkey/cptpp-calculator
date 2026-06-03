@@ -29,7 +29,7 @@ init:
 	@echo "Checking for OCaml AFL switch..."
 	@opam switch $(SWITCH_NAME) >/dev/null 2>&1 || opam switch create $(SWITCH_NAME) --packages=ocaml-variants.5.4.1+options,ocaml-option-afl
 	@echo "Syncing .opam configuration layouts..."
-	$(DUNE) build @install --auto-promote || true
+	@opam exec --switch=$(SWITCH_NAME) -- $(DUNE) build @install --auto-promote || true
 	@echo "Installing system dependencies..."
 	opam install . --switch=$(SWITCH_NAME) --deps-only --with-test -y
 

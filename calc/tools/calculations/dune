@@ -1,0 +1,3 @@
+(executable
+ (name knapsack)
+ (modules knapsack))
