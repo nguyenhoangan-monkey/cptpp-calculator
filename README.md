@@ -41,6 +41,10 @@ If I have to say, the closest thing to this is the specialized CPTPP of these so
   } 
 }}%%
 graph TD
+    Source[Tariff schedules, HS codes, exemptions, etc.] --> XLSX_Ingress
+    Source --> CSV_Ingress
+    Source --> JSON_Ingress
+
     XLSX_Ingress ~~~ CSV_Ingress ~~~ JSON_Ingress
     XLSX_Ingress[.xlsx]
     CSV_Ingress[.csv]
