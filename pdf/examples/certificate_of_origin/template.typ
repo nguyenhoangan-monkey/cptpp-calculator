@@ -158,6 +158,5 @@
   field("signature", "DIGITALLY SIGNED SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"),
 
   sub-label("Date:"), field("date", "1 June 2026"),
-),
-// sub-label("Date:"), field("date", datetime.today().display("[day] [month repr:long] [year]")),
 )
+// sub-label("Date:"), field("date", datetime.today().display("[day] [month repr:long] [year]")),
