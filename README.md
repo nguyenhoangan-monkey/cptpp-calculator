@@ -22,3 +22,38 @@ I added extensive imagery of Hatsune Miku since adding cartoon characters to eas
 If I have to say, the closest thing to this is the specialized CPTPP of these softwares:
 - [Thompson Reuters ONESOURCE Free Trade Agreement Management](https://tax.thomsonreuters.com/en/onesource/global-trade-management/free-trade-agreement)
 - [SAP Global Trade Services, Preference Management](https://www.sap.com/products/financial-management/global-trade-management.html)
+
+```mermaid
+%%{init: { 
+  'theme': 'base', 
+  'themeVariables': {
+    'background': '#CBFDFD',
+    'primaryColor': '#CBFDFD',
+    'primaryTextColor': '#111111',
+    'lineColor': '#61D1DC',
+    'edgeLabelBackground': '#ffffff',
+    'subgraphBackground': '#CBFDFD',
+    'subgraphBorderColor': '#61D1DC',
+    'clusterBkg': '#CBFDFD',
+    'clusterBorder': '#61D1DC',
+    'nodeBorder': '#61D1DC'
+  } 
+}}%%
+graph TD
+        Data_Ingress[Government Data Release] -->|Initial Source Files| Step_1
+        Step_1[./cptpp -E csv_cleaner.py] -->|hs.csv| Step_2[./cptpp -emit-ml list_parser.py]
+        Step_2 -->|hs.ml| Step_3[./cptpp -c csv_serializer.ml]
+        Step_3 -->|hs_world_2022.bin| Step_4[Copy / Move Data]
+
+        Step_4 -->|calc/lib/data/| Step_5[Runtime Engine Ingestion]
+        Domain[Domain Rules Definition] -->|calc/lib/domain/| Step_5
+        Payload[User Input Ingestion] -->|User Payload| Step_5
+        
+        Step_5 -->|Control Flow Tree| Step_6[Tree Routing & Compliance Evaluation]
+        Step_6 -->|Constraints Matrix| Step_7[Linear Boundary Knapsack Optimization]
+        Step_7 -->|Raw Layout Data| Step_8[generator/pdf/Makefile]
+        Fonts[Font Storage] -->|Static Link Assets| Step_8
+        Template[Template Design] -->|Layout Architecture| Step_8
+        
+        Step_8 -->|typst compile| End_Product(((template.pdf)))
+```
