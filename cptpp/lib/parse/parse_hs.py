@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
 """
  SPDX-License-Identifier: GPL-3.0-only
  Copyright (C) 2026 Nguyễn Hoàng An
 """
 
 import csv
+import sys
 from pathlib import Path
 import tempfile
 import os
@@ -85,7 +87,21 @@ def world_2022_to_ocaml(input_path: str, output_path: str) -> None:
                 os.remove(temp_name)
             raise e
 
-    # Execute the isolated pipeline stages sequentially
     _, hs_code_to_parent = parse_hs_csv(input_path)
     flat_codes = process_hs_hierarchy(hs_code_to_parent)
     write_ocaml_matrix(flat_codes, output_path)
+
+if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Ingest World HS 2022 CSV data and emit an OCaml array module.")
+    parser.add_argument("input_file", help="Path to the source harmonized-system.csv file")
+    parser.add_argument("-o", required=True, help="Destination path for the generated OCaml implementation (.ml) file")
+    
+    args = parser.parse_args()
+    
+    try:
+        world_2022_to_ocaml(args.input_file, args.o)
+    except Exception as err:
+        print(f"parse_hs: error: {err}", file=sys.stderr)
+        sys.exit(1)
