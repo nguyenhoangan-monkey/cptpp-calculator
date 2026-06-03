@@ -23,8 +23,9 @@ If I have to say, the closest thing to this is the specialized CPTPP of these so
 - [Thompson Reuters ONESOURCE Free Trade Agreement Management](https://tax.thomsonreuters.com/en/onesource/global-trade-management/free-trade-agreement)
 - [SAP Global Trade Services, Preference Management](https://www.sap.com/products/financial-management/global-trade-management.html)
 
+## Data flowchart
 ```mermaid
-%%{init: { 
+%%{init: {
   'theme': 'base', 
   'themeVariables': {
     'background': '#CBFDFD',
@@ -40,20 +41,39 @@ If I have to say, the closest thing to this is the specialized CPTPP of these so
   } 
 }}%%
 graph TD
-        Data_Ingress[Government Data Release] -->|Initial Source Files| Step_1
-        Step_1[./cptpp -E csv_cleaner.py] -->|hs.csv| Step_2[./cptpp -emit-ml list_parser.py]
-        Step_2 -->|hs.ml| Step_3[./cptpp -c csv_serializer.ml]
-        Step_3 -->|hs_world_2022.bin| Step_4[Copy / Move Data]
+    XLSX_Ingress ~~~ CSV_Ingress ~~~ JSON_Ingress
+    XLSX_Ingress[.xlsx]
+    CSV_Ingress[.csv]
+    JSON_Ingress[.json]
 
-        Step_4 -->|calc/lib/data/| Step_5[Runtime Engine Ingestion]
-        Domain[Domain Rules Definition] -->|calc/lib/domain/| Step_5
-        Payload[User Input Ingestion] -->|User Payload| Step_5
-        
-        Step_5 -->|Control Flow Tree| Step_6[Tree Routing & Compliance Evaluation]
-        Step_6 -->|Constraints Matrix| Step_7[Linear Boundary Knapsack Optimization]
-        Step_7 -->|Raw Layout Data| Step_8[generator/pdf/Makefile]
-        Fonts[Font Storage] -->|Static Link Assets| Step_8
-        Template[Template Design] -->|Layout Architecture| Step_8
-        
-        Step_8 -->|typst compile| End_Product(((template.pdf)))
+    XLSX_Ingress --> Step_1([./cptpp -E py_script input -o output.csv])
+    CSV_Ingress  --> Step_1
+    JSON_Ingress --> Step_1
+    
+    Step_1 -->|cleaned .csv files| Step_2([./cptpp -emit-ml py_script input.csv -o output.ml])
+    Step_2 -->|ocaml .ml IR| Step_3([./cptpp -c ocaml_exe input.ml -o output.bin])
+    Step_3 -->|serialized ocaml objects .bin| Step_4([/calc/lib/data/])
+
+    User ~~~ Payload ~~~ Override
+    User[Bill of material from user] -->|parse .xlsx, .csv, .json| Processing([/calc/lib/parser/])
+    Processing -->|Raw| Inter_Step1([.of_string in /calc/lib/domain/])
+    Forminput[Form input] -->|Raw| Inter_Step1
+    Payload[API, microservices] -->|Maybe| Inter_Step1
+    Override[Saved session data,<br>unsafe override] -->|Ready| Inter_Step1
+
+    Inter_Step1 -->|ocaml primitives| Inter_Step2([Tech_tree.make, Good.make, etc. in /calc/lib/domain/])
+    Inter_Step2 -->|relational, trade primitives| Domain([eager evaluation of fetched types])
+
+    Step_4 -->|copy tariffs, HS codes, etc. to /calc| Step_5[/calc/lib/engine/]
+    Domain -->|explicit data relation| Step_5
+    
+    Step_5 --> Step_6A([further calculations])
+    Step_6A --> Step_5
+    Step_6A -->|stream output to developer| CLI_Product(((CLI output)))
+
+    Step_5 --> Step_6B([/generator/pdf/])
+    Step_6B -->|typst compile| PDF_Product(((PDF certificate<br>of origin)))
+
+    Step_5 --> Step_6C([/generator/website])
+    Step_6C -->|API response to user| Web_Product(((Interactive<br>website)))
 ```
