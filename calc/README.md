@@ -1,13 +1,7 @@
 This is `cptpp-calc`, a rules of origin and tariffs calculator.
 
 ## Installation
-Download the zip, cd to the folder then:
-
-```bash
-dune build
-opam install . --deps-only --with-test
-dune build
-```
+Download the zip, cd to the folder then do `make build`.
 
 ## How the calculator works
 ### Step 0: get tariff data
@@ -157,11 +151,6 @@ let generate_akita_neru_tree api_data_thunk underlying_miku_tree =
 this is for trees: `tree -I "_build|_opam|*.install|dune.lock"`
 
 first I need to convert json of tariffs.
-
-before commit:
-* `dune build @install --auto-promote` - for .opam to be happy
-* `opam install . --deps-only --with-test` - install everything
-* `dune build` - actually building
 
 TODO:
 - allow HS code conflatation

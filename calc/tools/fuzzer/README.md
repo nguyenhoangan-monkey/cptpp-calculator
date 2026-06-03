@@ -4,24 +4,19 @@ This is where I post signed binaries (tagged git commit with my signature) and a
 
 ## How to verify `lib/domain/hs_code.ml`
 
-before commit:
-* `dune build @install --auto-promote` - for .opam to be happy
-* `opam install . --deps-only --with-test` - install everything
-* `make setup` - for my machine, require sudo
-
 also you need to install AFL before you can run this. This code uses... ocaml own AFL implementation.
 
 Instead of juggling a bunch of open terminal windows, you can just use these quick shortcuts:
 
 * `make help` – Shows all available commands
-* `make setup` – Runs the environment setup (you only need to do this once)
 * `make build` – Compiles the fuzzer
 * `make fuzz` – Compiles and starts the fuzzer on 2 background cores
 * `make dump` – Collects all the queue cases into an output.txt file
 * `make kill` – Stops the background fuzzers but keeps your data safe
 * `make clean` – Stops everything, wipes the results, and cleans up the repo
-
-Seeds used: check at `test/seeds.txt`
+* `make init` – Creates the `5.4.1+afl` switch and resolves package dependencies
+* `make setup` – Runs the environment setup (require sudo)
+* `make seed` – Generate seed from /test/seeds.txt
 
 Please check output_fail.txt and output_pass.txt to see whether the parsing makes sense. I halted the test because by this time, output_fail.txt is just outputting garbage masquading as a new execution pattern.
 

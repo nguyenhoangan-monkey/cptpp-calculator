@@ -3,7 +3,7 @@
 all: build
 
 build:
-	dune build
+	dune build @install --auto-promote
 	opam install . --deps-only --with-test
 	dune build
 

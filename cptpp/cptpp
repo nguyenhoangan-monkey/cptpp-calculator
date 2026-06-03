@@ -2,112 +2,51 @@
 import os
 import sys
 import argparse
-from abc import ABC, abstractmethod
-
-# Fix path resolution cleanly without sys.path hacks if possible.
-# If scripts is a sibling directory, ensure the parent is in the path.
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(BASE_DIR)
-
-try:
-    # Clean imports assuming 'scripts' is a package directory containing an __init__.py
-    from scripts import parse_hs
-    from scripts import parse_country
-except ImportError as e:
-    print(f"Driver Error: Failed to import internal parsers: {e}", file=sys.stderr)
-    sys.exit(1)
-
-# =====================================================================
-# SYSTEM REGISTRY (The Extensibility Layer)
-# =====================================================================
-
-class BaseParser(ABC):
-    """Abstract base class ensuring all parsers share an identical interface."""
-    
-    @abstractmethod
-    def run(self, infile: str, outfile: str) -> None:
-        pass
-
-
-class HSParser(BaseParser):
-    def run(self, infile: str, outfile: str) -> None:
-        print(f"cptpp [frontend]: Running Harmonized System (HS) parser...")
-        parse_hs.world_2022_to_ocaml(infile, outfile)
-
-
-class CountryParser(BaseParser):
-    def run(self, infile: str, outfile: str) -> None:
-        print(f"cptpp [frontend]: Running Country/Zone parser...")
-        # Abstracting the internal differences of parse_country here
-        data = parse_country.fetch_country_data()
-        parse_country.generate_ocaml_variants(data, outfile)
-
-
-# To add a new parser in the future, you just write the class above 
-# and add one line to this dictionary:
-PARSER_REGISTRY = {
-    "hs": HSParser(),
-    "country": CountryParser()
-}
-
-# Strict mapping of file extensions to target schemas to avoid bad guesses
-EXTENSION_DEFAULTS = {
-    ".csv": "hs",
-    ".xlsx": "hs",
-    # If json implies country data, map it explicitly:
-    ".json": "country" 
-}
-
-# =====================================================================
-# CORE LOGIC
-# =====================================================================
-
-def resolve_schema(infile: str, manual_schema: str = None) -> str:
-    """Determines which schema to use, prioritizing explicit user input."""
-    if manual_schema:
-        if manual_schema not in PARSER_REGISTRY:
-            print(f"cptpp: error: Unsupported schema '{manual_schema}'. Available: {list(PARSER_REGISTRY.keys())}", file=sys.stderr)
-            sys.exit(1)
-        return manual_schema
-
-    # Fallback to strict extension matching
-    _, ext = os.path.splitext(infile.lower())
-    if ext in EXTENSION_DEFAULTS:
-        return EXTENSION_DEFAULTS[ext]
-    
-    # Final fallback or safe exit
-    print(f"cptpp: error: Could not auto-detect schema for file '{infile}'. Please specify using --schema.", file=sys.stderr)
-    sys.exit(1)
-
-def run_frontend(infile: str, outfile: str, schema_type: str):
-    print(f"cptpp [frontend]: Lowering {infile} -> {outfile} using schema '{schema_type}'...")
-    
-    # Strategy Pattern implementation: Dynamic execution without if/else
-    parser = PARSER_REGISTRY[schema_type]
-    parser.run(infile, outfile)
+import subprocess
 
 def main():
-    parser = argparse.ArgumentParser(description="CPTPP Toolchain Driver (Frontend)")
-    parser.add_argument("input_file", help="Path to raw input file (.csv, .xlsx, .json)")
-    parser.add_argument("-o", "--output", required=True, help="Path to output OCaml IR (.ml)")
-    parser.add_argument("-s", "--schema", choices=PARSER_REGISTRY.keys(), help="Explicitly set the input schema type")
-    parser.add_argument("-emit-ml", action="store_true", help="Emit OCaml IR structure (Currently mandatory)")
+    parser = argparse.ArgumentParser(
+        description="CPTPP Generic Toolchain Driver",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""Examples:
+  ./cptpp -E scripts/csv_cleaner.py data/raw.csv -o data/clean.csv
+  ./cptpp -emit-ml scripts/parse_hs.py data/clean.csv -o ir/hs.ml
+  ./cptpp -c ir/serialize_hs.exe ir/hs.ml -o bin/hs.bin
+        """
+    )
+    
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("-E", "--preprocess", action="store_true", help="Run a preprocessing/cleaning script")
+    group.add_argument("-emit-ml", "--generate-ml", action="store_true", help="Run an OCaml generator script")
+    group.add_argument("-c", "--compile", action="store_true", help="Run an OCaml binary serializer")
+
+    parser.add_argument("processor", help="Path to the script or executable performing the phase")
+    parser.add_argument("input_file", help="Path to the input file")
+    parser.add_argument("-o", "--output", required=True, help="Path to the output file")
 
     args = parser.parse_args()
 
+    if not os.path.exists(args.processor):
+        print(f"cptpp: error: processor not found: '{args.processor}'", file=sys.stderr)
+        sys.exit(1)
     if not os.path.exists(args.input_file):
-        print(f"cptpp: error: no such file or directory: '{args.input_file}'", file=sys.stderr)
+        print(f"cptpp: error: input file not found: '{args.input_file}'", file=sys.stderr)
         sys.exit(1)
 
-    if not args.output.endswith('.ml') and not args.emit_ml:
-        print("cptpp: error: Backend binary generation (.bin) is not implemented yet. Use -emit-ml.", file=sys.stderr)
-        sys.exit(1)
+    print(f"cptpp: Executing phase with {args.processor}...")
 
-    # Resolve exactly what tool we are using before pulling any levers
-    schema_to_use = resolve_schema(args.input_file, args.schema)
-    
-    run_frontend(args.input_file, args.output, schema_to_use)
-    print("cptpp: Frontend phase finished successfully.")
+    try:
+        if args.processor.endswith(".py"):
+            cmd = [sys.executable, args.processor, args.input_file, "-o", args.output]
+        else:
+            cmd = [args.processor, args.input_file, "-o", args.output]
+
+        subprocess.run(cmd, check=True)
+        print(f"cptpp: Phase successful -> {args.output}")
+
+    except subprocess.CalledProcessError as e:
+        print(f"cptpp: error: Phase failed inside {args.processor}", file=sys.stderr)
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

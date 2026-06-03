@@ -13,7 +13,7 @@ help:
 	done
 
 parse:
-	python3 -m scripts.parse
+	./cptpp -emit-ml scripts/parse_hs.py data/harmonized_system/hs_world_2022/harmonized-system.csv -o ir/hs_world_2022.ml
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +

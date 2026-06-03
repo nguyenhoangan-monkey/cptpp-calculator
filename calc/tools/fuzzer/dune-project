@@ -17,4 +17,10 @@
 (package
  (name cptpp-fuzz)
  (synopsis "CPTPP rules of origin and tariffs calculator fuzzing suite")
- (description "An automated fuzz testing harness for cptpp-calc functions"))
+ (description "An automated fuzz testing harness for cptpp-calc functions")
+ (depends
+  (ocaml
+   (>= "5.4.0"))
+  (dune
+   (>= "3.23"))
+  (afl-persistent)))

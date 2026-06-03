@@ -1,13 +1,13 @@
 # Variables
-DUNE = opam exec --switch=5.4.1+afl -- dune
+SWITCH_NAME = 5.4.1+afl
+DUNE = opam exec --switch=$(SWITCH_NAME) -- dune
 FUZZ = ./_build/default/test/fuzz.exe
+
 export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
 export AFL_SKIP_CPUFREQ=1
 export AFL_POST_PROCESS_KEEP_ORIGINAL=1
 
-
-# List all targets here
-TARGETS = setup build seed fuzz dump kill clean
+TARGETS = init setup build seed fuzz dump kill clean
 
 .PHONY: all help $(TARGETS)
 
@@ -20,20 +20,26 @@ help:
 		echo "  make $$target"; \
 	done
 
-# Catch-all rule: if you type a typo, it runs 'help' instead of breaking
 %:
 	@echo "Error: Unknown command '$@'\n"
 	@$(MAKE) -s help
 	@exit 1
 
+init:
+	@echo "Checking for OCaml AFL switch..."
+	@opam switch $(SWITCH_NAME) >/dev/null 2>&1 || opam switch create $(SWITCH_NAME) --packages=ocaml-variants.5.4.1+options,ocaml-option-afl
+	@echo "Syncing .opam configuration layouts..."
+	$(DUNE) build @install --auto-promote || true
+	@echo "Installing system dependencies..."
+	opam install . --switch=$(SWITCH_NAME) --deps-only --with-test -y
+
 setup:
-	@echo "Configuring environment variables..."
-	@grep -q "AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES" ~/.zshrc || echo 'export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1' >> ~/.zshrc
-	@grep -q "AFL_SKIP_CPUFREQ" ~/.zshrc || echo 'export AFL_SKIP_CPUFREQ=1' >> ~/.zshrc
-	@echo "Please run 'sudo afl-system-config' manually if prompted."
+	@echo "Configuring core system overrides..."
+	@echo "Please enter sudo password to adjust system core dumps and CPU scaling flags:"
 	sudo afl-system-config
 
 build:
+	$(DUNE) build @install --auto-promote
 	$(DUNE) build test/fuzz.exe --instrument-with afl
 
 seed:
@@ -46,9 +52,6 @@ fuzz: build
 	sleep 1 
 	afl-fuzz -x test/hs_code.dict -i input -o output -M main $(FUZZ)
 
-status:
-	@if [ -d output ]; then afl-whatsup output/; else echo "No active fuzzing session found."; fi
-
 dump:
 	@echo "Dumping and validating test cases..."
 	@rm -f output_pass.txt output_fail.txt
@@ -60,6 +63,6 @@ kill:
 	-pkill -f afl-fuzz
 
 clean:
-	@echo "Cleaning directories..."
+	@echo "Cleaning workspace artifacts..."
 	rm -rf output
 	$(DUNE) clean
