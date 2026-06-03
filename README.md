@@ -41,36 +41,24 @@ If I have to say, the closest thing to this is the specialized CPTPP of these so
   } 
 }}%%
 graph TD
-    Step_1[make sync] -->|compiling IR compiler| Step_2([make sync])
-    Step_2 -->|compiling IR compiler| Step_3([make sync /data-bucket])
+    Step_1[git pull ... /cptpp] -->|download compiler| Step_2
+    Step_2([make build]) -->|compiling IR compiler| Step_4
 
-    Source[Tariff schedules, HS codes, exemptions, etc.] --> XLSX_Ingress
-    Source --> CSV_Ingress
-    Source --> JSON_Ingress
-
-    XLSX_Ingress ~~~ CSV_Ingress ~~~ JSON_Ingress
-    XLSX_Ingress[.xlsx]
-    CSV_Ingress[.csv]
-    JSON_Ingress[.json]
-
-    XLSX_Ingress --> Step_3
-    CSV_Ingress  --> Step_3
-    JSON_Ingress --> Step_3
+    Source[Tariff schedules, HS codes, exemptions, etc.] -->|.xlsx, .csv, .json| Step_3([/data_bucket])
     
-    Step_3 -->|serialized ocaml objects .bin| Step_4([mv output.bin calc/lib/data/])
+    Step_3 -->|passed to compiler| Step_4([./cptpp -r data_bucket -o cptpp.bin])
+    Step_4 -->|serialized ocaml objects .bin| Step_5[calc/lib/engine/]
 
-    User ~~~ Payload ~~~ Override
-    User[Bill of material from user] -->|parse .xlsx, .csv, .json| Processing([calc/lib/parser/])
-    Processing -->|Raw| Inter_Step1([.of_string in calc/lib/domain/])
     Forminput[Form input] -->|Raw| Inter_Step1
+    User[Bill of material from user] -->|.xlsx, .csv, .json| Processing([calc/lib/parser/])
+    Processing -->|Raw| Inter_Step1([.of_string in calc/lib/domain/])
     Payload[API, microservices] -->|Maybe| Inter_Step1
     Override[Saved session data,<br>unsafe override] -->|Ready| Inter_Step1
 
-    Inter_Step1 -->|ocaml primitives| Inter_Step2([Tech_tree.make, Good.make, etc. in calc/lib/domain/])
-    Inter_Step2 -->|relational, trade primitives| Domain([eager evaluation of fetched types])
+    Inter_Step1 -->|ocaml primitives| Inter_Step2([Tech_tree.t, Good.t in calc/lib/domain/])
+    Inter_Step2 -->|lazy.t multi-level BOM| Domain([evaluating values via Lazy.force])
 
-    Step_4 -->|copy tariffs, HS codes, etc. to calc| Step_5[calc/lib/engine/]
-    Domain -->|explicit data relation| Step_5
+    Domain -->|explicit BOM and rules| Step_5
     
     Step_5 --> Step_6A([further calculations])
     Step_6A --> Step_5
