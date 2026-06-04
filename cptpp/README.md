@@ -63,6 +63,12 @@ An even more direct path would be to import the AST directly from python `parser
   4) Abort compilation and leave file unchanged
 
 >> 1
+
+[cptpp] [PATCHED] Applied temporary in-memory patch: Row 4102 -> "B10"
+[cptpp] Resuming compilation...
+[cptpp] SUCCESS: Low-level IR generated and optimized.
+[cptpp] Type-matching verified against calc_domain.mli.
+[cptpp] Serialized payload written to /calc/lib/data/cptpp.bin (Build complete).
 ```
 
 ## Data sources
