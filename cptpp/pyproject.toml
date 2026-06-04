@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cptpp"
+version = "0.1.0"
+description = "CPTPP orchestrator mixing Python and OCaml"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    # Add any python dependencies here, e.g.,
+    # "pandas",
+    # "openpyxl", 
+]
+
+[project.scripts]
+cptpp = "lib.driver.main:main"
+
+[tool.setuptools.packages.find]
+# This tells python to look inside 'lib' for your python modules (driver, parser, etc.)
+where = ["."]
+include = ["lib*"]
