@@ -44,6 +44,27 @@ Note to self:
 
 An even more direct path would be to import the AST directly from python `parser` to ocaml, have a light translator/extractor in ocaml `ast`, then finally do AST calculations in `ast`. Use pyml library.
 
+```
+[cptpp] COMPILATION ERROR: Invalid Semantic Data
+┌─ [Data Source Error] ──────────────────────────────────────────────────────────
+│ File:   vietnam-harmonized-system-2026-raw.xlsx
+│ Sheet:  Tariff_Schedules
+│ Row:    4102, Column: E (Field: Staging_Category)
+│ Value:  "B14_Custom_Typo"
+├───────────────────────────────────────────────────────────────────────────────
+│ Cause:  "B14_Custom_Typo" is not a recognized CPTPP staging category variable.
+│         Expected variants: [ EIF | B3 | B5 | B6 | B10 | TRQ ]
+└───────────────────────────────────────────────────────────────────────────────
+
+[cptpp] The build cannot continue with corrupted data. How would you like to patch this node?
+  1) Hot-fix value to "B10" (Linear reduction over 10 years)
+  2) Hot-fix value to "EIF" (Entry into force)
+  3) Type a custom manual string override
+  4) Abort compilation and leave file unchanged
+
+>> 1
+```
+
 ## Data sources
 **IMPORTANT: This section shows what kind of license is used. It has legal value and thus require due diligence.**
 
