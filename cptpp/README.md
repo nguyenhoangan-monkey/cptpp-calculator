@@ -38,6 +38,12 @@ You can call the individual section too:
 6. `serializer`: `cptpp --link vietnam.ml japan.ml -o tariff.bin` (serialized Ocaml .bin)
 
 
+
+
+Note to self:
+
+An even more direct path would be to import the AST directly from python `parser` to ocaml, have a light translator/extractor in ocaml `ast`, then finally do AST calculations in `ast`. Use pyml library.
+
 ## Data sources
 **IMPORTANT: This section shows what kind of license is used. It has legal value and thus require due diligence.**
 
