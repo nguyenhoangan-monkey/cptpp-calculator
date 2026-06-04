@@ -3,7 +3,7 @@
  Copyright (C) 2026 Nguyễn Hoàng An
 -->
 
-cptpp is a parser that takes tariff schedules, country profiles, HS code matrices, and serializes it into an marshaled OCaml binary blob .miku. The .miku is used the `/calc` OCaml trade engine to perform CPTPP certificate of origin and compliance calculations, allow the entireity of the tariff schedules of all countries in CPTPP across many years to be loaded in RAM. Compare to loading the csv directly in the trade engine, this confers many benefit for the user, such as allowing complex trade modeling in the trade engine, prevent silent data corruption, no database query latency (because there is no database), no internet access needed, and simplify developer work. In short, the parser have many layers for abstraction (IR, modules,) to keep the logic transparent.
+cptpp is a data baker that takes tariff schedules, country profiles, HS code matrices, and serializes it into an marshaled OCaml binary blob .miku. The .miku is used the `/calc` OCaml trade engine to perform CPTPP certificate of origin and compliance calculations, allow the entireity of the tariff schedules of all countries in CPTPP across many years to be loaded in RAM. Compare to loading the csv directly in the trade engine, this confers many benefit for the user, such as allowing complex trade modeling in the trade engine, prevent silent data corruption, no database query latency (because there is no database), no internet access needed, and simplify developer work.
 
 The accepted filetypes for ingestion is .csv, .json, .xml, .xlsx and .pdf (structured, predefined in code). Other than some predefined file structures (such as New Zealand's CPTPP tariff schedules for countries), it is expected that the files map its column to the predefined name fields. See here for more information.
 
@@ -20,10 +20,10 @@ The reason why SQL is not used is because SQL are not type safe nor have inherie
 
 The pipeline is strictly sequential and divided into two core phases: a Rust-based extraction frontend and an OCaml-based validation and serialization backend.
 
-### driver
+### lib/driver
 The driver is the CLI entry point. The driver parses command-line arguments, manage Rust/OCaml build environment, and coordinate script execution. It also handle path and environment variables to allow calling "cptpp". It also manage the protocol buffer.
 
-### rust-ir
+### lib/rust-ir
 rust-ir acts as the data extraction, normalization, and ingestion layer. .csv, .json, .xml, .xlsx and .pdf are parsed here because the Rust libraries are much more expressive and stable compare to OCaml's libraries.
 
 1. `extractor`: Preprocessing. Ingests raw data (.xlsx, .json, .csv, .xml) using external libraries, strips whitespace, sanitizes empty cells, and maps raw text into Rust's string/number primitives.
@@ -31,7 +31,7 @@ rust-ir acts as the data extraction, normalization, and ingestion layer. .csv, .
 3. `interface`: Standardization. Standardizes shared metadata fields (e.g., "name") and enforces constraints on memory layout before serialization.
 4. `writer`: FFI writer. Maps Rust's primitives directly to OCaml-compatible structs with `ocaml-interop`, then passes the Rust array across the FFI bridge to OCaml runtime.
 
-### ocaml-ir
+### lib/ocaml-ir
 ocaml-ir focuses on semantics validation and matching to the expected types by /calc trade engine, without needing to worry about
 
 1. `reader`: FFI reader. Capture the Rust array with `external`, deserialize it, then being transformed to a stream for `validator` to ingest.
