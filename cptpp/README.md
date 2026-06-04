@@ -3,10 +3,12 @@
  Copyright (C) 2026 Nguyễn Hoàng An
 -->
 
-`cptpp` is a data compiler of `.xlsx`, `.csv`, `.json` and `.xml` formats to an optimised Ocaml binary blob `.miku` used for `/calc`.
+cptpp is a parser that takes tariff schedules, country profiles, HS code matrices, and serializes it into an marshaled OCaml binary blob .miku. The .miku is used the `/calc` OCaml trade engine to perform CPTPP certificate of origin and compliance calculations, allow the entireity of the tariff schedules of all countries in CPTPP across many years to be loaded in RAM. Compare to loading the csv directly in the trade engine, this confers many benefit for the user, such as allowing complex trade modeling in the trade engine, prevent silent data corruption, no database query latency (because there is no database), no internet access needed, and simplify developer work. In short, the parser have many layers for abstraction (IR, modules,) to keep the logic transparent.
+
+The accepted filetypes for ingestion is .csv, .json, .xml, .xlsx and .pdf (structured, predefined in code). Other than some predefined file structures (such as New Zealand's CPTPP tariff schedules for countries), it is expected that the files map its column to the predefined name fields. See here for more information.
 
 ## How to run
-Run `make setup` followed by `make install` to configure the environments and install the global `cptpp` command.
+Run `make setup` to create the OCaml switches and Rust dependencies. If you want to use cptpp as a command for for developer work instead of ./cptpp, run `make install`.
 
 - To get the marshalized version `.miku` for `/calc`, run: `cptpp one.csv two.json three.xlsx <more files...> -o output-file.miku`.
 - To get the Ocaml IR (.ml) for one of the files, run `cptpp --emit-ml file-name -o output-file.ml`
@@ -14,29 +16,27 @@ Run `make setup` followed by `make install` to configure the environments and in
 
 
 ## Logic
-The pipeline is strictly sequential and divided into two core phases: a Rust-based extraction frontend and an OCaml-based validation and serialization backend. The two environments communicate via a Foreign Function Interface bridge.
+The reason why SQL is not used is because SQL are not type safe nor have inherient structure. A relational database is very hard to visualize the constraint and is often prone to silent data corruption, as well as suffering from runtime bloat. Representing the data as structured objects help reduce developer tax and allow for efficient representation in memory and lookup in Ocaml.
+
+The pipeline is strictly sequential and divided into two core phases: a Rust-based extraction frontend and an OCaml-based validation and serialization backend.
 
 ### driver
-The driver is the CLI entry point. It parses command-line arguments, maps out the execution pipeline, and manages the multi-language build environment including the underlying Makefile.
+The driver is the CLI entry point. The driver parses command-line arguments, manage Rust/OCaml build environment, and coordinate script execution. It also handle path and environment variables to allow calling "cptpp". It also manage the protocol buffer.
 
 ### rust-ir
-The Rust frontend acts as the data extraction, normalization, and ingestion layer. Because Rust excels at high-performance I/O and low-level data manipulation, it is responsible for handling raw spreadsheet ingestion before passing typed representations to the backend.
+rust-ir acts as the data extraction, normalization, and ingestion layer. .csv, .json, .xml, .xlsx and .pdf are parsed here because the Rust libraries are much more expressive and stable compare to OCaml's libraries.
 
-1. `extractor`: Preprocessing. Ingests raw data (.xlsx, .json, .csv, .xml) using external libraries, strips whitespace, sanitizes empty cells, and maps raw text into generic internal string/number primitives.
-2. `dialect`: Domain modeling. Defines the strict structural variants for specific trade data models, such as tariff schedules, country profiles, HS code matrices, etc.
-3. `interface`: Standardization. Enforces strict memory and structural constraints on the domain models, also allow some of the common fields such as "name" to be shared.
-4. `lowering`: Lowering to Ocaml. Packs the structured Rust arrays into a binary payload and passes them across the FFI bridge to the OCaml runtime, mapping Rust's primitives directly to OCaml-compatible structs.
+1. `extractor`: Preprocessing. Ingests raw data (.xlsx, .json, .csv, .xml) using external libraries, strips whitespace, sanitizes empty cells, and maps raw text into Rust's string/number primitives.
+2. `dialect`: Domain modeling. Maps the sanitized data into different models corresponding to data types (e.g., tariff schedules, country profiles, HS code matrices). `--emit-rs` export the Rust array at the end of this step.
+3. `interface`: Standardization. Standardizes shared metadata fields (e.g., "name") and enforces constraints on memory layout before serialization.
+4. `writer`: FFI writer. Maps Rust's primitives directly to OCaml-compatible structs with `ocaml-interop`, then passes the Rust array across the FFI bridge to OCaml runtime.
 
 ### ocaml-ir
-Unlike rust-ir, ocaml-ir focuses on semantics validation and matching to the expected types by /calc trade engine.
+ocaml-ir focuses on semantics validation and matching to the expected types by /calc trade engine, without needing to worry about
 
-1. `deserializer`: Reading from FFI. Basically it reads the rust array binary to ocaml data types by linking with `external`. To prevent memory exhaustion, the data is converted to a lazy.t stream for `parser` to ingest.
-2. `validator`: Syntactic analysis. Here we check for corruption in the data stream. It verifies data integrity, cross-references HS codes against tariff tables, and flags any structural corruption or logical contradictions.
-3. `codegen`: Lowering to OCaml IR. This is where we write the raw array representation to the native Ocaml datatypes that store the array of data in an efficient manner.
-
-
-### serializer
-The serializer ocaml objects with `bin_prot` to pack hundreds of different Ocaml objects to one clean `.miku`. It is then shipped to /calc/lib/data for the trade engine.
+1. `reader`: FFI reader. Capture the Rust array with `external`, deserialize it, then being transformed to a stream for `validator` to ingest.
+2. `validator`: Data validation. Ingests the stream to verify structural integrity and domain logic. Executes business logic validation, such as cross-referencing HS codes against tariff matrices, and flags data corruption or semantic contradictions. `--emit-ml` export the OCaml object at the end of this step.
+3. `serializer`: Serialization. The raw array representation is packed with `bin_prot` to one clean `.miku`. The intended usage is shipping this binary blob to /calc/lib/data for the trade engine.
 
 
 ## Data sources

@@ -3,7 +3,7 @@
  Copyright (C) 2026 Nguyễn Hoàng An
 -->
 
-This is `cptpp-calc`, a rules of origin and tariffs calculator.
+This is `calc`, a rules of origin and tariffs calculator.
 
 ## Installation
 Download the zip, cd to the folder then do `make build`.
