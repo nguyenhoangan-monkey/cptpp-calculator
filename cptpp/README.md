@@ -21,7 +21,7 @@ The reason why SQL is not used is because SQL are not type safe nor have inherie
 The pipeline is strictly sequential and divided into two core phases: a Rust-based extraction frontend and an OCaml-based validation and serialization backend.
 
 ### lib/driver
-The driver is the CLI entry point. The driver parses command-line arguments, manage Rust/OCaml build environment, and coordinate script execution. It also handle path and environment variables to allow calling "cptpp". It also manage the protocol buffer.
+The driver is the CLI entry point. The driver parses command-line arguments, manage Rust/OCaml build environment, and coordinate script execution. It also handle path and environment variables to allow calling "cptpp".
 
 ### lib/rust-frontend
 `rust-frontend` acts as the data extraction, normalization, and ingestion layer. .csv, .json, .xml, .xlsx and .pdf are parsed here because the Rust libraries are much more expressive and stable compare to OCaml's libraries.
@@ -35,9 +35,9 @@ The driver is the CLI entry point. The driver parses command-line arguments, man
 `ocaml-backend` focuses on semantics validation and matching to the expected types by /calc trade engine, without needing to worry about
 
 1. `reader`: FFI reader. Capture the Rust array with `external`, deserialize it, then being transformed to a stream for `validator` to ingest.
-2. `validator`: Data validation. Ingests the stream to verify structural integrity and domain logic. Executes business logic validation, such as cross-referencing HS codes against tariff matrices, and flags data corruption or semantic contradictions. `--emit-ml` export the OCaml object at the end of this step.
+2. `validator`: Data validation. Ingests the stream to verify structural integrity and domain logic. Executes business logic validation, such as cross-referencing HS codes against tariff matrices, and flags data corruption or semantic contradictions.
 3. `optimizer`: Remove useless data. Data that is not used by the desired datatype and historical tariff lines that are unreachable are deleted entirely.
-4. `compressor`: Data packing. Transform the data into cache-friendly, compact memory layouts. There are many optimization techniques, such as:
+4. `compressor`: Data packing. Transform the data into cache-friendly, compact memory layouts. There are many optimization techniques. `--emit-ml` export the OCaml object at the end of this step.
     * Interns Unicode text descriptions into a central integer-mapped string pool
     * Groups items into 256 buckets by using the first byte of the token list
     * Flattens data fields into a group of arrays
