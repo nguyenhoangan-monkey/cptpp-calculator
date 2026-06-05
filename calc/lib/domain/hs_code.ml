@@ -1,7 +1,4 @@
-(**
- * SPDX-License-Identifier: GPL-3.0-only
- * Copyright (C) 2026 Nguyễn Hoàng An
- *)
+(** * SPDX-License-Identifier: GPL-3.0-only * Copyright (C) 2026 Nguyễn Hoàng An *)
 
 (* HS CODE FUNCTORS AND TYPES *)
 module type Bounded_int_config = sig
@@ -100,6 +97,8 @@ type prefix_token = Digits of string | Delims of string
 (* Consume exactly up to 6 digits from the input stream. It groups consecutive digits
 into strings, validates and skips delimiters, and immediately stops when it has seen
 6 digits, returning the unconsumed rest of the stream *)
+
+(* TODO: rewrite this crazy loop logic *)
 let tokenizer unicode_stream =
   (* converts char list to string, *)
   (* wraps it in the correct token type, and appends to list *)

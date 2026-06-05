@@ -11,8 +11,8 @@ The accepted filetypes for ingestion is .csv, .json, .xml, .xlsx and .pdf (struc
 Run `make setup` to create the OCaml switches and Rust dependencies. If you want to use cptpp as a command for for developer work instead of ./cptpp, run `make install`.
 
 - To get the marshalized version `.miku` for `/calc`, run: `cptpp one.csv two.json three.xlsx <more files...> -o output-file.miku`.
-- To get the Ocaml IR (.ml) for one of the files, run `cptpp --emit-ml file-name -o output-file.ml`
-- To get the Rust IR (.rs) for one of the files, run `cptpp --emit-rs file-name -o output-file.rs`
+- To get the Ocaml representation (.ml) for one of the files, run `cptpp --emit-ml file-name -o output-file.ml`
+- To get the Rust representation (.rs) for one of the files, run `cptpp --emit-rs file-name -o output-file.rs`
 
 
 ## Logic
@@ -23,20 +23,25 @@ The pipeline is strictly sequential and divided into two core phases: a Rust-bas
 ### lib/driver
 The driver is the CLI entry point. The driver parses command-line arguments, manage Rust/OCaml build environment, and coordinate script execution. It also handle path and environment variables to allow calling "cptpp". It also manage the protocol buffer.
 
-### lib/rust-ir
-rust-ir acts as the data extraction, normalization, and ingestion layer. .csv, .json, .xml, .xlsx and .pdf are parsed here because the Rust libraries are much more expressive and stable compare to OCaml's libraries.
+### lib/rust-frontend
+`rust-frontend` acts as the data extraction, normalization, and ingestion layer. .csv, .json, .xml, .xlsx and .pdf are parsed here because the Rust libraries are much more expressive and stable compare to OCaml's libraries.
 
 1. `extractor`: Preprocessing. Ingests raw data (.xlsx, .json, .csv, .xml) using external libraries, strips whitespace, sanitizes empty cells, and maps raw text into Rust's string/number primitives.
-2. `dialect`: Domain modeling. Maps the sanitized data into different models corresponding to data types (e.g., tariff schedules, country profiles, HS code matrices). `--emit-rs` export the Rust array at the end of this step.
+2. `datatype`: Domain modeling. Maps the sanitized data into different models corresponding to data types (e.g., tariff schedules, country profiles, HS code matrices). `--emit-rs` export the Rust array at the end of this step.
 3. `interface`: Standardization. Standardizes shared metadata fields (e.g., "name") and enforces constraints on memory layout before serialization.
 4. `writer`: FFI writer. Maps Rust's primitives directly to OCaml-compatible structs with `ocaml-interop`, then passes the Rust array across the FFI bridge to OCaml runtime.
 
-### lib/ocaml-ir
-ocaml-ir focuses on semantics validation and matching to the expected types by /calc trade engine, without needing to worry about
+### lib/ocaml-backend
+`ocaml-backend` focuses on semantics validation and matching to the expected types by /calc trade engine, without needing to worry about
 
 1. `reader`: FFI reader. Capture the Rust array with `external`, deserialize it, then being transformed to a stream for `validator` to ingest.
 2. `validator`: Data validation. Ingests the stream to verify structural integrity and domain logic. Executes business logic validation, such as cross-referencing HS codes against tariff matrices, and flags data corruption or semantic contradictions. `--emit-ml` export the OCaml object at the end of this step.
-3. `serializer`: Serialization. The raw array representation is packed with `bin_prot` to one clean `.miku`. The intended usage is shipping this binary blob to /calc/lib/data for the trade engine.
+3. `optimizer`: Remove useless data. Data that is not used by the desired datatype and historical tariff lines that are unreachable are deleted entirely.
+4. `compressor`: Data packing. Transform the data into cache-friendly, compact memory layouts. There are many optimization techniques, such as:
+    * Interns Unicode text descriptions into a central integer-mapped string pool
+    * Groups items into 256 buckets by using the first byte of the token list
+    * Flattens data fields into a group of arrays
+5. `serializer`: Serialization. The raw array representation is packed with `bin_prot` to one clean `.miku`. The intended usage is shipping this binary blob to /calc/lib/data for the trade engine.
 
 
 ## Data sources
