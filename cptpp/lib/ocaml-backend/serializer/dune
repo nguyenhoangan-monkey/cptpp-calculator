@@ -1,0 +1,6 @@
+(library
+ (name serializer)
+ (public_name cptpp.serializer)
+ (preprocess
+  (pps ppx_deriving.show ppx_bin_prot))
+ (libraries bin_prot core_kernel compressor))

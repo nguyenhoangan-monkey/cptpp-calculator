@@ -1,6 +1,6 @@
-(lang dune 3.23)
+(lang dune 3.0)
 
-(name cptpp-calc)
+(name cptpp)
 
 (generate_opam_files true)
 
@@ -15,14 +15,16 @@
 (bug_reports "https://github.com/nguyenhoangan-monkey/cptpp-project/issues")
 
 (package
- (name cptpp-calc)
- (synopsis "CPTPP rules of origin and tariffs calculator")
- (description
-  "A compliance and regional value content rules engine for CPTPP tariffs evaluation.")
+ (name cptpp)
+ (synopsis "Ocaml-backend")
  (depends
   (ocaml
-   (>= 5.4.0))
-  zarith
-  (alcotest :with-test)
-  (qcheck :with-test)
-  (qcheck-alcotest :with-test)))
+   (>= 4.14.0))
+  (dune
+   (>= 3.0))
+  (bin_prot
+   (>= v0.15.0))
+  (core_kernel
+   (>= v0.15.0))
+  (ppx_deriving
+   (>= 5.2.1))))

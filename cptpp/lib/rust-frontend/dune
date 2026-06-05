@@ -1,0 +1,9 @@
+(rule
+ (targets librust_frontend.a)
+ (deps
+  (glob_files **/*.rs)
+  Cargo.toml)
+ (action
+  (progn
+   (run cargo build --release --manifest-path Cargo.toml)
+   (copy ../../target/release/librust_frontend.a librust_frontend.a))))

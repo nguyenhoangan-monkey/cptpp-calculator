@@ -1,0 +1,12 @@
+(executable
+ (name cli)
+ (public_name cptpp)
+ (package cptpp)
+ (libraries
+  core_kernel
+  cmdliner
+  reader
+  validator
+  optimizer
+  compressor
+  serializer))

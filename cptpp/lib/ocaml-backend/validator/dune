@@ -1,0 +1,6 @@
+(library
+ (name validator)
+ (public_name cptpp.validator)
+ (preprocess
+  (pps ppx_deriving.show))
+ (libraries core_kernel compressor))

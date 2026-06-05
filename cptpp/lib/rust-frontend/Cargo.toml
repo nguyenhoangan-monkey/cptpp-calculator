@@ -1,0 +1,12 @@
+[package]
+name = "rust_frontend"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "rust_frontend"
+path = "writer/ffi_export.rs"
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+ocaml-interop = "0.12.0"

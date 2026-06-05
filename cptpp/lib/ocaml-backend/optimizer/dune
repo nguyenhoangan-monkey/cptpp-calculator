@@ -1,0 +1,4 @@
+(library
+ (name optimizer)
+ (public_name cptpp.optimizer)
+ (libraries compressor))

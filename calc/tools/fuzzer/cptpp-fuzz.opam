@@ -4,7 +4,7 @@ synopsis: "CPTPP rules of origin and tariffs calculator fuzzing suite"
 description: "An automated fuzz testing harness for cptpp-calc functions"
 maintainer: ["Nguyen Hoang An <nguyenhoangan1235@gmail.com>"]
 authors: ["Nguyen Hoang An"]
-license: "BSD-3-Clause"
+license: "GPL-3.0-only"
 homepage: "https://github.com/nguyenhoangan-monkey/cptpp-project"
 bug-reports: "https://github.com/nguyenhoangan-monkey/cptpp-project/issues"
 depends: [
