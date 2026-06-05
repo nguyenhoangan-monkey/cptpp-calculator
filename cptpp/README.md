@@ -77,3 +77,5 @@ Notes:
 
 ## notes
 https://aosabook.org/en/v1/llvm.html
+
+do String Interning
