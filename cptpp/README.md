@@ -3,11 +3,11 @@
  Copyright (C) 2026 Nguyễn Hoàng An
 -->
 
-`cptpp` is a Rust/Ocaml program that takes tariff schedules, country profiles and HS code matrices, as .csv, .json, .xml, .xlsx and .pdf (structured, predefined in code). This is a classic *extract, transform, load pipeline*, with a serialization step to a binary blob .miku.
+`cptpp` is a data integration gateway that takes tariff schedules, country profiles and HS code matrices, as .csv, .json, .xml, .xlsx and .pdf (structured, predefined in code). This is a classic *extract, transform, load pipeline*, with a serialization step to a binary blob .miku.
 
-Similar to a classic extract, transform, load pipeline used by SAP GTS or Thompson Reuters ONESOURCE, it is expected that the user map the data column to the predefined name fields. For some specific file types such as New Zealand's CPTPP tariff schedules for countries, the program would detect it automatically and no additional user input is needed.
+Similar to a classic extract, transform, load pipeline used by SAP GTS or Thompson Reuters ONESOURCE, it is expected that the user map the data column to the predefined name fields. For some specific file types such as New Zealand's CPTPP tariff schedules for countries, the program would do automated layout detection and no additional user input is needed.
 
-The .miku is used the `/calc` OCaml trade engine to perform CPTPP certificate of origin and compliance calculations, allow the entirety of the tariff schedules of all countries in CPTPP across many years to be loaded in RAM.
+The .miku is used by the `/calc` OCaml trade engine to perform CPTPP certificate of origin and compliance calculations, allow the entirety of the tariff schedules of all countries in CPTPP across many years to be loaded in RAM.
 
 
 ## How to run
@@ -43,7 +43,7 @@ Instead, by representing the data holistically as structured objects, we create 
 
 The *extract, transform, load pipeline* is strictly sequential and divided into two core phases: a Rust-based extraction frontend and an OCaml-based validation and serialization backend.
 
-Here, we have two intermediate representations (IR): one as a Rust array (--emit-rs) and another as a compressed structure of arrays in OCaml (--emit-ml). The Rust IR can theoretically be converted back to a .csv then being imported back if we write the harness for it, while the OCaml IR can only be read by `calc` library because it is a well-defined language defined in `calc`. The pipeline is heavily inspired by the multi-level intermediate representation work by LLVM complier to make sure the data ingestion is expressive while keeping the developer burden low.
+Here, we have two intermediate representations (IR): one as a Rust array (--emit-rs) and another as a compressed structure of arrays in OCaml (--emit-ml). The Rust IR can theoretically be converted back to a .csv then being imported back if we write the harness for it, while the OCaml IR can only be read by `calc` library because it is a well-defined language defined in `calc`. The pipeline is heavily inspired by the multi-level intermediate representation work by LLVM compiler to make sure the data ingestion is expressive while keeping the developer burden low.
 
 *For the technically minded, think of the M * N problem! M is all the different file format and nature of the data, and N is all of the expected efficient data structure to represent it in binary. By having IRs, we reduce this problem to M + N problem via modularity.*
 
