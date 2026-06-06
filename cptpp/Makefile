@@ -1,5 +1,5 @@
 # Paths
-RUST_DIR   = lib/rust-frontend
+RUST_DIR   = lib/rust-middleend
 RUST_OUT   = $(RUST_DIR)/target/release
 READER_DIR = lib/ocaml-backend/reader
 

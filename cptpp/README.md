@@ -19,58 +19,60 @@ Run `make setup` to create the OCaml switches and Rust dependencies. If you want
 cptpp one.csv two.json three.xlsx <more files...> -o output-file.miku
 ```
 
-If you want to get the different transformation checkpoints:
-
 To get the tabular .csv for one of the files, run:
 ```bash
 cptpp --emit-csv file-name -o output-file.csv
 ```
 
-In technical terms, this is the Rust IR represented as arrays. The raw frontend form can be collected by running `cptpp --emit-rs file-name -o output-file.rs` which is then transformed into .csv.
-
-To get the structured data console output .txt for one of the files, run:
-```bash
-cptpp --emit-txt file-name -o output-file.txt
-```
-
-In technical terms, this is the OCaml IR being rendered to plain text. The raw backend form can be collected by running `cptpp --emit-ml file-name -o output-file.ml` which is transformed to a console output via `[@@deriving show]`.
+In technical terms, this is the intermediate representation (IR) of the program represented as arrays before being passed to the protocol buffer. This is a simple array, which is transformed into .csv.
 
 
 ## Technical documentation
+**The rest of this README is about the internal working of `cptpp`.**
+
 Typical data pipelines built in languages like Python or SQL are fragile. Because they handle data flexibly at runtime, a single unexpected format change from a trade partner—like a missing column or a typo in a tariff rate—can cause the entire system to crash silently or corrupt downstream reports.
 
 Instead, by representing the data holistically as structured objects, we create a secure, centralized buffer zone. This approach completely eliminates the need to write separate, fragile cleanup scripts for every new country or file format. If a trade partner changes their spreadsheet layout, the fix is made instantly in one central location. Precompiling the data to .miku confers many benefits, such as allowing complex trade modeling in the trade engine, preventing silent data corruption, simplifying developer work, no database query latency (because there is no database), and no internet access needed.
 
-The *extract, transform, load pipeline* is strictly sequential and divided into two core phases: a Rust-based extraction frontend and an OCaml-based validation and serialization backend.
-
-Here, we have two intermediate representations (IR): one as a Rust array (--emit-rs) and another as a compressed structure of arrays in OCaml (--emit-ml). The Rust IR can theoretically be converted back to a .csv then being imported back if we write the harness for it, while the OCaml IR can only be read by `calc` library because it is a well-defined language defined in `calc`. The pipeline is heavily inspired by the multi-level intermediate representation work by LLVM compiler to make sure the data ingestion is expressive while keeping the developer burden low.
+The *extract, transform, load pipeline* is strictly sequential and divided into two core phases: a Rust-based extraction middleend and an OCaml-based validation and serialization backend. The intermediate representation (IR) which sits between the Rust and OCaml boundary as a clean Protocol Buffer stream can be dumped as a `.csv`. The result is the final, highly compressed "structure of arrays" generated at the end of the OCaml backend. The pipeline is heavily inspired by the multi-level intermediate representation work by the LLVM compiler to make sure the data ingestion is expressive while keeping the developer burden low.
 
 *For the technically minded, think of the M * N problem! M is all the different file format and nature of the data, and N is all of the expected efficient data structure to represent it in binary. By having IRs, we reduce this problem to M + N problem via modularity.*
 
 
 ### lib/driver
-The driver is the CLI entry point. The driver parses command-line arguments, manage Rust/OCaml build environment, and coordinate script execution. It also handle path and environment variables to allow calling "cptpp".
+The driver is the CLI entry point. The driver parses command-line arguments, manage Rust/OCaml build environment, and coordinate script execution. It also handle path and environment variables to allow calling `cptpp`, and also, it tracks which files are modified with `fingerprint.ml` so if we modify 1 spreadsheet, we don't have to recompile every single file in input folder before serialization.
 
-### lib/rust-frontend
-`rust-frontend` acts as the data extraction, normalization, and ingestion layer. .csv, .json, .xml, .xlsx and .pdf are parsed here because the Rust libraries are much more expressive and stable compare to OCaml's libraries.
+### lib/python-frontend
+`python-frontend` is a collection of scripts to clean complex raw data, such as .xlsx and .pdf to convert to .csv. These data are quite hard to import and manipulate in Rust so they are ideal for parsing with Python libraries from `pip`.
 
-1. `extractor`: Preprocessing. Ingests raw data (.xlsx, .json, .csv, .xml) using external libraries, strips whitespace, sanitizes empty cells, and maps raw text into Rust's string/number primitives.
-2. `datatype`: Domain modeling. Maps the sanitized data into different models corresponding to data types (e.g., tariff schedules, country profiles, HS code matrices). `--emit-rs` export the Rust array at the end of this step.
+### lib/rust-middleend
+`rust-middleend` acts as the data extraction, normalization, and ingestion layer for .csv, .json, and .xml. To make debugging broken data easy, this area tracks exactly what row and column of the data cell is corrupted with `datatype/span.rs`.
+
+1. `parser`: Parsing .xlsx, .json, .csv, .xml. Ingests raw data using external libraries, deletes whitespace, and maps raw text into Rust's string/number primitives.
+2. `datatype`: Domain modeling. Maps the sanitized data into different models corresponding to data types (e.g., tariff schedules, country profiles, HS code matrices)
 3. `interface`: Standardization. Standardizes shared metadata fields (e.g., "name") and enforces constraints on memory layout before serialization.
-4. `writer`: FFI writer. Maps Rust's primitives directly to OCaml-compatible structs with `ocaml-interop`, then passes the Rust array across the FFI bridge to OCaml runtime.
+4. `writer`: Buffer writer. Maps Rust's primitives directly to OCaml-compatible structs as a protocol buffer.
+
+### lib/proto
+Here, we want to transfer data from rust-middleend to ocaml-backend in a safe manner. The protocol buffer definition (`ir.proto`) carries `SourceSpan` message type, which is the source of truth to define the intermediate representation. The job of `ir.rs` in rust-middleend and `ir.ml` in ocaml-backend is to provide this standardization to the respective languages, so that `rust-middleend/writer` can generate the IR and `ocaml-backend/reader` can read the IR.
 
 ### lib/ocaml-backend
-`ocaml-backend` focuses on semantics validation and matching to the expected types by /calc trade engine.
+`ocaml-backend` focuses on semantics validation and matching to the expected types by /calc trade engine. Validations and optimizations are now independent, pluggable passes run by `pass_manager.ml`. To make debugging broken data easy, this area tracks exactly what row and column of the data cell is corrupted with `validator/diagnostics.ml`.
 
-1. `reader`: FFI reader. Capture the Rust array with `external`, deserialize it, then being transformed to a stream for `validator` to ingest.
+1. `reader`: Buffer reader. Capture the protocol buffer payload, deserialize it into generated OCaml types, and initialize a stream for `validator` to ingest.
 2. `validator`: Data validation. Ingests the stream to verify structural integrity and domain logic. Executes business logic validation, such as cross-referencing HS codes against tariff matrices, and flags data corruption or semantic contradictions.
 3. `optimizer`: Remove useless data. Data that is not used by the desired datatype and historical tariff lines that are unreachable are deleted entirely.
-4. `compressor`: Data packing. Transform the data into cache-friendly, compact memory layouts. There are many optimization techniques. `--emit-ml` export the OCaml object at the end of this step.
+4. `compressor`: Data packing. Transform the data into cache-friendly, compact memory layouts. There are many optimization techniques.
     * Interns Unicode text descriptions into a central integer-mapped string pool
     * Groups items into 256 buckets by using the first byte of the token list
     * Flattens data fields into a group of arrays
 5. `serializer`: Serialization. The raw array representation is packed with `bin_prot` to one clean `.miku`. The intended usage is shipping this binary blob to /calc/lib/data for the trade engine.
 
+
+Before the data is serialized to .miku, the data is an OCaml object. For the developer, if you want get the structured optimized representation of the data for individual testing, run:
+```bash
+cptpp --emit-ml file-name -o output-file.ml
+```
 
 ## Data sources
 IMPORTANT: This section shows what kind of license is used. It has legal value and thus require due diligence.

@@ -7,7 +7,7 @@ type target = {
 
 (* Safely invoke Cargo to compile the Rust frontend static archive *)
 let compile_rust_frontend () : (unit, string) result =
-  let cmd = "cargo build --release --manifest-path lib/rust-frontend/Cargo.toml" in
+  let cmd = "cargo build --release --manifest-path lib/rust-middleend/Cargo.toml" in
   match Unix.system cmd with
   | Ok () -> Ok ()
   | Error _ -> Error "Rust frontend compilation failed."
