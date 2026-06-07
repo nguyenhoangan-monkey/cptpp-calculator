@@ -1,9 +1,11 @@
 (executable
- (name cli)
+ (name orchestrator)
  (public_name cptpp)
  (package cptpp)
  (libraries
   core_kernel
+  base
+  shexp
   cmdliner
   reader
   validator

@@ -3,10 +3,12 @@ name = "rust_frontend"
 version = "0.1.0"
 edition = "2021"
 
-[lib]
-name = "rust_frontend"
-path = "writer/ffi_export.rs"
-crate-type = ["staticlib", "cdylib"]
+[[bin]]
+name = "rust_generator"
+path = "writer/buffer_write.rs"
 
 [dependencies]
-ocaml-interop = "0.12.0"
+prost = "0.13"
+
+[build-dependencies]
+prost-build = "0.13"

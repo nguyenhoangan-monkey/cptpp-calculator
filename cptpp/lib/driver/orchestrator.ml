@@ -1,53 +1,19 @@
-open Core_kernel
+open Shexp_process
 
-type target = {
-  inputs  : string list;
-  output  : string;
-}
+let orchestrate () =
+  Stdlib.print_endline "[Orchestrator] Step 1: Compiling Protobuf files...";
+  eval (run "protoc" ["--rust_out=./rust-middleend/writer"; "proto/ir.proto"]);
 
-(* Safely invoke Cargo to compile the Rust frontend static archive *)
-let compile_rust_frontend () : (unit, string) result =
-  let cmd = "cargo build --release --manifest-path lib/rust-middleend/Cargo.toml" in
-  match Unix.system cmd with
-  | Ok () -> Ok ()
-  | Error _ -> Error "Rust frontend compilation failed."
+  Stdlib.print_endline "[Orchestrator] Step 2: Building Rust binary...";
+  eval (run "cargo" ["build"; "--manifest-path"; "./rust-middleend/Cargo.toml"; "--release"]);
 
-(* Coordinate the data compilation stages sequentially *)
-let compile_data target : unit =
-  printf "Step 1: Ingesting data via FFI...\n";
-  let raw_stream = Reader.Ffi_import.run target.inputs in
-
-  printf "Step 2: Running semantic validation passes...\n";
-  let validated_stream = 
-    raw_stream
-    |> Validator.Static_check.validate
-    |> Validator.Hierarchy_resolve.resolve
+  Stdlib.print_endline "[Orchestrator] Step 3: Executing Rust frontend...";
+  (* We use run_output inside eval so it extracts and returns the stdout string *)
+  let rust_bytes = 
+    eval (run_output "./rust-middleend/target/release/rust_generator" []) 
   in
 
-  printf "Step 3: Executing mid-end optimizations...\n";
-  let optimized_stream = 
-    validated_stream
-    |> Optimizer.Dead.eliminate
-    |> Optimizer.Simplify.run
-  in
+  Stdlib.print_endline "[Orchestrator] Step 4: Handing off data to OCaml backend reader...";
+  Reader.Buffer_read.process_bytes rust_bytes
 
-  printf "Step 4: Compiling low-level compressed layouts...\n";
-  let packed_payload = Compressor.Layout.pack optimized_stream in
-
-  printf "Step 5: Emitting serialized binary to %s...\n" target.output;
-  Serializer.Bin_writer.write_miku_file target.output packed_payload
-
-(* Main orchestration entry point called by cli.ml *)
-let run (inputs : string list) (output : string) : unit =
-  match compile_rust_frontend () with
-  | Error msg -> 
-      prerr_endline ("Build Error: " ^ msg);
-      exit 1
-  | Ok () ->
-      try 
-        compile_data { inputs; output };
-        printf "Build successful! Created binary asset.\n"
-      with exn ->
-        (* Graceful fallback to your diagnostic printer if execution explodes *)
-        Validator.Diagnostic.print exn;
-        exit 1
+let () = orchestrate ()

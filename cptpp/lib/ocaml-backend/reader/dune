@@ -1,7 +1,6 @@
 (library
  (name reader)
  (public_name cptpp.reader)
- (foreign_archives rust_frontend)
  (preprocess
-  (pps ppx_deriving.show ppx_bin_prot))
- (libraries bin_prot validator optimizer compressor))
+  (pps ppx_deriving.show ppx_sexp_conv ppx_bin_prot))
+ (libraries base bin_prot ocaml-protoc-plugin validator optimizer compressor))

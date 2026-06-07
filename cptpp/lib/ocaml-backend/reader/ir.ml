@@ -1,20 +1,31 @@
-type hscode_entry = {
-  code : string;
-  description : string;
-}
+open Bin_prot.Std
+open Base
 
-type fabricated_ir = {
-  entries : hscode_entry array;
-}
+module Raw = struct
+  type 'a t = {
+    row : int;
+    col : int;
+    payload : 'a;
+  } [@@deriving bin_io, sexp]
+end
 
-let verify_and_dump ir =
-  Printf.printf "[Gateway] Received %d raw HS code entries from FFI.\n" (Array.length ir.entries);
+module Validated = struct
+  type hs_code = { code : string; desc : string } [@@deriving bin_io]
+  type tariff  = { id : int; rate : float }       [@@deriving bin_io]
   
-  let sample_size = min 3 (Array.length ir.entries) in
-  for i = 0 to sample_size - 1 do
-    let entry = ir.entries.(i) in
-    Printf.printf "  Sample %d -> HS Code: %s | Desc: %s\n" 
-      i entry.code entry.description
-  done;
-  
-  ir.entries
+  type t = 
+    | Hs_code of hs_code
+    | Tariff of tariff
+  [@@deriving bin_io]
+end
+
+module Optimized = struct
+  type t = Validated.t [@@deriving bin_io]
+end
+
+module Compressed = struct
+  type t = {
+    keys : string array;
+    values : int array;
+  } [@@deriving bin_io]
+end

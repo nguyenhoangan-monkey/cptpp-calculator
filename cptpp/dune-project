@@ -16,15 +16,14 @@
 
 (package
  (name cptpp)
- (synopsis "Ocaml-backend")
+ (synopsis "Compiler pipeline")
  (depends
   (ocaml
-   (>= 4.14.0))
-  (dune
-   (>= 3.0))
-  (bin_prot
-   (>= v0.15.0))
-  (core_kernel
-   (>= v0.15.0))
-  (ppx_deriving
-   (>= 5.2.1))))
+   (>= 5.4.0))
+  dune
+  base
+  shexp
+  ppx_deriving
+  ppx_sexp_conv
+  ppx_bin_prot
+  ocaml-protoc-plugin))
