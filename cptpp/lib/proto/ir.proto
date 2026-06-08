@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-message Cell {
-  int32 row = 1;
-  int32 col = 2;
-  string payload = 3;
-}
-
-message TabularData { repeated Cell cells = 1; }

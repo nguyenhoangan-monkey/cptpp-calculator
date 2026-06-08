@@ -1,6 +1,0 @@
-(library
- (name compressor)
- (public_name cptpp.compressor)
- (preprocess
-  (pps ppx_deriving.show ppx_bin_prot))
- (libraries bin_prot core_kernel))
