@@ -1,0 +1,10 @@
+(menhir
+ (modules parser))
+
+(executable
+ (name main)
+ (public_name cptpp)
+ (libraries sedlex menhirLib unix bigarray)
+ (preprocess
+  (pps sedlex.ppx -- -no-check))
+ (flags :standard -extension layouts))

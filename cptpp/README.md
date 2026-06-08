@@ -14,7 +14,7 @@ The .miku is used by the `/calc` OCaml trade engine to perform CPTPP certificate
 
 ## How to install
 
-(add instruction on installing oxcaml)
+(add instruction on installing oxcaml, also caution that this uses 5.2.0+ox switch while calc MUST use the latest 5.4.1 OCaml switch)
 
 Run `make setup` to create the OCaml switches and Rust dependencies. If you want to use `cptpp` as a global command for developer work instead of `./cptpp`, run `make install`.
 

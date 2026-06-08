@@ -1,6 +1,8 @@
-(lang dune 3.0)
+(lang dune 3.12)
 
 (name cptpp)
+
+(using menhir 2.1)
 
 (generate_opam_files true)
 
@@ -19,8 +21,9 @@
  (synopsis "Compiler pipeline")
  (depends
   (ocaml
-   (>= 5.4.0))
-  dune
-  base
-  shexp
-  ppx_jane))
+   (>= 5.2.0))
+  (dune
+   (>= 3.0))
+  sedlex
+  menhir
+  menhirLib))
