@@ -11,10 +11,7 @@ depends: [
   "dune" {>= "3.0"}
   "base"
   "shexp"
-  "ppx_deriving"
-  "ppx_sexp_conv"
-  "ppx_bin_prot"
-  "ocaml-protoc-plugin"
+  "ppx_jane"
   "odoc" {with-doc}
 ]
 build: [
