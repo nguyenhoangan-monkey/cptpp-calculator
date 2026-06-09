@@ -4,7 +4,8 @@
 (executable
  (name main)
  (public_name cptpp)
- (libraries sedlex menhirLib unix bigarray)
+ (modules parser lexer syntax main)
+ (libraries sedlex re menhirLib unix bigarray cmdliner)
  (preprocess
   (pps sedlex.ppx -- -no-check))
  (flags :standard -extension layouts))

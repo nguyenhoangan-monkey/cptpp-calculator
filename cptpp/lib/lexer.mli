@@ -1,0 +1,1 @@
+val f : Sedlexing.lexbuf -> unit -> Parser.token * Lexing.position * Lexing.position
