@@ -1,11 +1,5 @@
-(menhir
- (modules parser))
-
 (executable
  (name main)
  (public_name cptpp)
  (modules parser lexer syntax main)
- (libraries sedlex re menhirLib unix bigarray cmdliner)
- (preprocess
-  (pps sedlex.ppx -- -no-check))
- (flags :standard -extension layouts))
+ (libraries cmdliner))

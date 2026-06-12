@@ -24,7 +24,4 @@
   (ocaml
    (>= 5.2.0))
   (dune
-   (>= 3.0))
-  sedlex
-  menhir
-  menhirLib))
+   (>= 3.0))))

@@ -3,18 +3,29 @@
 all: build
 
 switch:
-	@echo "==> Setting up OxCaml 5.2.0+ox switch..."
-	@if ! opam switch list | grep -q "5.2.0+ox"; then \
-		opam repo add ox git+https://github.com/oxcaml/opam-repository.git --dont-select || true; \
-		opam switch create 5.2.0+ox --repos ox,default || true; \
-	else \
-		echo "OxCaml switch already exists."; \
+	@echo "==> Updating opam repositories..."
+	opam update --all
+
+	@echo "==> Ensuring any old or broken 5.2.0+ox switch is removed..."
+	@if opam switch list | grep -q "5.2.0+ox"; then \
+		opam switch remove 5.2.0+ox -y; \
 	fi
-	@echo "==> Switch ready. Run 'eval \$$(opam env --switch=5.2.0+ox)' in your terminal to activate it."
+
+	@echo "==> Installing dune..."
+	opam install dune --switch=5.2.0+ox -y
+
+	@echo "==> Creating OxCaml 5.2.0+ox switch (this may take some time)..."
+	opam switch create 5.2.0+ox --repos ox=git+https://github.com/oxcaml/opam-repository.git,default
+
+	@echo ""
+	@echo "===================================================================="
+	@echo "==> Switch ready! To activate it in your current terminal, run:"
+	@echo "    eval \$$(opam env --switch=5.2.0+ox)"
+	@echo "===================================================================="
 
 setup:
 	@echo "==> Installing ecosystem dependencies..."
-	@dune build cptpp.opam 
+	@dune build cptpp.opam
 	@opam install . --deps-only --with-test -y
 	@dune build @install --auto-promote
 

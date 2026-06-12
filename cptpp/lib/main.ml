@@ -9,14 +9,12 @@
 
 open Cmdliner
 
-let parse_buffer l =
-  let provider = Lexer.f l in
-  MenhirLib.Convert.Simplified.traditional2revised Parser.exp provider
-
-let lexbuf _outchan l = (* Compile the buffer and output it to the channel *)
+let compile _outchan l = (* Compile the buffer and output it to the channel *)
   (* Id.counter := 0;
   Typing.extenv := M.empty; *)
-  parse_buffer l
+  l
+  |> Lexer.f
+  |> Parser.f
   (* |> Typing.f
   |> KNormal.f
   |> Alpha.f
@@ -27,10 +25,9 @@ let lexbuf _outchan l = (* Compile the buffer and output it to the channel *)
   |> Emit.f outchan *)
 
 let file f =
-  In_channel.with_open_text (f ^ ".csv") @@ fun inchan ->
-  Out_channel.with_open_text (f ^ ".miku") @@ fun outchan ->
-  inchan 
-  |> Sedlexing.Utf8.from_channel 
+  let* inchan = In_channel.with_open_text (f ^ ".csv") in
+  let* outchan = Out_channel.with_open_text (f ^ ".miku") in
+  inchan
   |> lexbuf outchan
   |> ignore
 
@@ -39,7 +36,7 @@ let cmd = (* List of command line arguments *)
   let term =
     (* let+ emit_csv = Arg.(info ["emit-csv"] |> flag |> value) *)
     (* and+ output   = Arg.(info ["o"] |> opt (some string) None |> required) *)
-    let+ files    = Arg.(info [] |> pos_all string [] |> non_empty) 
+    let+ files    = Arg.(info [] |> pos_all string [] |> non_empty)
     in
     List.iter file files
   in
