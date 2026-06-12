@@ -2,8 +2,6 @@
 
 (name cptpp)
 
-(using menhir 2.1)
-
 (generate_opam_files true)
 
 (maintainers "Nguyen Hoang An <nguyenhoangan1235@gmail.com>")
@@ -22,6 +20,4 @@
  (depends
   cmdliner
   (ocaml
-   (>= 5.2.0))
-  (dune
-   (>= 3.0))))
+   (>= 5.4.0))))

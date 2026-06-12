@@ -7,9 +7,9 @@ license: "GPL-3.0-only"
 homepage: "https://github.com/nguyenhoangan-monkey/cptpp-project"
 bug-reports: "https://github.com/nguyenhoangan-monkey/cptpp-project/issues"
 depends: [
+  "dune" {>= "3.12"}
   "cmdliner"
-  "ocaml" {>= "5.2.0"}
-  "dune" {>= "3.12" & >= "3.0"}
+  "ocaml" {>= "5.4.0"}
   "odoc" {with-doc}
 ]
 build: [

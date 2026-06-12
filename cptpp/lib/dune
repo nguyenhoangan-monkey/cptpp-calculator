@@ -1,5 +1,15 @@
+(library
+ (name compiler_lib)
+ (modules file lexer parser typing knormal alpha closure virtual simm regalloc emit)
+ (libraries cmdliner))
+
 (executable
  (name main)
  (public_name cptpp)
- (modules parser lexer syntax main)
- (libraries cmdliner))
+ (modules main)
+ (libraries compiler_lib cmdliner))
+
+(executable
+ (name experiments)
+ (modules experiments)
+ (libraries compiler_lib cmdliner))
